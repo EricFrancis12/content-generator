@@ -1,0 +1,7 @@
+dev:
+docker-compose docker-compose.yml docker-compose.dev.yml up -d
+docker-compose docker-compose.yml docker-compose.dev.yml down
+
+prod:
+docker-compose docker-compose.yml docker-compose.prod.yml up -d --build
+docker-compose docker-compose.yml docker-compose.prod.yml down
