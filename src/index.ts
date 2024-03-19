@@ -27,6 +27,4 @@ app.get('/', async (req, res) => {
 app.use('/api/v1/campaigns', campaignsRouter);
 
 const port = Number(process.env.PORT || 3000);
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`Server running on port ${port}`));
