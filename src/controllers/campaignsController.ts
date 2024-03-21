@@ -1,7 +1,6 @@
 import Campaign from '../models/Campaign';
 import type { Request, Response } from 'express';
 
-
 export async function getAllCampaigns(req: Request, res: Response) {
     try {
         const campaigns = await Campaign.find();
