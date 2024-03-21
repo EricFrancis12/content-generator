@@ -1,5 +1,6 @@
 import express from 'express';
 import campaignsRouter from './routes/campaigns/campaignsRouter';
+import amqpRouter from './routes/amqp/amqpRouter';
 import mongoose from 'mongoose';
 import config from './config/config';
 const { MONGO_IP, MONGO_PORT, MONGO_USER, MONGO_PASSWORD } = config;
@@ -25,6 +26,7 @@ app.get('/', async (req, res) => {
 });
 
 app.use('/api/v1/campaigns', campaignsRouter);
+app.use('/api/v1/amqp', amqpRouter);
 
 const port = Number(process.env.PORT || 3000);
 app.listen(port, '0.0.0.0', () => {

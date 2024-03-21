@@ -18,5 +18,15 @@ services:
     volumes:
       - mongo-db:/data/db
 
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    hostname: "rabbit"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
 volumes:
   mongo-db:
