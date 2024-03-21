@@ -5,7 +5,7 @@ const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_QUEUES } = config;
 
 const ampqUrl = `amqp://${RABBITMQ_IP}:${RABBITMQ_PORT}`;
 
-let channel: amqplib.Channel | null = null;
+export let channel: amqplib.Channel | null = null;
 const connectWithRetry = () => {
     amqplib
         .connect(ampqUrl)
@@ -33,9 +33,6 @@ export async function sendMessageToQueue(req: Request, res: Response) {
         if (!channel) {
             throw new Error('Channel does not exist');
         }
-        if (!RABBITMQ_QUEUES.includes(req.params.queue_name)) {
-            throw new Error('Queue does not exist');
-        }
         channel.sendToQueue(req.params.queue_name, Buffer.from(JSON.stringify(req.body)), {
             persistent: true
         });
@@ -54,22 +51,19 @@ export async function consumeMessageFromQueue(req: Request, res: Response) {
         if (!channel) {
             throw new Error('Channel does not exist');
         }
-        if (!RABBITMQ_QUEUES.includes(req.params.queue_name)) {
-            throw new Error('Queue does not exist');
+        const message = await channel.get(req.params.queue_name);
+        if (!!message) {
+            const result = JSON.parse(message?.content?.toString() || 'null');
+            res.status(200).json({
+                success: true,
+                data: {
+                    message: result
+                }
+            });
+            channel.ack(message);
+        } else {
+            throw new Error('Error getting message from queue');
         }
-        let result: string | null = null;
-        await channel.consume(req.params.queue_name, (message) => {
-            result = JSON.parse(message?.content.toString() || 'null');
-            if (!!message) {
-                channel?.ack(message);
-            }
-        });
-        res.status(200).json({
-            success: true,
-            data: {
-                message: result
-            }
-        });
     } catch (err) {
         res.json({
             success: false

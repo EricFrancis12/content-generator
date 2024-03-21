@@ -9,6 +9,7 @@ services:
       - PORT=3000
     depends_on:
       - mongo
+      - rabbitmq
 
   mongo:
     image: mongo

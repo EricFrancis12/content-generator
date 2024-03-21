@@ -7,7 +7,7 @@ const config = {
     MONGO_PASSWORD: process.env.MONGO_PASSWORD,
     RABBITMQ_IP: process.env.RABBITMQ_IP || 'rabbitmq',
     RABBITMQ_PORT: process.env.RABBITMQ_PORT || 5672,
-    RABBITMQ_QUEUES: ['two', 'three']
+    RABBITMQ_QUEUES: ['download', 'apply-filters', 'publish']
 };
 
 export default config;
