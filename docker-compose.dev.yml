@@ -12,3 +12,16 @@ services:
     environment:
       - NODE_ENV=development
     command: npm run dev
+
+  ui:
+    build:
+      context: ./services/ui
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./services/ui/:/app
+      - /app/node_modules
