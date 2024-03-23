@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { ESourceType, EContentType, EFilterComponentType, EPublisherType } from '../typings/index';
 
-const campaignSchema = new mongoose.Schema({
+export const campaignSchema = new mongoose.Schema({
     name: {
         type: String,
         require: [true, 'Campaign must have a name']
