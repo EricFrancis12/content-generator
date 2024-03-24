@@ -10,6 +10,15 @@ services:
       - NODE_ENV=production
     command: npm start
 
+  campaign-engine:
+    build:
+      context: ./services/node-app
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: npm start
+
   ui:
     build:
       context: ./services/ui

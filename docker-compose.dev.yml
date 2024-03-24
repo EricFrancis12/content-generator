@@ -13,6 +13,18 @@ services:
       - NODE_ENV=development
     command: npm run dev
 
+  campaign-engine:
+    build:
+      context: ./services/campaign-enginye
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./services/campaign-engine/src/:/app/src
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
   ui:
     build:
       context: ./services/ui

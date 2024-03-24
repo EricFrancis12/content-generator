@@ -13,6 +13,12 @@ services:
       - mongo
       - rabbitmq
 
+  campaign-engine:
+    build: ./services/campaign-engine
+    depends_on:
+      - mongo
+      - rabbitmq
+
   ui:
     depends_on:
       - node-app

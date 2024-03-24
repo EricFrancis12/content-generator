@@ -1,0 +1,27 @@
+{
+    "name": "campaign-engine",
+    "version": "1.0.0",
+    "description": "",
+    "main": "build/index.js",
+    "scripts": {
+        "start": "node build/index.js",
+        "build": "npx tsc",
+        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/index.js\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@tsconfig/node18": "^18.2.2",
+        "@types/amqplib": "^0.10.5",
+        "@types/mongoose": "^5.11.97",
+        "@types/node": "^20.11.30",
+        "amqplib": "^0.10.3",
+        "mongoose": "^8.2.3",
+        "typescript": "^5.4.3"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2",
+        "nodemon": "^3.1.0"
+    }
+}
