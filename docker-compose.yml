@@ -2,7 +2,9 @@ version: "3"
 
 services:
   node-app:
-    build: ./services/node-app
+    build:
+      context: ./services
+      dockerfile: ./node-app/Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -14,7 +16,9 @@ services:
       - rabbitmq
 
   campaign-engine:
-    build: ./services/campaign-engine
+    build:
+      context: ./services
+      dockerfile: ./campaign-engine/Dockerfile
     depends_on:
       - mongo
       - rabbitmq

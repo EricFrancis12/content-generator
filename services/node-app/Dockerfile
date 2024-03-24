@@ -1,6 +1,6 @@
 FROM node:15
 WORKDIR /app
-COPY package.json /app
+COPY ./node-app/package.json /app
 
 ARG NODE_ENV
 RUN if [ "$NODE_ENV" = "development" ]; \
@@ -8,7 +8,8 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     else npm install --only-production; \
     fi
 
-COPY . /app
+COPY ./node-app/ /app
+COPY ./_shared/ /app/_shared
 RUN npm run build
 ENV PORT 3000
 EXPOSE $PORT

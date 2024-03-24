@@ -1,0 +1,11 @@
+{
+  "name": "_shared",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/amqplib": "^0.10.5",
+    "amqplib": "^0.10.3"
+  }
+}

@@ -3,9 +3,9 @@
     "version": "1.0.0",
     "main": "build/index.js",
     "scripts": {
-        "start": "node build/index.js",
+        "start": "node build/src/index.js",
         "build": "npx tsc",
-        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/index.js\""
+        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/src/index.js\""
     },
     "dependencies": {
         "@tsconfig/node18": "^18.2.2",

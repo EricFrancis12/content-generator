@@ -3,7 +3,8 @@ version: "3"
 services:
   node-app:
     build:
-      context: ./services/node-app
+      context: ./services
+      dockerfile: ./node-app/Dockerfile
       args:
         NODE_ENV: production
     environment:
@@ -12,7 +13,8 @@ services:
 
   campaign-engine:
     build:
-      context: ./services/node-app
+      context: ./services
+      dockerfile: ./campaign-engine/Dockerfile
       args:
         NODE_ENV: production
     environment:

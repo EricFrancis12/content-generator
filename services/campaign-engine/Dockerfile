@@ -1,6 +1,6 @@
 FROM node:15
 WORKDIR /app
-COPY package.json /app
+COPY ./campaign-engine/package.json /app
 
 ARG NODE_ENV
 RUN if [ "$NODE_ENV" = "development" ]; \
@@ -8,6 +8,9 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     else npm install --only-production; \
     fi
 
-COPY . /app
+COPY ./campaign-engine/src/ /app/src
+COPY ./campaign-engine/package*.json/ /app
+COPY ./campaign-engine/tsconfig.json /app
+COPY ./_shared/ /app/_shared
 RUN npm run build
 CMD ["npm", "start"]

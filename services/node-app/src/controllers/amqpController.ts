@@ -1,32 +1,14 @@
 import type { Request, Response } from 'express';
 import amqplib from 'amqplib';
+import _shared from '../../_shared';
+const { initRabbitMQ } = _shared.amqp;
 import config from '../config/config';
-const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_QUEUES } = config;
-
-const ampqUrl = `amqp://${RABBITMQ_IP}:${RABBITMQ_PORT}`;
+const { RABBITMQ_IP, RABBITMQ_PORT } = config;
 
 export let channel: amqplib.Channel | null = null;
-const connectWithRetry = () => {
-    amqplib
-        .connect(ampqUrl)
-        .then(async (conn) => {
-            console.log('Connected to Rabbitmq');
-            channel = await conn.createChannel();
-            console.log('Created amqp channel');
-            const numQueues = RABBITMQ_QUEUES.length;
-            for (let i = 0; i < numQueues; i++) {
-                await channel.assertQueue(RABBITMQ_QUEUES[i], {
-                    durable: true
-                });
-            }
-            console.log(`Asserted ${numQueues} queue${numQueues > 1 ? 's' : ''}: ${RABBITMQ_QUEUES.map(queue => `"${queue}"`).join(', ')}`);
-        })
-        .catch(err => {
-            console.error(err);
-            setTimeout(connectWithRetry, 5000);
-        });
-}
-connectWithRetry();
+const ampqUrl = `amqp://${RABBITMQ_IP}:${RABBITMQ_PORT}`;
+const connectWithRetry = initRabbitMQ(ampqUrl);
+connectWithRetry().then(_channel => channel = _channel);
 
 export async function sendMessageToQueue(req: Request, res: Response) {
     try {
