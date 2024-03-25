@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { ESourceType, EContentType, EFilterComponentType, EPublisherType } from '../typings/index';
+import typings from '../typings/index';
+const { ESourceType, EContentType, EFilterComponentType, EPublisherType } = typings;
 
 export const campaignSchema = new mongoose.Schema({
     name: {

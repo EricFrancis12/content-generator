@@ -1,7 +1,9 @@
-import * as amqp from './amqp/amqp';
+import * as amqp from './amqp/index';
+import * as typings from './typings/index';
 
 const _shared = {
-    amqp
+    amqp,
+    typings
 };
 
 export default _shared;

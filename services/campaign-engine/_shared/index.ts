@@ -1,3 +1,7 @@
 import _shared from '../../_shared';
 
-export default _shared;
+const shared = {
+    ..._shared
+};
+
+export default shared;
