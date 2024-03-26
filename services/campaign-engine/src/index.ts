@@ -1,10 +1,4 @@
-import _shared from '../_shared';
-const { initRabbitMQ, RABBITMQ_QUEUES } = _shared.amqp;
-import config from './config/config';
-const { INTERVAL_MS } = config;
+import CampaignsEngine from './models/CampaignsEngine';
 
-async function main() {
-    // ...
-}
-
-setInterval(main, INTERVAL_MS);
+const campaignsEngine = new CampaignsEngine();
+campaignsEngine.start();

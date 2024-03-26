@@ -1,5 +1,6 @@
-import * as amqp from './amqp/index';
-import * as typings from './typings/index';
+import * as amqp from './amqp';
+import * as typings from './typings';
+import { ICampaign, TDownloadQueueItem, TSourceImage, TSourceVideo, IHistoryItem, IIntakeHistoryItem } from './typings';
 
 const _shared = {
     amqp,
@@ -7,3 +8,11 @@ const _shared = {
 };
 
 export default _shared;
+export {
+    ICampaign,
+    TDownloadQueueItem,
+    TSourceImage,
+    TSourceVideo,
+    IHistoryItem,
+    IIntakeHistoryItem
+};
