@@ -21,6 +21,26 @@ services:
       - NODE_ENV=production
     command: npm start
 
+  download-engine:
+    build:
+      context: ./services
+      dockerfile: ./download-engine/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: npm start
+
+  apply-filters-engine:
+    build:
+      context: ./services
+      dockerfile: ./apply-filters-engine/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: npm start
+
   ui:
     build:
       context: ./services/ui

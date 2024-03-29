@@ -50,12 +50,13 @@ export const campaignSchema = new mongoose.Schema({
                 enum: Object.values(EFilterComponentType),
                 require: [true, 'Filter base must have a type']
             },
-            content_id: {
-                type: String
+            contentType: {
+                type: String,
+                enum: Object.values(EContentType),
+                require: [true, 'Filter base must have a content type']
             },
-            filterIndex: {
-                type: Number
-            }
+            internalId: String,
+            filterIndex: Number
         },
         ingredient: {
             type: {
@@ -63,7 +64,12 @@ export const campaignSchema = new mongoose.Schema({
                 enum: Object.values(EFilterComponentType),
                 require: [true, 'Filter ingredient must have a type']
             },
-            content_id: String,
+            contentType: {
+                type: String,
+                enum: Object.values(EContentType),
+                require: [true, 'Filter ingredient must have a content type']
+            },
+            internalId: String,
             filterIndex: Number
         },
         options: {}

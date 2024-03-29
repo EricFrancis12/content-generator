@@ -23,6 +23,24 @@ services:
       - mongo
       - rabbitmq
 
+  download-engine:
+    build:
+      context: ./services
+      dockerfile: ./download-engine/Dockerfile
+    depends_on:
+      - rabbitmq
+    volumes:
+      - shared-file-system:/app/shared-file-system
+
+  apply-filters-engine:
+    build:
+      context: ./services
+      dockerfile: ./apply-filters-engine/Dockerfile
+    depends_on:
+      - rabbitmq
+    volumes:
+      - shared-file-system:/app/shared-file-system
+
   ui:
     depends_on:
       - node-app
@@ -47,3 +65,4 @@ services:
 
 volumes:
   mongo-db:
+  shared-file-system:

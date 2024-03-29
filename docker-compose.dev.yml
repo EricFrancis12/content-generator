@@ -29,6 +29,34 @@ services:
       - NODE_ENV=development
     command: npm run dev
 
+  download-engine:
+    build:
+      context: ./services
+      dockerfile: ./download-engine/Dockerfile
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./services/download-engine/src/:/app/src
+      - ./services/_shared/:/app/_shared
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+  apply-filters-engine:
+    build:
+      context: ./services
+      dockerfile: ./apply-filters-engine/Dockerfile
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./services/apply-filters-engine/src/:/app/src
+      - ./services/_shared/:/app/_shared
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
   ui:
     build:
       context: ./services/ui

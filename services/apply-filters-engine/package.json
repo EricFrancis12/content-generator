@@ -2,20 +2,25 @@
     "name": "apply-filters-engine",
     "version": "1.0.0",
     "description": "",
-    "main": "build/index.js",
+    "main": "build/src/index.js",
     "scripts": {
-        "start": "node build/index.js",
+        "start": "node build/src/index.js",
         "build": "npx tsc",
-        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/index.js\""
+        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/src/index.js\""
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@ffmpeg-installer/ffmpeg": "^1.1.0",
+        "@ffprobe-installer/ffprobe": "^2.1.2",
         "@tsconfig/node18": "^18.2.2",
         "@types/amqplib": "^0.10.5",
+        "@types/fluent-ffmpeg": "^2.1.24",
         "@types/node": "^20.11.30",
         "amqplib": "^0.10.3",
+        "fluent-ffmpeg": "^2.1.2",
+        "os": "^0.1.2",
         "typescript": "^5.4.3"
     },
     "devDependencies": {

@@ -1,6 +1,7 @@
 import amqplib from 'amqplib';
+import type { TRabbitMQQueue } from '../typings';
 
-export const RABBITMQ_QUEUES = ['download', 'apply-filters', 'publish'];
+export const RABBITMQ_QUEUES: TRabbitMQQueue[] = ['download', 'apply-filters', 'publish'];
 
 export function initRabbitMQ(ampqUrl: string, {
     timeout = 5000

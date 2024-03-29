@@ -1,3 +1,3 @@
+import ApplyFiltersEngine from './models/ApplyFiltersEngine';
 
-
-console.log('Apply filters engine running');
+const applyFiltersEngine = new ApplyFiltersEngine({ startWhenConnected: true });

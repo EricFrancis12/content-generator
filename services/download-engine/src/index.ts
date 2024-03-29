@@ -1,3 +1,3 @@
+import DownloadEngine from './models/DownloadEngine';
 
-
-console.log('Download engine running');
+const downloadEngine = new DownloadEngine({ startWhenConnected: true });

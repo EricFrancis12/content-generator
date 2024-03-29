@@ -17,18 +17,19 @@ export interface ICampaign {
 };
 
 export interface IFilter {
-    name: string,
-    base: {
-        type: EFilterComponentType,
-        content_id: string,
-        filterIndex: number
-    },
-    ingredient: {
-        type: EFilterComponentType,
-        content_id: string,
-        filterIndex: number
-    },
+    name: TFilterName,
+    base: IFIlterComponent,
+    ingredient: IFIlterComponent,
     options: TFilterOptions
+};
+
+export type TFilterName = 'concatVideos' | 'overlayVideoOntoVideo';
+
+export interface IFIlterComponent {
+    type: EFilterComponentType,
+    contentType: EContentType,
+    internalId: string,
+    filterIndex: number
 };
 
 export type TFilterOptions = {
@@ -53,7 +54,9 @@ export interface IOutputHistoryItem extends IHistoryItem {
 export enum ESourceType {
     INSTAGRAM = 'INSTAGRAM',
     TIKTOK = 'TIKTOK',
-    YOUTUBE = 'YOUTUBE'
+    YOUTUBE = 'YOUTUBE',
+    CREATED_BY_FILTER = 'CREATED_BY_FILTER',
+    READ_FROM_SAVED = 'READ_FROM_SAVED'
 };
 
 export enum EContentType {
@@ -74,12 +77,28 @@ export enum EPublisherType {
     DOWNLOAD_TO_MACHINE = 'DOWNLOAD_TO_MACHINE'
 };
 
-export type TSourceContent = {
+export interface ISourceContent {
     sourceType: ESourceType,
     externalId: string
 };
-export type TSourceImage = TSourceContent;
-export type TSourceVideo = TSourceContent;
+export interface ISourceImage extends ISourceContent {
+    // ...
+};
+export interface ISourceVideo extends ISourceContent {
+    // ...
+};
+
+export interface ISavedContent {
+    sourceType: ESourceType,
+    contentType: EContentType,
+    path: string
+};
+export interface ISavedImage extends ISavedContent {
+    // ...
+};
+export interface ISavedVideo extends ISavedContent {
+    // ...
+};
 
 export type TDownloadQueueItem = {
     campaign_id: string,
@@ -90,3 +109,25 @@ export type TDownloadQueueItem = {
     publishTo: IOutput[]
 };
 
+export type TFilterQueueItem = {
+    campaign_id: string,
+    sourceType: ESourceType,
+    contentType: EContentType,
+    externalId: string,
+    filters: IFilter[],
+    publishTo: IOutput[],
+    contentPath: string
+};
+
+export type TPublishQueueItem = {
+    campaign_id: string,
+    sourceType: ESourceType,
+    contentType: EContentType,
+    externalId: string,
+    filters: IFilter[],
+    publishTo: IOutput[],
+    contentPath: string,
+    internalId: string
+};
+
+export type TRabbitMQQueue = 'download' | 'apply-filters' | 'publish';

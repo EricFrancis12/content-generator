@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 import { fetchCampaigns, checkForNewYouTubeVideos, addToDownloadQueue, addToIntakeHistory } from '../data';
-import type { TDownloadQueueItem, TSourceImage, TSourceVideo } from '../../_shared';
+import type { TDownloadQueueItem, ISourceImage, ISourceVideo } from '../../_shared';
 import config from '../config/config';
 const { CRON_EXPRESSION } = config;
 
@@ -16,7 +16,7 @@ export default class CampaignsEngine {
                 const { intakeHistory, filters, publishTo } = campaign;
                 const { type: sourceType, contentType, externalId } = campaign.source;
 
-                let newContent: (TSourceImage | TSourceVideo)[] = [];
+                let newContent: (ISourceImage | ISourceVideo)[] = [];
 
                 if (sourceType === 'YOUTUBE') {
                     if (contentType === 'VIDEO') {

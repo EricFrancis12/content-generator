@@ -3,7 +3,7 @@ import xml2js from 'xml2js';
 const parser = new xml2js.Parser();
 import ytdl from 'ytdl-core';
 import { ICampaign } from '../../_shared';
-import type { TDownloadQueueItem, TSourceImage, TSourceVideo, IHistoryItem, IIntakeHistoryItem } from '../../_shared';
+import type { TDownloadQueueItem, ISourceImage, ISourceVideo, IHistoryItem, IIntakeHistoryItem } from '../../_shared';
 import { isShortVideo, isLongVideo } from '../utils';
 import config from '../config/config';
 const { MIN_ALLOWED_VIDEO_LENGTH, MAX_ALLOWED_VIDEO_LENGTH } = config;
@@ -59,32 +59,32 @@ export async function addToIntakeHistory(campaign_id: string, externalId: string
     }
 }
 
-export async function checkForNewInstagramImages(id: string, history: string[]): Promise<TSourceImage[]> {
+export async function checkForNewInstagramImages(id: string, history: string[]): Promise<ISourceImage[]> {
     // ...
     return [];
 }
 
-export async function checkForNewInstagramVideos(id: string, history: string[]): Promise<TSourceVideo[]> {
+export async function checkForNewInstagramVideos(id: string, history: string[]): Promise<ISourceVideo[]> {
     // ...
     return [];
 }
 
-export async function checkForNewTikTokImages(id: string, history: string[]): Promise<TSourceImage[]> {
+export async function checkForNewTikTokImages(id: string, history: string[]): Promise<ISourceImage[]> {
     // ...
     return [];
 }
 
-export async function checkForNewTikTokVideos(id: string, history: string[]): Promise<TSourceVideo[]> {
+export async function checkForNewTikTokVideos(id: string, history: string[]): Promise<ISourceVideo[]> {
     // ...
     return [];
 }
 
-export async function checkForNewYouTubeImages(channel_id: string, history: string[]): Promise<TSourceImage[]> {
+export async function checkForNewYouTubeImages(channel_id: string, history: string[]): Promise<ISourceImage[]> {
     // ...
     return [];
 }
 
-export async function checkForNewYouTubeVideos(channel_id: string, history: IHistoryItem[], options?: TOptions): Promise<TSourceVideo[]> {
+export async function checkForNewYouTubeVideos(channel_id: string, history: IHistoryItem[], options?: TOptions): Promise<ISourceVideo[]> {
     try {
         const recentVideos = await getRecentYouTubeVideos(channel_id, options);
         const newVideos = recentVideos.filter(recentVideo => !history.some(historyItem => historyItem.externalId === recentVideo.externalId));
@@ -103,7 +103,7 @@ export type TOptions = {
     longVideosOnly?: boolean
 };
 
-export async function getRecentYouTubeVideos(channel_id: string, options?: TOptions): Promise<TSourceVideo[]> {
+export async function getRecentYouTubeVideos(channel_id: string, options?: TOptions): Promise<ISourceVideo[]> {
     const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}`;
     const res = await axios.get(rssFeedUrl);
     const data = res.data;
@@ -150,5 +150,5 @@ export async function getRecentYouTubeVideos(channel_id: string, options?: TOpti
         .map(item => ({
             sourceType: 'YOUTUBE',
             externalId: item.videoId as string
-        })) as TSourceVideo[];
+        })) as ISourceVideo[];
 }

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { channel } from '../controllers/amqpController';
-import _shared from '../../_shared';
-const { RABBITMQ_QUEUES } = _shared.amqp;
+import _shared, { TRabbitMQQueue } from '../../_shared';
+const { RABBITMQ_QUEUES,  } = _shared.amqp;
 
 export default function amqpMiddleware(req: Request, res: Response, next: NextFunction) {
     if (!channel) {
@@ -10,7 +10,7 @@ export default function amqpMiddleware(req: Request, res: Response, next: NextFu
             success: false
         });
     }
-    if (!!req.params.queue_name && !RABBITMQ_QUEUES.includes(req.params.queue_name)) {
+    if (!!req.params.queue_name && !RABBITMQ_QUEUES.includes(req.params.queue_name as TRabbitMQQueue)) {
         console.error('Queue does not exist');
         return res.json({
             success: false

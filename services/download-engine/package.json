@@ -2,11 +2,11 @@
     "name": "download-engine",
     "version": "1.0.0",
     "description": "",
-    "main": "build/index.js",
+    "main": "build/src/index.js",
     "scripts": {
-        "start": "node build/index.js",
+        "start": "node build/src/index.js",
         "build": "npx tsc",
-        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/index.js\""
+        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/src/index.js\""
     },
     "keywords": [],
     "author": "",
@@ -16,7 +16,8 @@
         "@types/amqplib": "^0.10.5",
         "@types/node": "^20.11.30",
         "amqplib": "^0.10.3",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.3",
+        "ytdl-core": "^4.11.5"
     },
     "devDependencies": {
         "concurrently": "^8.2.2",
