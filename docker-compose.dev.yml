@@ -10,6 +10,7 @@ services:
     volumes:
       - ./services/node-app/src/:/app/src
       - ./services/_shared/:/app/_shared
+      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -38,6 +39,7 @@ services:
     volumes:
       - ./services/download-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
+      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -52,6 +54,7 @@ services:
     volumes:
       - ./services/apply-filters-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
+      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     environment:
       - NODE_ENV=development

@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', async (req, res) => {
-    res.send('zzGET @ ./');
+    res.send('GET @ ./');
 });
 
 app.use('/api/v1/campaigns', campaignsRouter);

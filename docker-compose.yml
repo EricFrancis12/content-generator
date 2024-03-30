@@ -29,8 +29,6 @@ services:
       dockerfile: ./download-engine/Dockerfile
     depends_on:
       - rabbitmq
-    volumes:
-      - shared-file-system:/app/shared-file-system
 
   apply-filters-engine:
     build:
@@ -38,8 +36,6 @@ services:
       dockerfile: ./apply-filters-engine/Dockerfile
     depends_on:
       - rabbitmq
-    volumes:
-      - shared-file-system:/app/shared-file-system
 
   ui:
     depends_on:
@@ -65,4 +61,3 @@ services:
 
 volumes:
   mongo-db:
-  shared-file-system:

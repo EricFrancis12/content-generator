@@ -9,6 +9,8 @@ services:
         NODE_ENV: production
     environment:
       - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
     command: npm start
 
   campaign-engine:
@@ -29,6 +31,8 @@ services:
         NODE_ENV: production
     environment:
       - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
     command: npm start
 
   apply-filters-engine:
@@ -39,6 +43,8 @@ services:
         NODE_ENV: production
     environment:
       - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
     command: npm start
 
   ui:
@@ -47,3 +53,6 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "3001:80"
+
+volumes:
+  shared-file-system:
