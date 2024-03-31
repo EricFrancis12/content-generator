@@ -1,7 +1,7 @@
 import _shared from '../../_shared';
 import {
-    ESourceType, EContentType, ISavedContent, ISavedImage, ISavedVideo, TFilterName, EFilterComponentType, TFilterOptions,
-    TRabbitMQQueue, TFilterQueueItem, TPublishQueueItem
+    ESourceType, EContentType, ISavedContent, ISavedImage, ISavedVideo, TFilterName, IFIlterComponent, EFilterComponentType,
+    TFilterOptions, TRabbitMQQueue, TFilterQueueItem, TPublishQueueItem
 } from '../../_shared';
 
 const shared = {
@@ -16,6 +16,7 @@ export {
     ISavedImage,
     ISavedVideo,
     TFilterName,
+    IFIlterComponent,
     EFilterComponentType,
     TFilterOptions,
     TRabbitMQQueue,

@@ -1,13 +1,10 @@
 import amqplib from 'amqplib';
-import _shared, {
-    ISavedContent, ISavedVideo, TFilterQueueItem, TPublishQueueItem,
-    EFilterComponentType, ESourceType, EContentType
-} from '../../_shared';
+import _shared, { ISavedContent, TFilterQueueItem, IFIlterComponent, EFilterComponentType } from '../../_shared';
 const { initRabbitMQ } = _shared.amqp;
 const { getSavedContentViaInternalId } = _shared.utils;
 import operations from '../operations';
 import config from '../config/config';
-const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_FILTER_QUEUE, RABBITMQ_PUBLISH_QUEUE } = config;
+const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_FILTER_QUEUE } = config;
 
 export default class ApplyFiltersEngine {
     channel: amqplib.Channel | null;
@@ -42,43 +39,54 @@ export default class ApplyFiltersEngine {
                     const filterQueueItem = JSON.parse(msg.content.toString()) as TFilterQueueItem;
                     console.log('Received new message: ');
                     console.log(filterQueueItem);
-                    const { sourceType, contentType, externalId, filters } = filterQueueItem;
+                    const { sourceType, filters, contentPath } = filterQueueItem;
+
+                    async function getContentPath(component: IFIlterComponent): Promise<string | undefined> {
+                        if (component.type === EFilterComponentType.SOURCE) {
+                            return contentPath;
+                        } else if (component.type === EFilterComponentType.SAVED) {
+                            return (await getSavedContentViaInternalId(component.internalId))?.path;
+                        } else if (component.type === EFilterComponentType.TEMP) {
+                            return results[component.filterIndex]?.path;
+                        }
+                        return undefined;
+                    }
 
                     const results: ISavedContent[] = [];
                     for (let i = 0; i < filters.length; i++) {
                         const { name, base, ingredient, options } = filters[i];
-                        const baseComponentType = base.type;
-                        const ingredientComponentType = ingredient.type;
                         const operation = operations[name];
                         if (!operation) {
                             console.error('Operation not found');
                             break;
                         }
 
-                        const baseContentPath = await getSavedContentViaInternalId(base.internalId).then(content => content?.path);
-                        if (!baseContentPath) {
-                            console.log('Base content path not found');
+                        const baseContentPathProm = getContentPath(base);
+                        const ingredientContentPathProm = getContentPath(ingredient);
+
+                        const baseContentPath = await baseContentPathProm;
+                        const ingredientContentPath = await ingredientContentPathProm;
+                        console.log(baseContentPath);
+                        console.log(ingredientContentPath);
+                        if (!baseContentPath || !ingredientContentPath) {
+                            console.error('Missing Base and/or Ingredient content path');
                             break;
                         }
 
-                        const ingredientContentPath = await getSavedContentViaInternalId(ingredient.internalId).then(content => content?.path);
-                        if (!ingredientContentPath) {
-                            console.log('Ingredient content path not found');
-                            break;
-                        }
-
-                        const baseContent: ISavedContent = {
-                            sourceType,
-                            contentType: base.contentType,
-                            path: baseContentPath
-                        };
-                        const ingredientContent: ISavedContent = {
-                            sourceType,
-                            contentType: ingredient.contentType,
-                            path: ingredientContentPath
-                        };
                         try {
-                            const result = await operation(baseContent, ingredientContent, options);
+                            const baseContent: ISavedContent = {
+                                sourceType,
+                                contentType: base.contentType,
+                                path: baseContentPath
+                            };
+                            const ingredientContent: ISavedContent = {
+                                sourceType,
+                                contentType: ingredient.contentType,
+                                path: ingredientContentPath
+                            };
+
+                            const isLastFilter = filters.length - 1 === i;
+                            const result = await operation(baseContent, ingredientContent, isLastFilter, options);
                             results.push(result);
                         } catch (err) {
                             console.error(err);
