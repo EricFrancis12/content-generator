@@ -2,7 +2,8 @@ import * as amqp from './amqp';
 import * as typings from './typings';
 import * as utils from './utils';
 import {
-    ICampaign, TDownloadQueueItem, TFilterQueueItem, TFilterName, EFilterComponentType, TFilterOptions, TPublishQueueItem,
+    EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, TDownloadQueueItem,
+    TFilterQueueItem, TFilterName, IFIlterComponent, EFilterComponentType, IFilterOptions, TPublishQueueItem,
     ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
     IHistoryItem, IIntakeHistoryItem, TRabbitMQQueue, EContentType, ESourceType
 } from './typings';
@@ -15,7 +16,10 @@ const _shared = {
 
 export default _shared;
 export {
+    EImageFileExtension,
+    EVideoFileExtension,
     ICampaign,
+    ICampaignOptions,
     TDownloadQueueItem,
     TFilterQueueItem,
     TPublishQueueItem,
@@ -27,8 +31,9 @@ export {
     IHistoryItem,
     IIntakeHistoryItem,
     TFilterName,
+    IFIlterComponent,
     EFilterComponentType,
-    TFilterOptions,
+    IFilterOptions,
     TRabbitMQQueue,
     EContentType,
     ESourceType

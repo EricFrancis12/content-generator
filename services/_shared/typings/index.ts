@@ -1,9 +1,24 @@
 
 
+export enum EImageFileExtension {
+    jpg = 'jpg',
+    jpeg = 'jpeg',
+    png = 'png',
+    gif = 'gif'
+};
+
+export enum EVideoFileExtension {
+    mp4 = 'mp4',
+    avi = 'avi',
+    mkv = 'mkv',
+    mov = 'mov'
+};
+
 export interface ICampaign {
     _id: string,
     name: string,
     disabled?: boolean,
+    options?: ICampaignOptions,
     intakeHistory: IIntakeHistoryItem[],
     outputHistory: IOutputHistoryItem[],
     source: {
@@ -16,11 +31,18 @@ export interface ICampaign {
     _v?: string // DO NOT use this value for anything. This is defined here simply because mongo db adds the _v automatically.
 };
 
+export interface ICampaignOptions {
+    minVideoLength?: number,
+    maxVideoLength?: number,
+    shortVideosOnly?: boolean,
+    longVideosOnly?: boolean
+};
+
 export interface IFilter {
     name: TFilterName,
     base: IFIlterComponent,
     ingredient: IFIlterComponent,
-    options: TFilterOptions
+    options: IFilterOptions
 };
 
 export type TFilterName = 'concatVideos' | 'overlayVideoOntoVideo';
@@ -32,8 +54,8 @@ export interface IFIlterComponent {
     filterIndex: number
 };
 
-export type TFilterOptions = {
-    [key: string]: any
+export interface IFilterOptions {
+    // ...
 };
 
 export interface IOutput {
@@ -61,7 +83,8 @@ export enum ESourceType {
 
 export enum EContentType {
     IMAGE = 'IMAGE',
-    VIDEO = 'VIDEO'
+    VIDEO = 'VIDEO',
+    UNKNOWN = 'UNKNOWN'
 };
 
 export enum EFilterComponentType {

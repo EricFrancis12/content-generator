@@ -3,9 +3,9 @@ import ytdl from 'ytdl-core';
 import { ISavedVideo, EContentType, ESourceType } from '../../_shared';
 
 export async function downloadYouTubeVideo(v: string, outputPath: string, {
-    quality
+    quality = '22'
 }: {
-    quality?: number
+    quality?: string | number
 } = {}): Promise<ISavedVideo> {
     const url = `https://youtube.com/watch?v=${v}`;
 
@@ -13,7 +13,7 @@ export async function downloadYouTubeVideo(v: string, outputPath: string, {
         await new Promise((resolve, reject) => {
             ytdl(url, { quality })
                 .pipe(fs.createWriteStream(outputPath))
-                .on('error', () => reject(false))
+                .on('error', (err) => reject(err))
                 .on('finish', () => resolve(true));
         });
     }

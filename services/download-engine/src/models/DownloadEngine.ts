@@ -1,8 +1,9 @@
 import amqplib from 'amqplib';
-import crypro from 'crypto';
+import crypto from 'crypto';
 import { downloadYouTubeVideo } from '../data';
-import _shared, { TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem } from '../../_shared';
-const { initRabbitMQ } = _shared.amqp;
+import _shared, { EContentType, ESourceType, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem } from '../../_shared';
+const { initRabbitMQ, RABBITMQ_EXCHANGE } = _shared.amqp;
+const { generateInternalId } = _shared.utils;
 import config from '../config/config';
 const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_DOWNLOAD_QUEUE, RABBITMQ_FILTER_QUEUE, RABBITMQ_PUBLISH_QUEUE } = config;
 
@@ -40,27 +41,27 @@ export default class DownloadEngine {
                     console.log('Received new message: ');
                     console.log(downloadQueueItem);
                     const { sourceType, contentType, externalId, filters } = downloadQueueItem;
-                    if (sourceType === 'YOUTUBE') {
-                        if (contentType === 'VIDEO') {
+                    if (sourceType === ESourceType.YOUTUBE) {
+                        if (contentType === EContentType.VIDEO) {
                             try {
+                                const internalId = generateInternalId();
                                 if (filters.length > 0) {
-                                    const outputPath = `./shared-file-system/source-content/YouTube/videos/${externalId}.mp4`;
+                                    const outputPath = `./shared-file-system/source-content/YouTube/videos/${internalId}.mp4`;
                                     const video = await downloadYouTubeVideo(externalId, outputPath);
                                     const filterQueueItem: TFilterQueueItem = {
                                         ...downloadQueueItem,
                                         contentPath: video.path
                                     };
-                                    this.channel?.sendToQueue(RABBITMQ_FILTER_QUEUE, Buffer.from(JSON.stringify(filterQueueItem)));
+                                    this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_FILTER_QUEUE, Buffer.from(JSON.stringify(filterQueueItem)));
                                 } else {
-                                    const internalId: string = crypto.randomUUID();
-                                    const outputPath = `./shared-file-system/output-content/${internalId}.mp4`;
+                                    const outputPath = `./shared-file-system/output-content/videos/${internalId}.mp4`;
                                     const video = await downloadYouTubeVideo(externalId, outputPath);
                                     const publishQueueItem: TPublishQueueItem = {
                                         ...downloadQueueItem,
                                         contentPath: video.path,
                                         internalId
                                     }
-                                    this.channel?.sendToQueue(RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
+                                    this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
                                 };
                             } catch (err) {
                                 console.error(err);

@@ -11,6 +11,12 @@ export const campaignSchema = new mongoose.Schema({
         type: Boolean,
         default: () => false
     },
+    options: {
+        minVideoLength: Number,
+        maxVideoLength: Number,
+        shortVideosOnly: Boolean,
+        longVideosOnly: Boolean    
+    },
     intakeHistory: [{
         externalId: {
             type: String,

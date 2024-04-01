@@ -20,7 +20,7 @@ export default class CampaignsEngine {
 
                 if (sourceType === 'YOUTUBE') {
                     if (contentType === 'VIDEO') {
-                        newContent = await checkForNewYouTubeVideos(externalId, intakeHistory);
+                        newContent = await checkForNewYouTubeVideos(externalId, intakeHistory, campaign?.options);
                     } else {
                         console.error('Source content types other than VIDEO not yet implimented');
                     }

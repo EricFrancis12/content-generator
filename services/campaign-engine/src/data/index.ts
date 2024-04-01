@@ -2,8 +2,10 @@ import axios from 'axios';
 import xml2js from 'xml2js';
 const parser = new xml2js.Parser();
 import ytdl from 'ytdl-core';
-import { ICampaign } from '../../_shared';
-import type { TDownloadQueueItem, ISourceImage, ISourceVideo, IHistoryItem, IIntakeHistoryItem } from '../../_shared';
+import type {
+    ICampaign, ICampaignOptions, TDownloadQueueItem, ISourceImage,
+    ISourceVideo, IHistoryItem, IIntakeHistoryItem
+} from '../../_shared';
 import { isShortVideo, isLongVideo } from '../utils';
 import config from '../config/config';
 const { MIN_ALLOWED_VIDEO_LENGTH, MAX_ALLOWED_VIDEO_LENGTH } = config;
@@ -84,7 +86,7 @@ export async function checkForNewYouTubeImages(channel_id: string, history: stri
     return [];
 }
 
-export async function checkForNewYouTubeVideos(channel_id: string, history: IHistoryItem[], options?: TOptions): Promise<ISourceVideo[]> {
+export async function checkForNewYouTubeVideos(channel_id: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceVideo[]> {
     try {
         const recentVideos = await getRecentYouTubeVideos(channel_id, options);
         const newVideos = recentVideos.filter(recentVideo => !history.some(historyItem => historyItem.externalId === recentVideo.externalId));
@@ -95,15 +97,11 @@ export async function checkForNewYouTubeVideos(channel_id: string, history: IHis
     }
 }
 
-export type TOptions = {
-    n?: number,
-    minVideoLength?: number,
-    maxVideoLength?: number,
-    shortVideosOnly?: boolean,
-    longVideosOnly?: boolean
+export interface IOptions extends ICampaignOptions {
+    n?: number
 };
 
-export async function getRecentYouTubeVideos(channel_id: string, options?: TOptions): Promise<ISourceVideo[]> {
+export async function getRecentYouTubeVideos(channel_id: string, options?: IOptions): Promise<ISourceVideo[]> {
     const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}`;
     const res = await axios.get(rssFeedUrl);
     const data = res.data;
@@ -128,14 +126,14 @@ export async function getRecentYouTubeVideos(channel_id: string, options?: TOpti
     const settledProms = await Promise.allSettled(proms);
     let videoData = settledProms.map((a: any) => a?.value?.videoDetails);
 
+    const minVideoLength = options?.minVideoLength || MIN_ALLOWED_VIDEO_LENGTH;
+    videoData = videoData.filter(a => parseFloat(a?.lengthSeconds) >= minVideoLength);
+
+    const maxVideoLength = options?.maxVideoLength || MAX_ALLOWED_VIDEO_LENGTH;
+    videoData = videoData.filter(a => parseFloat(a?.lengthSeconds) <= maxVideoLength);
+
     if (!!options) {
-        if ('minVideoLength' in options) {
-            const minVideoLength = options?.minVideoLength || MIN_ALLOWED_VIDEO_LENGTH;
-            videoData = videoData.filter(a => parseFloat(a?.lengthSeconds) >= minVideoLength);
-        } else if ('maxVideoLength' in options) {
-            const maxVideoLength = options?.maxVideoLength || MAX_ALLOWED_VIDEO_LENGTH;
-            videoData = videoData.filter(a => parseFloat(a?.lengthSeconds) <= maxVideoLength);
-        } else if (options?.shortVideosOnly === true) {
+        if (options?.shortVideosOnly === true) {
             videoData = videoData.filter(a => isShortVideo(parseFloat(a?.lengthSeconds)));
         } else if (options?.longVideosOnly === true) {
             videoData = videoData.filter(a => isLongVideo(parseFloat(a?.lengthSeconds)));

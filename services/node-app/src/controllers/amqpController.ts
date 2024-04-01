@@ -1,13 +1,14 @@
 import type { Request, Response } from 'express';
 import amqplib from 'amqplib';
 import _shared from '../../_shared';
-const { initRabbitMQ } = _shared.amqp;
+const { initRabbitMQ, RABBITMQ_EXCHANGE } = _shared.amqp;
 import config from '../config/config';
 const { RABBITMQ_IP, RABBITMQ_PORT } = config;
 
 export let channel: amqplib.Channel | null = null;
 const ampqUrl = `amqp://${RABBITMQ_IP}:${RABBITMQ_PORT}`;
 const connectWithRetry = initRabbitMQ(ampqUrl);
+
 connectWithRetry().then(_channel => channel = _channel);
 
 export async function sendMessageToQueue(req: Request, res: Response) {
@@ -15,18 +16,30 @@ export async function sendMessageToQueue(req: Request, res: Response) {
         if (!channel) {
             throw new Error('Channel does not exist');
         }
-        channel.sendToQueue(req.params.queue_name, Buffer.from(JSON.stringify(req.body)), {
-            persistent: true
-        });
+
+        const queueName = req.params.queue_name;
+        if (!queueName) {
+            throw new Error('Queue name is missing from request parameters');
+        }
+
+        if (!req.body) {
+            throw new Error('Invalid request body');
+        }
+
+        // Send message to exchange
+        channel.publish(RABBITMQ_EXCHANGE, queueName, Buffer.from(JSON.stringify(req.body)), { persistent: true });
+
         res.status(201).json({
             success: true
         });
     } catch (err) {
+        console.error('Error sending message to queue:', err);
         res.json({
-            success: false
+            success: false,
         });
     }
 }
+
 
 export async function consumeMessageFromQueue(req: Request, res: Response) {
     try {
