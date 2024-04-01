@@ -1,10 +1,11 @@
+import fs from 'fs';
 import axios from 'axios';
 import xml2js from 'xml2js';
 const parser = new xml2js.Parser();
 import ytdl from 'ytdl-core';
-import type {
-    ICampaign, ICampaignOptions, TDownloadQueueItem, ISourceImage,
-    ISourceVideo, IHistoryItem, IIntakeHistoryItem
+import {
+    ICampaign, ICampaignOptions, TDownloadQueueItem, ISourceImage, ISourceVideo,
+    IHistoryItem, IIntakeHistoryItem, ESourceType
 } from '../../_shared';
 import { isShortVideo, isLongVideo } from '../utils';
 import config from '../config/config';
@@ -97,11 +98,31 @@ export async function checkForNewYouTubeVideos(channel_id: string, history: IHis
     }
 }
 
+export async function checkForNewRedditImages(subreddit: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceImage[]> {
+    try {
+        const recentImages = await getRecentRedditImages(subreddit, options);
+        const newImages = recentImages.filter(recentImage => !history.some(historyItem => historyItem.externalId === recentImage.externalId));
+        return newImages;
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
+
+export async function checkForNewRedditVideos(subreddit: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceVideo[]> {
+    // ...
+    return [];
+}
+
 export interface IOptions extends ICampaignOptions {
     n?: number
 };
 
-export async function getRecentYouTubeVideos(channel_id: string, options?: IOptions): Promise<ISourceVideo[]> {
+interface IOptionsYouTube extends IOptions {
+    // ...
+};
+
+export async function getRecentYouTubeVideos(channel_id: string, options?: IOptionsYouTube): Promise<ISourceVideo[]> {
     const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}`;
     const res = await axios.get(rssFeedUrl);
     const data = res.data;
@@ -145,8 +166,46 @@ export async function getRecentYouTubeVideos(channel_id: string, options?: IOpti
     }
 
     return videoData
-        .map(item => ({
-            sourceType: 'YOUTUBE',
-            externalId: item.videoId as string
-        })) as ISourceVideo[];
+        .map(item => {
+            const sourceVideo: ISourceVideo = {
+                sourceType: ESourceType.YOUTUBE,
+                externalId: item.videoId
+            };
+            return sourceVideo;
+        });
+}
+
+interface IOptionsReddit extends IOptions {
+    selector?: 'new' | 'hot' | 'controversial';
+};
+
+export async function getRecentRedditImages(subreddit: string, options?: IOptionsReddit): Promise<ISourceImage[]> {
+    const selector = options?.selector ?? 'hot';
+    const url = `https://api.reddit.com/r/${subreddit}/${selector}`;
+    const res = await axios.get(url);
+    const children: unknown[] = res.data?.data?.children;
+    if (children) {
+        const imageUrls: string[] = children
+            .map((child) => {
+                if (typeof child === 'object' && child !== null && 'data' in child) {
+                    if (typeof child.data === 'object' && child.data !== null && 'url' in child.data) {
+                        if (typeof child.data.url === 'string') {
+                            return child.data.url;
+                        }
+                    }
+                }
+                return '';
+            })
+            .filter(item => !!item);
+
+        return imageUrls.map(imageUrl => {
+            const splitOnSlash = imageUrl.split('/');
+            const externalId = splitOnSlash[splitOnSlash.length - 1] || '';
+            return {
+                sourceType: ESourceType.REDDIT,
+                externalId
+            };
+        });
+    }
+    return [];
 }

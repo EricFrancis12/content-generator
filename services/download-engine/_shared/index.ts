@@ -1,6 +1,6 @@
 import _shared from '../../_shared';
 import {
-    TRabbitMQQueue, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem, ISavedVideo,
+    TRabbitMQQueue, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem, ISavedImage, ISavedVideo,
     EContentType, ESourceType
 } from '../../_shared/typings';
 
@@ -14,6 +14,7 @@ export {
     TDownloadQueueItem,
     TFilterQueueItem,
     TPublishQueueItem,
+    ISavedImage,
     ISavedVideo,
     EContentType,
     ESourceType

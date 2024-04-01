@@ -45,7 +45,7 @@ export interface IFilter {
     options: IFilterOptions
 };
 
-export type TFilterName = 'concatVideos' | 'overlayVideoOntoVideo';
+export type TFilterName = 'concatVideos' | 'overlayVideoOntoVideo' | 'overlayImageOntoVideo';
 
 export interface IFIlterComponent {
     type: EFilterComponentType,
@@ -77,6 +77,7 @@ export enum ESourceType {
     INSTAGRAM = 'INSTAGRAM',
     TIKTOK = 'TIKTOK',
     YOUTUBE = 'YOUTUBE',
+    REDDIT = 'REDDIT',
     CREATED_BY_FILTER = 'CREATED_BY_FILTER',
     READ_FROM_SAVED = 'READ_FROM_SAVED'
 };

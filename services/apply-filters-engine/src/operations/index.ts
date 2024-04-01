@@ -53,10 +53,12 @@ const concatVideos: TOperationFunction = async (baseVideo, ingredientVideo, isLa
     });
 };
 
+type TCorner = 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right';
+
 interface IOverlayVideoOntoVideoOptions extends IFilterOptions {
-    x?: number | string,
-    y?: number | string,
-    corner?: 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right',
+    x?: number,
+    y?: number,
+    corner?: TCorner,
     scaleIngredientRelativeToSelf?: number,
     scaleIngredientRelativeToBase?: number,
     trimTo?: number
@@ -70,8 +72,8 @@ const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVi
     scaleIngredientRelativeToBase,
     trimTo
 }: IOverlayVideoOntoVideoOptions = {}) => {
-    let overlayX = x;
-    let overlayY = y;
+    let overlayX = `${x}`;
+    let overlayY = `${y}`;
 
     // Adjust overlay position based on corner
     if (corner === 'upper-right') {
@@ -109,23 +111,23 @@ const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVi
             ? `./shared-file-system/output-content/videos/${internalId}.mp4`
             : `./shared-file-system/WIP-filters-content/videos/${internalId}.mp4`;
 
-        const command = ffmpeg()
+        const command = ffmpeg();
         command.input(baseVideo.path); // base video (audio will be included)
         command.input(ingredientVideo.path); // overlay video (audio will be removed)
         if (trimTo) {
             command.setStartTime(0);
             command.duration(trimTo);
         }
-        command.complexFilter(complexFilter)
-        command.output(outputPath)
-        command.outputOptions(['-c:a copy'])
+        command.complexFilter(complexFilter);
+        command.output(outputPath);
+        command.outputOptions(['-c:a copy']);
         command.on('start', (command) => {
             console.log(command);
-        })
-        command.on('error', reject)
+        });
+        command.on('error', reject);
         command.on('start', () => {
             console.log(`Starting overlay for ${baseVideoName} and ${ingredientVideoName}`);
-        })
+        });
         command.on('end', () => {
             console.log(`Overlay finished for ${baseVideoName} and ${ingredientVideoName}`);
             resolve({
@@ -133,15 +135,92 @@ const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVi
                 contentType: EContentType.VIDEO,
                 path: outputPath
             });
-        })
-        command.run()
+        });
+        command.run();
+    });
+};
+
+interface IOverlayImageOntoVideoOptions extends IFilterOptions {
+    x?: number,
+    y?: number,
+    corner?: TCorner,
+    scaleIngredientRelativeToSelf?: number,
+    scaleIngredientRelativeToBase?: number
+};
+
+const overlayImageOntoVideo: TOperationFunction = async (baseVideo, ingredientImage, isLastFilter, {
+    x = 0,
+    y = 0,
+    corner = 'upper-left',
+    scaleIngredientRelativeToSelf,
+    scaleIngredientRelativeToBase
+}: IOverlayImageOntoVideoOptions = {}) => {
+    let overlayX = `${x}`;
+    let overlayY = `${y}`;
+
+    // Adjust overlay position based on corner
+    if (corner === 'upper-right') {
+        overlayX = `main_w-overlay_w-${x}`;
+    } else if (corner === 'lower-left') {
+        overlayY = `main_h-overlay_h-${y}`;
+    } else if (corner === 'lower-right') {
+        overlayX = `main_w-overlay_w-${x}`;
+        overlayY = `main_h-overlay_h-${y}`;
+    }
+
+    let scale = '[1:v]scale=w=1:1[scaled]';
+    if (typeof scaleIngredientRelativeToSelf === 'number') {
+        scale = `[1:v]scale=w=iw*${scaleIngredientRelativeToSelf}:-1[scaled]`;
+    } else if (typeof scaleIngredientRelativeToBase === 'number') {
+        const baseVideoWidth = (await getSavedContentDetails(baseVideo.path)).width;
+        if (baseVideoWidth) {
+            const w = baseVideoWidth * scaleIngredientRelativeToBase;
+            scale = `[1:v]scale=w=${w}:-1[scaled]`;
+        }
+    }
+
+    const complexFilter = [
+        scale,
+        `[0:v][scaled]overlay=${overlayX}:${overlayY}`
+    ];
+
+    return new Promise((resolve, reject) => {
+        const baseVideoName = basename(baseVideo.path);
+        const ingredientVideoName = basename(ingredientImage.path);
+        const internalId = generateInternalId();
+        const outputPath = isLastFilter
+            ? `./shared-file-system/output-content/videos/${internalId}.mp4`
+            : `./shared-file-system/WIP-filters-content/videos/${internalId}.mp4`;
+
+        const command = ffmpeg();
+        command.input(baseVideo.path);
+        command.input(ingredientImage.path);
+        command.complexFilter(complexFilter);
+        command.output(outputPath);
+        command.outputOptions(['-c:a copy']);
+        command.on('start', (command) => {
+            console.log(command);
+        });
+        command.on('error', reject);
+        command.on('start', () => {
+            console.log(`Starting overlay for ${baseVideoName} and ${ingredientVideoName}`);
+        });
+        command.on('end', () => {
+            console.log(`Overlay finished for ${baseVideoName} and ${ingredientVideoName}`);
+            resolve({
+                sourceType: ESourceType.CREATED_BY_FILTER,
+                contentType: EContentType.VIDEO,
+                path: outputPath
+            });
+        });
+        command.run();
     });
 };
 
 const operations: TOperations = {
     concatVideos,
     overlayVideoOntoVideo,
-    // overlayImageOntoVideo,
+    overlayImageOntoVideo,
     // takeScreenshotOfVideo
 };
 export default operations;
