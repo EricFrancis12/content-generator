@@ -2,7 +2,9 @@ version: "3"
 
 services:
   node-app:
-    build: ./services/node-app
+    build:
+      context: ./services
+      dockerfile: ./node-app/Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -11,6 +13,28 @@ services:
       - MONGO_PASSWORD=mypassword
     depends_on:
       - mongo
+      - rabbitmq
+
+  campaign-engine:
+    build:
+      context: ./services
+      dockerfile: ./campaign-engine/Dockerfile
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  download-engine:
+    build:
+      context: ./services
+      dockerfile: ./download-engine/Dockerfile
+    depends_on:
+      - rabbitmq
+
+  apply-filters-engine:
+    build:
+      context: ./services
+      dockerfile: ./apply-filters-engine/Dockerfile
+    depends_on:
       - rabbitmq
 
   ui:

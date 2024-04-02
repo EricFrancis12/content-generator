@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { ESourceType, EContentType, EFilterComponentType, EPublisherType } from '../typings/index';
+import typings from '../typings/index';
+const { ESourceType, EContentType, EFilterComponentType, EPublisherType } = typings;
 
 export const campaignSchema = new mongoose.Schema({
     name: {
@@ -10,7 +11,24 @@ export const campaignSchema = new mongoose.Schema({
         type: Boolean,
         default: () => false
     },
-    downloadHistory: [String],
+    options: {
+        minVideoLength: Number,
+        maxVideoLength: Number,
+        shortVideosOnly: Boolean,
+        longVideosOnly: Boolean    
+    },
+    intakeHistory: [{
+        externalId: {
+            type: String,
+            require: [true, 'Intake history item must have an externalId']
+        }
+    }],
+    outputHistory: [{
+        externalId: {
+            type: String,
+            require: [true, 'Output history item must have an externalId']
+        }
+    }],
     source: {
         type: {
             type: String,
@@ -27,51 +45,53 @@ export const campaignSchema = new mongoose.Schema({
             require: [true, 'Campaign must have an external id']
         }
     },
-    filters: [
-        {
-            name: {
-                type: String,
-                require: [true, 'Filter must have a name']
-            },
-            base: {
-                type: {
-                    type: String,
-                    enum: Object.values(EFilterComponentType),
-                    require: [true, 'Filter base must have a type']
-                },
-                content_id: {
-                    type: String
-                },
-                filterIndex: {
-                    type: Number
-                }
-            },
-            ingredient: {
-                type: {
-                    type: String,
-                    enum: Object.values(EFilterComponentType),
-                    require: [true, 'Filter ingredient must have a type']
-                },
-                content_id: String,
-                filterIndex: Number
-            },
-            options: {}
-        }
-    ],
-    publishTo: [
-        {
+    filters: [{
+        name: {
+            type: String,
+            require: [true, 'Filter must have a name']
+        },
+        base: {
             type: {
                 type: String,
-                enum: Object.values(EPublisherType),
-                require: [true, 'Publisher must have a type']
+                enum: Object.values(EFilterComponentType),
+                require: [true, 'Filter base must have a type']
             },
-            externalId: {
+            contentType: {
                 type: String,
-                require: [true, 'Publisher must have an external id']
+                enum: Object.values(EContentType),
+                require: [true, 'Filter base must have a content type']
             },
-            disabled: Boolean
-        }
-    ]
+            internalId: String,
+            filterIndex: Number
+        },
+        ingredient: {
+            type: {
+                type: String,
+                enum: Object.values(EFilterComponentType),
+                require: [true, 'Filter ingredient must have a type']
+            },
+            contentType: {
+                type: String,
+                enum: Object.values(EContentType),
+                require: [true, 'Filter ingredient must have a content type']
+            },
+            internalId: String,
+            filterIndex: Number
+        },
+        options: {}
+    }],
+    publishTo: [{
+        type: {
+            type: String,
+            enum: Object.values(EPublisherType),
+            require: [true, 'Publisher must have a type']
+        },
+        externalId: {
+            type: String,
+            require: [true, 'Publisher must have an external id']
+        },
+        disabled: Boolean
+    }]
 });
 
 const Campaign = mongoose.model('Campaign', campaignSchema);

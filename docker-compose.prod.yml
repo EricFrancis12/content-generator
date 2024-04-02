@@ -3,11 +3,48 @@ version: "3"
 services:
   node-app:
     build:
-      context: ./services/node-app
+      context: ./services
+      dockerfile: ./node-app/Dockerfile
       args:
         NODE_ENV: production
     environment:
       - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
+    command: npm start
+
+  campaign-engine:
+    build:
+      context: ./services
+      dockerfile: ./campaign-engine/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: npm start
+
+  download-engine:
+    build:
+      context: ./services
+      dockerfile: ./download-engine/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
+    command: npm start
+
+  apply-filters-engine:
+    build:
+      context: ./services
+      dockerfile: ./apply-filters-engine/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
     command: npm start
 
   ui:
@@ -16,3 +53,6 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "3001:80"
+
+volumes:
+  shared-file-system:
