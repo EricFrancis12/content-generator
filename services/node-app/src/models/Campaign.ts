@@ -17,18 +17,6 @@ export const campaignSchema = new mongoose.Schema({
         shortVideosOnly: Boolean,
         longVideosOnly: Boolean    
     },
-    intakeHistory: [{
-        externalId: {
-            type: String,
-            require: [true, 'Intake history item must have an externalId']
-        }
-    }],
-    outputHistory: [{
-        externalId: {
-            type: String,
-            require: [true, 'Output history item must have an externalId']
-        }
-    }],
     source: {
         type: {
             type: String,

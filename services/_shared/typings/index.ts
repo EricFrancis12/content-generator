@@ -19,8 +19,6 @@ export interface ICampaign {
     name: string,
     disabled?: boolean,
     options?: ICampaignOptions,
-    intakeHistory: IIntakeHistoryItem[],
-    outputHistory: IOutputHistoryItem[],
     source: {
         type: ESourceType,
         contentType: EContentType,
@@ -59,10 +57,17 @@ export interface IFilterOptions {
 };
 
 export interface IOutput {
-
+    name: TOutputName,
+    contentType: EContentType,
+    externalId: string
 };
 
+export type TOutputName = 'keep saved' | 'send via Telegram';
+
 export interface IHistoryItem {
+    sourceType: ESourceType,
+    contentType: EContentType,
+    campaign_id: string,
     externalId: string,
     _id?: string // Defining this as optional because in testing, mongo db adds the _id to all history items after pushing them to the array
 };
@@ -70,7 +75,7 @@ export interface IIntakeHistoryItem extends IHistoryItem {
     // ...
 };
 export interface IOutputHistoryItem extends IHistoryItem {
-    // ...
+    timestamp: number
 };
 
 export enum ESourceType {

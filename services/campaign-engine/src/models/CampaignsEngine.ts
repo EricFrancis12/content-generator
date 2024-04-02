@@ -1,5 +1,8 @@
 import cron from 'node-cron';
-import { fetchCampaigns, checkForNewYouTubeVideos, addToDownloadQueue, addToIntakeHistory, checkForNewRedditImages } from '../data';
+import {
+    fetchCampaigns, checkForNewYouTubeVideos, addToDownloadQueue,
+    addToIntakeHistory, checkForNewRedditImages, fetchIntakeHistory
+} from '../data';
 import { ESourceType, EContentType, TDownloadQueueItem, ISourceImage, ISourceVideo } from '../../_shared';
 import config from '../config/config';
 const { CRON_EXPRESSION } = config;
@@ -13,7 +16,8 @@ export default class CampaignsEngine {
             const campaigns = await fetchCampaigns();
             for (let i = 0; i < campaigns.length; i++) {
                 const campaign = campaigns[i];
-                const { intakeHistory, filters, publishTo, disabled } = campaign;
+                const intakeHistory = await fetchIntakeHistory(campaign._id);
+                const { filters, publishTo, disabled } = campaign;
                 const { type: sourceType, contentType, externalId } = campaign.source;
                 if (disabled === true) {
                     continue;
