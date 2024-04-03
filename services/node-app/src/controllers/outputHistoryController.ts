@@ -18,17 +18,31 @@ export async function getOutputHistory(req: Request, res: Response) {
 }
 
 export async function createOutputHistoryItem(req: Request, res: Response) {
+    const { sourceType, contentType, externalId } = req.body;
     try {
-        const outputHistoryItem = await OutputHistoryItem.create({
-            ...req.body,
-            campaign_id: req.params.campaign_id
+        const outputHistory = await OutputHistoryItem.find({ campaign_id: req.params.campaign_id });
+        const historyItemAlreadyExists = outputHistory.some(historyItem => {
+            const sameSourceType = historyItem.sourceType === sourceType;
+            const sameContentType = historyItem.contentType === contentType;
+            const sameExternalId = historyItem.externalId === externalId;
+            return sameSourceType && sameContentType && sameExternalId;
         });
-        res.status(200).json({
-            success: true,
-            data: {
-                outputHistoryItem
-            }
-        });
+        if (!historyItemAlreadyExists) {
+            const outputHistoryItem = await OutputHistoryItem.create({
+                ...req.body,
+                campaign_id: req.params.campaign_id
+            });
+            res.status(200).json({
+                success: true,
+                data: {
+                    outputHistoryItem
+                }
+            });
+        } else {
+            res.json({
+                success: true
+            });
+        }
     } catch (err) {
         res.json({
             success: false

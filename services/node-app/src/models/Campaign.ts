@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import typings from '../typings/index';
-const { ESourceType, EContentType, EFilterComponentType, EPublisherType } = typings;
+const { ESourceType, EContentType, EFilterComponentType } = typings;
 
 export const campaignSchema = new mongoose.Schema({
     name: {
@@ -15,7 +15,7 @@ export const campaignSchema = new mongoose.Schema({
         minVideoLength: Number,
         maxVideoLength: Number,
         shortVideosOnly: Boolean,
-        longVideosOnly: Boolean    
+        longVideosOnly: Boolean
     },
     source: {
         type: {
@@ -69,16 +69,21 @@ export const campaignSchema = new mongoose.Schema({
         options: {}
     }],
     publishTo: [{
-        type: {
+        disabled: Boolean,
+        outputType: {
             type: String,
-            enum: Object.values(EPublisherType),
-            require: [true, 'Publisher must have a type']
+            require: [true, 'Output must have a type']
+        },
+        contentType: {
+            type: String,
+            enum: Object.values(EContentType),
+            require: [true, 'Output ingredient must have a content type']
         },
         externalId: {
             type: String,
-            require: [true, 'Publisher must have an external id']
+            require: [true, 'Output must have an external id']
         },
-        disabled: Boolean
+        options: {}
     }]
 });
 

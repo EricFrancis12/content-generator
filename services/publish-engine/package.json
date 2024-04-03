@@ -16,6 +16,8 @@
         "@types/amqplib": "^0.10.5",
         "@types/node": "^20.11.30",
         "amqplib": "^0.10.3",
+        "axios": "^1.6.8",
+        "form-data": "^4.0.0",
         "typescript": "^5.4.3"
     },
     "devDependencies": {

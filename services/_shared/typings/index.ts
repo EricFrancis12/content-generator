@@ -57,24 +57,30 @@ export interface IFilterOptions {
 };
 
 export interface IOutput {
-    name: TOutputName,
+    outputType: TOutputType,
     contentType: EContentType,
-    externalId: string
+    externalId: string,
+    disabled?: boolean,
+    options?: IOutputOptions
 };
 
-export type TOutputName = 'keep saved' | 'send via Telegram';
+export type TOutputType = 'keep saved' | 'send content to Telegram channel' | 'send message to Telegram channel';
+
+export interface IOutputOptions {
+    message?: string
+};
 
 export interface IHistoryItem {
     sourceType: ESourceType,
     contentType: EContentType,
     campaign_id: string,
-    externalId: string,
-    _id?: string // Defining this as optional because in testing, mongo db adds the _id to all history items after pushing them to the array
+    externalId: string
 };
 export interface IIntakeHistoryItem extends IHistoryItem {
     // ...
 };
 export interface IOutputHistoryItem extends IHistoryItem {
+    outputType: TOutputType,
     timestamp: number
 };
 
@@ -97,13 +103,6 @@ export enum EFilterComponentType {
     SOURCE = 'SOURCE',
     SAVED = 'SAVED',
     TEMP = 'TEMP'
-};
-
-export enum EPublisherType {
-    TIKTOK_ACCOUNT = 'TIKTOK_ACCOUNT',
-    INSTAGRAM_ACCOUNT = 'INSTAGRAM_ACCOUNT',
-    TELEGRAM_CHANNEL = 'TELEGRAM_CHANNEL',
-    DOWNLOAD_TO_MACHINE = 'DOWNLOAD_TO_MACHINE'
 };
 
 export interface ISourceContent {
@@ -155,8 +154,7 @@ export type TPublishQueueItem = {
     externalId: string,
     filters: IFilter[],
     publishTo: IOutput[],
-    contentPath: string,
-    internalId: string
+    contentPath: string
 };
 
 export type TRabbitMQQueue = 'download' | 'apply-filters' | 'publish';

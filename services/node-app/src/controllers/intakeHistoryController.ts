@@ -18,17 +18,31 @@ export async function getIntakeHistory(req: Request, res: Response) {
 }
 
 export async function createIntakeHistoryItem(req: Request, res: Response) {
+    const { sourceType, contentType, externalId } = req.body;
     try {
-        const intakeHistoryItem = await IntakeHistoryItem.create({
-            ...req.body,
-            campaign_id: req.params.campaign_id
+        const intakeHistory = await IntakeHistoryItem.find({ campaign_id: req.params.campaign_id });
+        const historyItemAlreadyExists = intakeHistory.some(historyItem => {
+            const sameSourceType = historyItem.sourceType === sourceType;
+            const sameContentType = historyItem.contentType === contentType;
+            const sameExternalId = historyItem.externalId === externalId;
+            return sameSourceType && sameContentType && sameExternalId;
         });
-        res.status(200).json({
-            success: true,
-            data: {
-                intakeHistoryItem
-            }
-        });
+        if (!historyItemAlreadyExists) {
+            const intakeHistoryItem = await IntakeHistoryItem.create({
+                ...req.body,
+                campaign_id: req.params.campaign_id
+            });
+            res.status(200).json({
+                success: true,
+                data: {
+                    intakeHistoryItem
+                }
+            });
+        } else {
+            res.json({
+                success: true
+            });
+        }
     } catch (err) {
         res.json({
             success: false

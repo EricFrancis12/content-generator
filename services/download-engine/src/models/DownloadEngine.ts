@@ -57,8 +57,7 @@ export default class DownloadEngine {
                                     const video = await downloadYouTubeVideo(externalId, outputPath);
                                     const publishQueueItem: TPublishQueueItem = {
                                         ...downloadQueueItem,
-                                        contentPath: video.path,
-                                        internalId
+                                        contentPath: video.path
                                     }
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
                                 }
@@ -80,11 +79,10 @@ export default class DownloadEngine {
                                     const image = await downloadRedditImage(externalId, outputPath);
                                     const publishQueueItem: TPublishQueueItem = {
                                         ...downloadQueueItem,
-                                        contentPath: image.path,
-                                        internalId
+                                        contentPath: image.path
                                     }
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
-                                };
+                                }
                             } else {
                                 console.error('Reddit content types other than IMAGE not yet implimented');
                             }

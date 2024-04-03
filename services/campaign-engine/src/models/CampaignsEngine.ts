@@ -52,7 +52,12 @@ export default class CampaignsEngine {
                     };
                     const success = await addToDownloadQueue(downloadQueueItem);
                     if (success) {
-                        await addToIntakeHistory(campaign._id, content.externalId);
+                        await addToIntakeHistory({
+                            sourceType,
+                            contentType,
+                            campaign_id: campaign._id,
+                            externalId: content.externalId
+                        });
                     }
                 }
             }

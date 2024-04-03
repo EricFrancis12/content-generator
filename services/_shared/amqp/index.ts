@@ -20,7 +20,7 @@ export function initRabbitMQ(ampqUrl: string, {
                 channel = await connection.createChannel();
                 console.log('Created amqp channel');
                 await channel.assertExchange(RABBITMQ_EXCHANGE, 'direct', { durable: true });
-                console.log(`Asserted exchange: ${RABBITMQ_EXCHANGE}`);
+                console.log(`Asserted exchange: "${RABBITMQ_EXCHANGE}"`);
                 const numQueues = RABBITMQ_QUEUES.length;
                 for (let i = 0; i < numQueues; i++) {
                     await channel.assertQueue(RABBITMQ_QUEUES[i], {

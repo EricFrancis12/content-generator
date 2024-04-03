@@ -1,4 +1,3 @@
-import fs from 'fs';
 import axios from 'axios';
 import xml2js from 'xml2js';
 const parser = new xml2js.Parser();
@@ -52,22 +51,12 @@ export async function addToDownloadQueue(downloadQueueItem: TDownloadQueueItem) 
     }
 }
 
-export async function addToIntakeHistory(campaign_id: string, externalId: string) {
+export async function addToIntakeHistory(intakeHistoryItem: IIntakeHistoryItem) {
+    const { campaign_id } = intakeHistoryItem;
     try {
-        const res = await axios.get(`http://node-app:3000/api/v1/campaigns/${campaign_id}/intake-history`);
+        const res = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/intake-history`, intakeHistoryItem);
         if (res.status >= 300 || res.data?.success !== true) {
             return false;
-        }
-        const intakeHistory = res.data?.data?.intakeHistory as IIntakeHistoryItem[];
-        if (!intakeHistory) {
-            return false;
-        }
-        const historyItemAlreadyExists = intakeHistory.some(historyItem => historyItem.externalId === externalId);
-        if (!historyItemAlreadyExists) {
-            const res2 = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/intake-history`, { externalId });
-            if (res2.status >= 300 || res.data?.success !== true) {
-                return false;
-            }
         }
         return true;
     } catch (err) {

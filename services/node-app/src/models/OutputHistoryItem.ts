@@ -20,6 +20,10 @@ export const outputHistoryItemSchema = new mongoose.Schema({
         type: String,
         require: [true, 'Output history item must have a campaign _id']
     },
+    outputType: {
+        type: String,
+        require: [true, 'Output history item must have a output type']
+    },
     timestamp: {
         type: Number,
         require: [true, 'Output history item must have a timestamp']

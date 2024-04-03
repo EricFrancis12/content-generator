@@ -47,6 +47,18 @@ services:
       - shared-file-system:/app/shared-file-system
     command: npm start
 
+  publish-engine:
+    build:
+      context: ./services
+      dockerfile: ./publish-engine/Dockerfile
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - shared-file-system:/app/shared-file-system
+    command: npm start
+
   ui:
     build:
       context: ./services/ui
