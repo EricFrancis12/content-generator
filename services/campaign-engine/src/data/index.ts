@@ -1,11 +1,10 @@
-import fs from 'fs';
 import axios from 'axios';
 import xml2js from 'xml2js';
 const parser = new xml2js.Parser();
 import ytdl from 'ytdl-core';
 import {
     ICampaign, ICampaignOptions, TDownloadQueueItem, ISourceImage, ISourceVideo,
-    IHistoryItem, IIntakeHistoryItem, ESourceType
+    IHistoryItem, IIntakeHistoryItem, ESourceType, EContentType
 } from '../../_shared';
 import { isShortVideo, isLongVideo } from '../utils';
 import config from '../config/config';
@@ -25,6 +24,20 @@ export async function fetchCampaigns() {
     }
 }
 
+export async function fetchIntakeHistory(campaign_id: string) {
+    try {
+        const res = await axios.get(`http://node-app:3000/api/v1/campaigns/${campaign_id}/intake-history`);
+        const intakeHistory = res.data?.data?.intakeHistory as IIntakeHistoryItem[];
+        if (!intakeHistory) {
+            return [];
+        }
+        return intakeHistory;
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
+
 export async function addToDownloadQueue(downloadQueueItem: TDownloadQueueItem) {
     try {
         const res = await axios.post('http://node-app:3000/api/v1/amqp/queues/download', downloadQueueItem);
@@ -38,21 +51,11 @@ export async function addToDownloadQueue(downloadQueueItem: TDownloadQueueItem) 
     }
 }
 
-export async function addToIntakeHistory(campaign_id: string, externalId: string) {
+export async function addToIntakeHistory(intakeHistoryItem: IIntakeHistoryItem) {
+    const { campaign_id } = intakeHistoryItem;
     try {
-        const res = await axios.get(`http://node-app:3000/api/v1/campaigns/${campaign_id}`);
+        const res = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/intake-history`, intakeHistoryItem);
         if (res.status >= 300 || res.data?.success !== true) {
-            return false;
-        }
-        const intakeHistory = res.data?.data?.campaign?.intakeHistory as IIntakeHistoryItem[];
-        if (!intakeHistory) {
-            return false;
-        }
-        const newIntakeHistory = intakeHistory.some(historyItem => historyItem.externalId === externalId)
-            ? intakeHistory
-            : [...intakeHistory, { externalId }];
-        const res2 = await axios.patch(`http://node-app:3000/api/v1/campaigns/${campaign_id}`, { intakeHistory: newIntakeHistory });
-        if (res2.status >= 300 || res.data?.success !== true) {
             return false;
         }
         return true;
@@ -90,7 +93,12 @@ export async function checkForNewYouTubeImages(channel_id: string, history: stri
 export async function checkForNewYouTubeVideos(channel_id: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceVideo[]> {
     try {
         const recentVideos = await getRecentYouTubeVideos(channel_id, options);
-        const newVideos = recentVideos.filter(recentVideo => !history.some(historyItem => historyItem.externalId === recentVideo.externalId));
+        const newVideos = recentVideos.filter(recentVideo => !history.some(historyItem => {
+            const sameSourceType = historyItem.sourceType === ESourceType.YOUTUBE;
+            const sameContentType = historyItem.contentType === EContentType.VIDEO;
+            const sameExternalId = historyItem.externalId === recentVideo.externalId;
+            return sameSourceType && sameContentType && sameExternalId;
+        }));
         return newVideos;
     } catch (err) {
         console.error(err);
@@ -101,7 +109,12 @@ export async function checkForNewYouTubeVideos(channel_id: string, history: IHis
 export async function checkForNewRedditImages(subreddit: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceImage[]> {
     try {
         const recentImages = await getRecentRedditImages(subreddit, options);
-        const newImages = recentImages.filter(recentImage => !history.some(historyItem => historyItem.externalId === recentImage.externalId));
+        const newImages = recentImages.filter(recentImage => !history.some(historyItem => {
+            const sameSourceType = historyItem.sourceType === ESourceType.REDDIT;
+            const sameContentType = historyItem.contentType === EContentType.IMAGE;
+            const sameExternalId = historyItem.externalId === recentImage.externalId;
+            return sameSourceType && sameContentType && sameExternalId;
+        }));
         return newImages;
     } catch (err) {
         console.error(err);

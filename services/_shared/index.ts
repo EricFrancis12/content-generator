@@ -5,7 +5,7 @@ import {
     EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, TDownloadQueueItem,
     TFilterQueueItem, TFilterName, IFIlterComponent, EFilterComponentType, IFilterOptions, TPublishQueueItem,
     ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
-    IHistoryItem, IIntakeHistoryItem, TRabbitMQQueue, EContentType, ESourceType
+    IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, EContentType, ESourceType
 } from './typings';
 
 const _shared = {
@@ -30,6 +30,7 @@ export {
     ISavedVideo,
     IHistoryItem,
     IIntakeHistoryItem,
+    IOutputHistoryItem,
     TFilterName,
     IFIlterComponent,
     EFilterComponentType,

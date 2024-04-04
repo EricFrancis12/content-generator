@@ -1,6 +1,6 @@
-FROM node:15
+FROM node:18
 WORKDIR /app
-COPY package.json /app
+COPY ./publish-engine/package.json /app
 
 ARG NODE_ENV
 RUN if [ "$NODE_ENV" = "development" ]; \
@@ -8,6 +8,9 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     else npm install --only-production; \
     fi
 
-COPY . /app
+COPY ./publish-engine/src/ /app/src
+COPY ./publish-engine/package*.json/ /app
+COPY ./publish-engine/tsconfig.json /app
+COPY ./_shared/ /app/_shared
 RUN npm run build
 CMD ["npm", "start"]

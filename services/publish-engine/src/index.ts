@@ -1,3 +1,3 @@
+import PublishEngine from './models/PublishEngine';
 
-
-console.log('Publish engine running');
+const publishEngine = new PublishEngine({ startWhenConnected: true });

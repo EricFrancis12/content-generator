@@ -1,10 +1,10 @@
 import amqplib from 'amqplib';
-import _shared, { ISavedContent, TFilterQueueItem, IFIlterComponent, EFilterComponentType } from '../../_shared';
-const { initRabbitMQ } = _shared.amqp;
+import _shared, { ISavedContent, TFilterQueueItem, TPublishQueueItem, IFIlterComponent, EFilterComponentType } from '../../_shared';
+const { initRabbitMQ, RABBITMQ_EXCHANGE } = _shared.amqp;
 const { getSavedContentViaInternalId } = _shared.utils;
 import operations from '../operations';
 import config from '../config/config';
-const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_FILTER_QUEUE } = config;
+const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_FILTER_QUEUE, RABBITMQ_PUBLISH_QUEUE } = config;
 
 export default class ApplyFiltersEngine {
     channel: amqplib.Channel | null;
@@ -53,6 +53,7 @@ export default class ApplyFiltersEngine {
                     }
 
                     const results: ISavedContent[] = [];
+                    let errored = false;
                     for (let i = 0; i < filters.length; i++) {
                         const { name, base, ingredient, options } = filters[i];
                         const operation = operations[name];
@@ -66,8 +67,6 @@ export default class ApplyFiltersEngine {
 
                         const baseContentPath = await baseContentPathProm;
                         const ingredientContentPath = await ingredientContentPathProm;
-                        console.log(baseContentPath);
-                        console.log(ingredientContentPath);
                         if (!baseContentPath || !ingredientContentPath) {
                             console.error('Missing Base and/or Ingredient content path');
                             break;
@@ -90,9 +89,21 @@ export default class ApplyFiltersEngine {
                             results.push(result);
                         } catch (err) {
                             console.error(err);
+                            errored = true;
                             break;
                         }
                     }
+
+                    if (!errored && !!results[results.length - 1]) {
+                        const publishQueueItem: TPublishQueueItem = {
+                            ...filterQueueItem,
+                            contentPath: results[results.length - 1].path
+                        };
+                        this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
+                    } else {
+                        // ... handle situation if all filters were not able to be applied
+                    }
+
                     this.channel?.ack(msg);
                 }
             });

@@ -37,6 +37,15 @@ services:
     depends_on:
       - rabbitmq
 
+  publish-engine:
+    build:
+      context: ./services
+      dockerfile: ./publish-engine/Dockerfile
+    env_file:
+      - ./services/publish-engine/.env
+    depends_on:
+      - rabbitmq
+
   ui:
     depends_on:
       - node-app

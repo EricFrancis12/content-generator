@@ -1,5 +1,5 @@
 import _shared from '../../_shared';
-import { TRabbitMQQueue } from '../../_shared/typings';
+import { ESourceType, EContentType, TRabbitMQQueue } from '../../_shared/typings';
 
 const shared = {
     ..._shared
@@ -7,5 +7,7 @@ const shared = {
 
 export default shared;
 export {
+    ESourceType,
+    EContentType,
     TRabbitMQQueue
 };
