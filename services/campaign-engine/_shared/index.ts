@@ -1,7 +1,7 @@
 import _shared from '../../_shared';
 import {
     ESourceType, EContentType, ICampaign, ICampaignOptions, TDownloadQueueItem, ISourceImage,
-    ISourceVideo, IHistoryItem, IIntakeHistoryItem
+    ISourceVideo, IHistoryItem, IIntakeHistoryItem, ECronExpression
 } from '../../_shared';
 
 const shared = {
@@ -18,5 +18,6 @@ export {
     ISourceImage,
     ISourceVideo,
     IHistoryItem,
-    IIntakeHistoryItem
+    IIntakeHistoryItem,
+    ECronExpression
 };

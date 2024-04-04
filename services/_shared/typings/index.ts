@@ -158,3 +158,10 @@ export type TPublishQueueItem = {
 };
 
 export type TRabbitMQQueue = 'download' | 'apply-filters' | 'publish';
+
+export enum ECronExpression {
+    EVERY_MINUTE = '* * * * *',
+    EVERY_TWO_MINUTES = '*/2 * * * *',
+    EVERY_HOUR = '0 * * * *', // At the beginning of every hour
+    EVERY_DAY = '0 0 * * *' // At midnight every day
+};
