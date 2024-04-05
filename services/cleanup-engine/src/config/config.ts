@@ -8,7 +8,7 @@ type TConfig = {
 };
 
 const config: TConfig = {
-    CRON_EXPRESSION: process.env.CRON_EXPRESSION || ECronExpression.EVERY_MINUTE,
+    CRON_EXPRESSION: process.env.CRON_EXPRESSION || ECronExpression.EVERY_DAY,
     MAX_FILE_AGE: Number(process.env.MAX_FILE_AGE || oneDayMs) // default is one day in ms
 };
 

@@ -7,7 +7,7 @@ type TConfig = {
 };
 
 const config: TConfig = {
-    CRON_EXPRESSION: process.env.CRON_EXPRESSION || ECronExpression.EVERY_MINUTE,
+    CRON_EXPRESSION: process.env.CRON_EXPRESSION || ECronExpression.EVERY_HOUR,
     MIN_ALLOWED_VIDEO_LENGTH: Number(process.env.MIN_ALLOWED_VIDEO_LENGTH) || 0,
     MAX_ALLOWED_VIDEO_LENGTH: Number(process.env.MAX_ALLOWED_VIDEO_LENGTH) || 60 * 60 * 4 // 4 hours in seconds
 };

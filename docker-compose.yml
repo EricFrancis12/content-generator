@@ -46,6 +46,11 @@ services:
     depends_on:
       - rabbitmq
 
+  cleanup-engine:
+    build:
+      context: ./services
+      dockerfile: ./cleanup-engine/Dockerfile
+
   ui:
     depends_on:
       - node-app
