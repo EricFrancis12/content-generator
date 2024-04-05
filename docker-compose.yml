@@ -20,6 +20,7 @@ services:
       context: ./services
       dockerfile: ./campaign-engine/Dockerfile
     depends_on:
+      - node-app
       - mongo
       - rabbitmq
 
@@ -28,6 +29,7 @@ services:
       context: ./services
       dockerfile: ./download-engine/Dockerfile
     depends_on:
+      - node-app
       - rabbitmq
 
   apply-filters-engine:
@@ -35,6 +37,7 @@ services:
       context: ./services
       dockerfile: ./apply-filters-engine/Dockerfile
     depends_on:
+      - node-app
       - rabbitmq
 
   publish-engine:
@@ -44,12 +47,15 @@ services:
     env_file:
       - ./services/publish-engine/.env
     depends_on:
+      - node-app
       - rabbitmq
 
   cleanup-engine:
     build:
       context: ./services
       dockerfile: ./cleanup-engine/Dockerfile
+    depends_on:
+      - node-app
 
   ui:
     depends_on:
