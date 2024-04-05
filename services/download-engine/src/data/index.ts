@@ -12,10 +12,14 @@ export async function downloadYouTubeVideo(v: string, outputPath: string, {
 
     if (!fs.existsSync(outputPath)) {
         await new Promise((resolve, reject) => {
-            ytdl(url, { quality })
-                .pipe(fs.createWriteStream(outputPath))
-                .on('error', (err) => reject(err))
-                .on('finish', () => resolve(true));
+            try {
+                ytdl(url, { quality })
+                    .pipe(fs.createWriteStream(outputPath))
+                    .on('error', (err) => reject(err))
+                    .on('finish', () => resolve(true));
+            } catch (err) {
+                reject(err);
+            }
         });
     }
     return {
