@@ -7,6 +7,16 @@ export function generateInternalId() {
     return crypto.randomUUID();
 }
 
+export async function copyFileToNewLocation(baseFilePath: string, newFilePath: string) {
+    try {
+        const fileContent = await fsPromises.readFile(baseFilePath);
+        await fsPromises.writeFile(newFilePath, fileContent);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
 export async function getAllNestedFilePaths(dirPath: string) {
     const result: string[] = [];
     const dirContents = await fsPromises.readdir(dirPath);

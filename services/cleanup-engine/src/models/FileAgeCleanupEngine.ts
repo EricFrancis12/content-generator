@@ -3,6 +3,7 @@ import cron from 'node-cron';
 import _shared from '../../_shared';
 const { getAllNestedFilePaths } = _shared.utils;
 import config from '../config/config';
+import { getFileDate } from '../utils';
 const { CRON_EXPRESSION, MAX_FILE_AGE } = config;
 
 type TOptions = {
@@ -45,12 +46,15 @@ const main = async () => {
     for (let i = 0; i < filePaths.length; i++) {
         const filePath = filePaths[i];
         try {
-            const stats = await fsPromises.stat(filePath);
-            const minAcceptableDate = new Date(Date.now() - MAX_FILE_AGE);
-            if (stats.birthtime < minAcceptableDate) {
-                console.log(`Attempting to delete: ${filePath}`);
-                await fsPromises.unlink(filePath);
-                console.log(`Successfully deleted: ${filePath}`);
+            const unixTimestamp = await getFileDate(filePath);
+            if (!!unixTimestamp) {
+                const birthtime = unixTimestamp * 1000;
+                const minAcceptableTime = Date.now() - MAX_FILE_AGE;
+                if (birthtime < minAcceptableTime) {
+                    console.log(`Attempting to delete: ${filePath}`);
+                    await fsPromises.unlink(filePath);
+                    console.log(`Successfully deleted: ${filePath}`);
+                }
             }
         } catch (err) {
             console.error(err);
