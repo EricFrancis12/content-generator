@@ -12,6 +12,8 @@ services:
       - ./services/_shared/:/app/_shared
       - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
+    env_file:
+      - ./services/node-app/.env
     environment:
       - NODE_ENV=development
     command: npm run dev
@@ -72,6 +74,8 @@ services:
       - ./services/_shared/:/app/_shared
       - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
+    env_file:
+      - ./services/publish-engine/.env
     environment:
       - NODE_ENV=development
     command: npm run dev
