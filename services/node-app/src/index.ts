@@ -3,6 +3,7 @@ import campaignsRouter from './routes/campaigns/campaignsRouter';
 import amqpRouter from './routes/amqp/amqpRouter';
 import mongoose from 'mongoose';
 import config from './config/config';
+import { auth } from './middleware/auth';
 const { MONGO_IP, MONGO_PORT, MONGO_USER, MONGO_PASSWORD } = config;
 
 const mongoUrl = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
@@ -24,6 +25,8 @@ app.use(express.json());
 app.get('/', async (req, res) => {
     res.send('GET @ ./');
 });
+
+app.use(auth);
 
 app.use('/api/v1/campaigns', campaignsRouter);
 app.use('/api/v1/amqp', amqpRouter);
