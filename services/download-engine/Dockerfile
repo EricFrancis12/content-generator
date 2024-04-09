@@ -9,7 +9,7 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     fi
 
 COPY ./download-engine/src/ /app/src
-COPY ./download-engine/package*.json/ /app
+COPY ./download-engine/package*.json /app
 COPY ./download-engine/tsconfig.json /app
 COPY ./_shared/ /app/_shared
 RUN npm run build

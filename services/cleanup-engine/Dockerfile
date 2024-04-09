@@ -9,7 +9,7 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     fi
 
 COPY ./cleanup-engine/src/ /app/src
-COPY ./cleanup-engine/package*.json/ /app
+COPY ./cleanup-engine/package*.json /app
 COPY ./cleanup-engine/tsconfig.json /app
 COPY ./_shared/ /app/_shared
 RUN npm run build
