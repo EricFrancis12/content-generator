@@ -74,4 +74,8 @@ describe('Mock api calls', () => {
             expect(result?.length).toEqual(0);
         });
     }
+
+    test('Testing failure for husky', () => {
+        expect(1).toEqual(2);
+    });
 });
