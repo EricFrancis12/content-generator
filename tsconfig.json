@@ -1,14 +1,11 @@
 {
-    "extends": "@tsconfig/node18/tsconfig.json",
     "compilerOptions": {
         "strict": true,
-        "lib": [
-            "ESNext"
-        ],
-        "outDir": "build"
+        "outDir": "build",
+        "esModuleInterop": true
     },
     "include": [
-        "src"
+        "."
     ],
     "exclude": [
         "node_modules",
