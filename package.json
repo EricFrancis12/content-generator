@@ -5,6 +5,7 @@
   "main": "",
   "scripts": {
     "test": "jest",
+    "preinstall": "node services/node-app/scripts/_prestart.js",
     "postinstall": "npm run install:_shared && npm run install:apply-filters-engine && npm run install:campaign-engine && npm run install:cleanup-engine && npm run install:download-engine && npm run install:node-app && npm run install:publish-engine && npm run install:ui",
     "install:_shared": "cd services/_shared && npm install",
     "install:apply-filters-engine": "cd services/apply-filters-engine && npm install",
