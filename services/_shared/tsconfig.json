@@ -1,0 +1,13 @@
+{
+    "extends": "@tsconfig/node18/tsconfig.json",
+    "compilerOptions": {
+        "outDir": "build"
+    },
+    "include": [
+        "."
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.test.ts"
+    ],
+}

@@ -1,0 +1,26 @@
+{
+  "name": "docker-content-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "jest",
+    "postinstall": "npm run install:_shared && npm run install:apply-filters-engine && npm run install:campaign-engine && npm run install:cleanup-engine && npm run install:download-engine && npm run install:node-app && npm run install:publish-engine && npm run install:ui",
+    "install:_shared": "cd services/_shared && npm install",
+    "install:apply-filters-engine": "cd services/apply-filters-engine && npm install",
+    "install:campaign-engine": "cd services/campaign-engine && npm install",
+    "install:cleanup-engine": "cd services/cleanup-engine && npm install",
+    "install:download-engine": "cd services/download-engine && npm install",
+    "install:node-app": "cd services/node-app && npm install",
+    "install:publish-engine": "cd services/publish-engine && npm install",
+    "install:ui": "cd services/ui && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2"
+  }
+}

@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { promises as fsPromises } from 'fs';
 import { EContentType, ESourceType, ISavedContent } from '../../_shared';
 
-export function generateInternalId() {
+export function generateInternalId(): string {
     return crypto.randomUUID();
 }
 

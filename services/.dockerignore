@@ -4,6 +4,7 @@
 **/.dockerignore
 **/.git
 **/.gitignore
+**/jest.config.js
 **/.env.example
 **/test
 **/tests
