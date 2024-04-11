@@ -4,8 +4,11 @@
   "description": "",
   "main": "",
   "scripts": {
+    "dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
+    "start": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
     "lint": "eslint . --ext .ts --ext .tsx",
     "test": "jest",
+    "prepare": "husky install",
     "preinstall": "node services/node-app/scripts/_prestart.js",
     "postinstall": "npm run install:_shared && npm run install:apply-filters-engine && npm run install:campaign-engine && npm run install:cleanup-engine && npm run install:download-engine && npm run install:node-app && npm run install:publish-engine && npm run install:ui",
     "install:_shared": "cd services/_shared && npm install",
@@ -15,8 +18,7 @@
     "install:download-engine": "cd services/download-engine && npm install",
     "install:node-app": "cd services/node-app && npm install",
     "install:publish-engine": "cd services/publish-engine && npm install",
-    "install:ui": "cd services/ui && npm install",
-    "prepare": "husky install"
+    "install:ui": "cd services/ui && npm install"
   },
   "keywords": [],
   "author": "",
