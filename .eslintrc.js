@@ -26,10 +26,14 @@ module.exports = {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "settings": {
+        "react": {
+            "version": "18.2.0"
+        }
+    },
     "plugins": [
         "@typescript-eslint",
         "react"
     ],
-    "rules": {
-    }
+    "rules": {}
 }
