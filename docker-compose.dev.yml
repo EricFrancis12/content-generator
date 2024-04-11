@@ -8,7 +8,6 @@ services:
     volumes:
       - ./services/node-app/src/:/app/src
       - ./services/_shared/:/app/_shared
-      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     env_file:
       - ./services/node-app/.env
@@ -40,7 +39,6 @@ services:
     volumes:
       - ./services/download-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
-      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -55,7 +53,6 @@ services:
     volumes:
       - ./services/apply-filters-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
-      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -70,7 +67,6 @@ services:
     volumes:
       - ./services/publish-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
-      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     env_file:
       - ./services/publish-engine/.env
@@ -87,7 +83,6 @@ services:
     volumes:
       - ./services/cleanup-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
-      - ./shared-file-system/:/app/shared-file-system
       - /app/node_modules
     environment:
       - NODE_ENV=development
