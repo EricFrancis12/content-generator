@@ -1,24 +1,32 @@
-import util from 'util';
-const exec = util.promisify(require('child_process').exec);
+import { exec } from 'child_process';
 
 type TArg = {
     stdout: string,
     stderr: string
 };
 
-const executeCommand = async (cmd: string): Promise<number | null> => {
+const executeCommand = async (cmd: string): Promise<string | null> => {
     try {
-        return await exec(cmd, { timeout: 2000 }).then(async ({ stdout, stderr }: TArg) => {
-            if (stderr) {
-                return null;
-            }
-            if (stdout) {
-                return stdout;
-            }
+        const { stdout, stderr } = await new Promise<TArg>((resolve, reject) => {
+            exec(cmd, { timeout: 2000 }, (err, stdout, stderr) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ stdout, stderr });
+                }
+            });
         });
-    } catch (cmdErr) {
-        return null;
+
+        if (stderr) {
+            return null;
+        }
+        if (stdout) {
+            return stdout;
+        }
+    } catch (err) {
+        console.error(err instanceof Error ? err : 'Error executing command at getFileDate()');
     }
+    return null;
 };
 
 const getFileDate = async (filePath: string): Promise<number | null> => {
@@ -29,22 +37,16 @@ const getFileDate = async (filePath: string): Promise<number | null> => {
         } else if (process.platform === 'darwin') {
             cmd = `stat -s "${filePath}"`;
         } else {
-            console.error(`getFileDate() => Error: only 'linux' and 'darwin' platforms are supported`);
-            return null;
+            throw new Error(`getFileDate() => Error: only 'linux' and 'darwin' platforms are supported`);
         }
 
-        let getDateResult = await executeCommand(cmd);
-        if (getDateResult === null) {
-            return null;
-        }
-
-        if (process.platform === 'linux') {
-            getDateResult = parseInt(`${getDateResult}`);
-            return getDateResult;
+        const getDateResult = await executeCommand(cmd);
+        if (getDateResult && process.platform === 'linux') {
+            const unixTimestamp = parseInt(getDateResult);
+            return unixTimestamp || null;
         }
     } catch (err) {
         console.error(`getFileDate() => ${err}`);
-        return null;
     }
     return null;
 };

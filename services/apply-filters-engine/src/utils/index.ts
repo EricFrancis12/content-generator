@@ -1,9 +1,9 @@
-import fs, { promises as fsPromises } from 'fs';
+import fs from 'fs';
 import { EImageFileExtension, EVideoFileExtension, EContentType, ESourceType, ISavedContent } from '../../_shared';
 
 import ffmpeg from 'fluent-ffmpeg';
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffprobePath = require('@ffprobe-installer/ffprobe').path;
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
+import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
 
@@ -11,16 +11,16 @@ interface ISavedContentDetailed extends ISavedContent {
     creationDate: Date | null,
     height: number | null,
     width: number | null
-};
+}
 interface ISavedImageDetailed extends ISavedContentDetailed {
     // ...
-};
+}
 interface ISavedVideoDetailed extends ISavedContentDetailed {
     videoLength: number | null
-};
+}
 
 export async function getSavedContentDetails(contentPath: string): Promise<ISavedContentDetailed> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (!fs.existsSync(contentPath)) {
             reject(`Invalid content path: "${contentPath}"`);
         }

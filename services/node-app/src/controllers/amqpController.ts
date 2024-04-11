@@ -47,7 +47,7 @@ export async function consumeMessageFromQueue(req: Request, res: Response) {
             throw new Error('Channel does not exist');
         }
         const message = await channel.get(req.params.queue_name);
-        if (!!message) {
+        if (message) {
             const result = JSON.parse(message?.content?.toString() || 'null');
             res.status(200).json({
                 success: true,

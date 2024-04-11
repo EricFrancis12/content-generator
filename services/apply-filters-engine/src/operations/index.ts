@@ -2,11 +2,11 @@ import { basename } from 'path';
 import { ESourceType, EContentType, ISavedContent, TFilterName, IFilterOptions } from '../../_shared';
 import _shared from '../../_shared';
 const { generateInternalId } = _shared.utils;
+import { getSavedContentDetails } from '../utils';
 
 import ffmpeg from 'fluent-ffmpeg';
-import { getSavedContentDetails } from '../utils';
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffprobePath = require('@ffprobe-installer/ffprobe').path;
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
+import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
 
@@ -23,9 +23,14 @@ type TOperations = {
 
 interface IConcatVideosOptions extends IFilterOptions {
     // ...
-};
+}
 
-const concatVideos: TOperationFunction = async (baseVideo, ingredientVideo, isLastFilter, options: IConcatVideosOptions = {}) => {
+const concatVideos: TOperationFunction = async (
+    baseVideo,
+    ingredientVideo,
+    isLastFilter,
+    /* eslint-disable */ options: IConcatVideosOptions = {} /* eslint-ebable */
+) => {
     return new Promise((resolve, reject) => {
         const baseVideoName = basename(baseVideo.path);
         const ingredientVideoName = basename(ingredientVideo.path);
@@ -62,7 +67,7 @@ interface IOverlayVideoOntoVideoOptions extends IFilterOptions {
     scaleIngredientRelativeToSelf?: number,
     scaleIngredientRelativeToBase?: number,
     trimTo?: number
-};
+}
 
 const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVideo, isLastFilter, {
     x = 0,
@@ -97,7 +102,7 @@ const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVi
     }
 
     const complexFilter = [
-        `[0:v]${!!scale ? '[scaled]' : '[1:v]'}overlay=${overlayX}:${overlayY}`
+        `[0:v]${scale ? '[scaled]' : '[1:v]'}overlay=${overlayX}:${overlayY}`
     ];
     if (scale) {
         complexFilter.unshift(scale);
@@ -146,7 +151,7 @@ interface IOverlayImageOntoVideoOptions extends IFilterOptions {
     corner?: TCorner,
     scaleIngredientRelativeToSelf?: number,
     scaleIngredientRelativeToBase?: number
-};
+}
 
 const overlayImageOntoVideo: TOperationFunction = async (baseVideo, ingredientImage, isLastFilter, {
     x = 0,

@@ -5,7 +5,7 @@ import { IOptions } from '.';
 
 interface IOptionsReddit extends IOptions {
     selector?: 'new' | 'hot' | 'controversial';
-};
+}
 
 const RedditApiResultSchema = z.object({
     data: z.object({

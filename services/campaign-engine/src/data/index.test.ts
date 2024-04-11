@@ -1,77 +1,85 @@
 import axios from 'axios';
 jest.mock('axios');
 import {
-    fetchCampaigns, fetchIntakeHistory, checkForNewInstagramImages, checkForNewInstagramVideos,
-    checkForNewTikTokImages, checkForNewTikTokVideos, checkForNewYouTubeImages, checkForNewYouTubeVideos,
-    checkForNewRedditImages, checkForNewRedditVideos, getRecentYouTubeVideos, getRecentRedditImages
+    fetchCampaigns, fetchIntakeHistory, getRecentYouTubeVideos, getRecentRedditImages,
+    checkForNewInstagramImages, checkForNewInstagramVideos, checkForNewTikTokImages, checkForNewTikTokVideos,
+    checkForNewYouTubeImages, checkForNewYouTubeVideos, checkForNewRedditImages, checkForNewRedditVideos
 } from '.';
 
-type TTestItem = {
-    _function: Function,
-    args: any
-};
-
-const sampleId = '1234';
-
-const itemsToTest: TTestItem[] = [
-    {
-        _function: fetchCampaigns,
-        args: []
-    },
-    {
-        _function: fetchIntakeHistory,
-        args: [sampleId]
-    },
-    {
-        _function: checkForNewInstagramImages,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewInstagramVideos,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewTikTokImages,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewTikTokVideos,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewYouTubeImages,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewYouTubeVideos,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewRedditImages,
-        args: [sampleId, []]
-    },
-    {
-        _function: checkForNewRedditVideos,
-        args: [sampleId, []]
-    },
-    {
-        _function: getRecentYouTubeVideos,
-        args: [sampleId]
-    },
-    {
-        _function: getRecentRedditImages,
-        args: [sampleId]
-    }
-];
-
 describe('Mock api calls', () => {
-    for (const { _function, args } of itemsToTest) {
-        test(`Checking ${_function.name} with invalid axios response`, async () => {
-            const invalidAxiosResponse = {};
-            (axios.get as jest.Mock).mockResolvedValue(invalidAxiosResponse);
-            const result = await _function(...args);
-            expect(Array.isArray(result)).toEqual(true);
-            expect(result?.length).toEqual(0);
-        });
-    }
+    const sampleId = '1234';
+    const invalidAxiosResponse = {};
+    (axios.get as jest.Mock).mockResolvedValue(invalidAxiosResponse);
+
+    test(`Checking ${fetchCampaigns.name} with invalid axios response`, async () => {
+        const result = await fetchCampaigns();
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${fetchIntakeHistory.name} with invalid axios response`, async () => {
+        const result = await fetchIntakeHistory(sampleId);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${getRecentYouTubeVideos.name} with invalid axios response`, async () => {
+        const result = await getRecentYouTubeVideos(sampleId);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${getRecentRedditImages.name} with invalid axios response`, async () => {
+        const result = await getRecentRedditImages(sampleId);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewInstagramImages.name} with invalid axios response`, async () => {
+        const result = await checkForNewInstagramImages(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewInstagramVideos.name} with invalid axios response`, async () => {
+        const result = await checkForNewInstagramVideos(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewTikTokImages.name} with invalid axios response`, async () => {
+        const result = await checkForNewTikTokImages(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewTikTokVideos.name} with invalid axios response`, async () => {
+        const result = await checkForNewTikTokVideos(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewYouTubeImages.name} with invalid axios response`, async () => {
+        const result = await checkForNewYouTubeImages(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewYouTubeVideos.name} with invalid axios response`, async () => {
+        const result = await checkForNewYouTubeVideos(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewRedditImages.name} with invalid axios response`, async () => {
+        const result = await checkForNewRedditImages(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
+
+    test(`Checking ${checkForNewRedditVideos.name} with invalid axios response`, async () => {
+        const result = await checkForNewRedditVideos(sampleId, []);
+        expect(Array.isArray(result)).toEqual(true);
+        expect(result?.length).toEqual(0);
+    });
 });

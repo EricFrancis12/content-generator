@@ -52,7 +52,7 @@ export default class PublishEngine {
 
                             let success = false;
                             if (outputType === 'keep saved') {
-                                const fileName = contentPath.split('/').at(-1);;
+                                const fileName = contentPath.split('/').at(-1);
                                 const contentTypeFolder = contentPath.split('/').at(-2);
                                 if (!!fileName && !!contentTypeFolder) {
                                     const newFilePath = `./shared-file-system/keep-saved-content/${contentTypeFolder}/${fileName}`;
@@ -72,7 +72,7 @@ export default class PublishEngine {
                                 console.error(`Unknown output type: ${outputType}`);
                             }
 
-                            if (!!success) {
+                            if (success) {
                                 await addToOutputHistory({
                                     sourceType,
                                     contentType,
