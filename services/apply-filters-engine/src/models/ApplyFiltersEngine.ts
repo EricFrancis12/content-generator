@@ -41,17 +41,6 @@ export default class ApplyFiltersEngine {
                     console.log(filterQueueItem);
                     const { sourceType, filters, contentPath } = filterQueueItem;
 
-                    async function getContentPath(component: IFIlterComponent): Promise<string | undefined> {
-                        if (component.type === EFilterComponentType.SOURCE) {
-                            return contentPath;
-                        } else if (component.type === EFilterComponentType.SAVED) {
-                            return (await getSavedContentViaInternalId(component.internalId))?.path;
-                        } else if (component.type === EFilterComponentType.TEMP) {
-                            return results[component.filterIndex]?.path;
-                        }
-                        return undefined;
-                    }
-
                     const results: ISavedContent[] = [];
                     let errored = false;
                     for (let i = 0; i < filters.length; i++) {
@@ -62,8 +51,8 @@ export default class ApplyFiltersEngine {
                             break;
                         }
 
-                        const baseContentPathProm = getContentPath(base);
-                        const ingredientContentPathProm = getContentPath(ingredient);
+                        const baseContentPathProm = getContentPath(base, results, contentPath);
+                        const ingredientContentPathProm = getContentPath(ingredient, results, contentPath);
 
                         const baseContentPath = await baseContentPathProm;
                         const ingredientContentPath = await ingredientContentPathProm;
@@ -115,4 +104,15 @@ export default class ApplyFiltersEngine {
             return this.channel.cancel(consumerTag);
         }
     }
+}
+
+async function getContentPath(component: IFIlterComponent, results: ISavedContent[], contentPath: string): Promise<string | undefined> {
+    if (component.type === EFilterComponentType.SOURCE) {
+        return contentPath;
+    } else if (component.type === EFilterComponentType.SAVED) {
+        return (await getSavedContentViaInternalId(component.internalId))?.path;
+    } else if (component.type === EFilterComponentType.TEMP) {
+        return results[component.filterIndex]?.path;
+    }
+    return undefined;
 }

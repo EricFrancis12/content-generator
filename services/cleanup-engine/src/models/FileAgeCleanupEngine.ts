@@ -47,7 +47,7 @@ const main = async () => {
         const filePath = filePaths[i];
         try {
             const unixTimestamp = await getFileDate(filePath);
-            if (!!unixTimestamp) {
+            if (unixTimestamp) {
                 const birthtime = unixTimestamp * 1000;
                 const minAcceptableTime = Date.now() - MAX_FILE_AGE;
                 if (birthtime < minAcceptableTime) {

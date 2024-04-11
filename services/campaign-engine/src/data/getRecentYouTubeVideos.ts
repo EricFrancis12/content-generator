@@ -11,7 +11,7 @@ import { IOptions } from '.';
 
 interface IOptionsYouTube extends IOptions {
     // ...
-};
+}
 
 const ParsedDataSchema = z.object({
     feed: z.object({
@@ -27,9 +27,8 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
         const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}`;
         const res = await axios.get(rssFeedUrl);
         const data: unknown = res.data;
-        if (typeof data !== 'string') {
-            return [];
-        }
+
+        if (typeof data !== 'string') return [];
 
         const parsedData: TParsedData | Error = await new Promise((resolve, reject) => {
             parser.parseString(data, (parseErr, parsedData) => {
@@ -41,37 +40,37 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
                 }
             });
         });
-
-        if (parsedData instanceof Error) {
-            return [];
-        }
+        if (parsedData instanceof Error) return [];
 
         const { success } = ParsedDataSchema.safeParse(parsedData);
-        if (!success) {
-            return [];
-        }
+        if (!success) return [];
 
         const proms = [];
         for (let j = 0; j < parsedData.feed.entry.length; j++) {
             const v = parsedData.feed.entry[j]['yt:videoId'][0];
-            const prom = ytdl.getBasicInfo(`https://youtube.com?v=${v}`)
-                .catch(err => console.error(err));
+            const prom = ytdl.getBasicInfo(`https://youtube.com?v=${v}`);
             proms.push(prom);
         }
         const settledProms = await Promise.allSettled(proms);
-        let videoData = settledProms.map((a: any) => a?.value?.videoDetails);
+
+        let videoData: ytdl.videoInfo[] = [];
+        for (const p of settledProms) {
+            if (p.status === 'fulfilled') {
+                videoData.push(p.value);
+            }
+        }
 
         const minVideoLength = options?.minVideoLength || MIN_ALLOWED_VIDEO_LENGTH;
-        videoData = videoData.filter(a => parseFloat(a?.lengthSeconds) >= minVideoLength);
+        videoData = videoData.filter(a => parseFloat(a.videoDetails.lengthSeconds) >= minVideoLength);
 
         const maxVideoLength = options?.maxVideoLength || MAX_ALLOWED_VIDEO_LENGTH;
-        videoData = videoData.filter(a => parseFloat(a?.lengthSeconds) <= maxVideoLength);
+        videoData = videoData.filter(a => parseFloat(a.videoDetails.lengthSeconds) <= maxVideoLength);
 
-        if (!!options) {
+        if (options) {
             if (options?.shortVideosOnly === true) {
-                videoData = videoData.filter(a => isShortVideo(parseFloat(a?.lengthSeconds)));
+                videoData = videoData.filter(a => isShortVideo(parseFloat(a.videoDetails.lengthSeconds)));
             } else if (options?.longVideosOnly === true) {
-                videoData = videoData.filter(a => isLongVideo(parseFloat(a?.lengthSeconds)));
+                videoData = videoData.filter(a => isLongVideo(parseFloat(a.videoDetails.lengthSeconds)));
             }
         }
 
@@ -79,14 +78,10 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
             videoData = videoData.slice(0, options.n);
         }
 
-        return videoData
-            .map(item => {
-                const sourceVideo: ISourceVideo = {
-                    sourceType: ESourceType.YOUTUBE,
-                    externalId: item.videoId
-                };
-                return sourceVideo;
-            });
+        return videoData.map(item => ({
+            sourceType: ESourceType.YOUTUBE,
+            externalId: item.videoDetails.videoId
+        }));
     } catch (err) {
         console.error(err);
         return [];

@@ -4,7 +4,7 @@ import * as utils from './utils';
 import {
     EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, TDownloadQueueItem,
     TFilterQueueItem, TFilterName, IFIlterComponent, EFilterComponentType, IFilterOptions, TPublishQueueItem,
-    ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
+    ISourceContent, ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
     IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, EContentType, ESourceType, ECronExpression
 } from './typings';
 
@@ -23,6 +23,7 @@ export {
     TDownloadQueueItem,
     TFilterQueueItem,
     TPublishQueueItem,
+    ISourceContent,
     ISourceImage,
     ISourceVideo,
     ISavedContent,

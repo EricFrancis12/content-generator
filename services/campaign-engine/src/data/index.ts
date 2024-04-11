@@ -17,8 +17,9 @@ export {
 
 export interface IOptions extends ICampaignOptions {
     n?: number
-};
+}
 
+/* eslint-disable */
 export async function checkForNewInstagramImages(id: string, history: string[]): Promise<ISourceImage[]> {
     // ...
     return [];
@@ -43,6 +44,7 @@ export async function checkForNewYouTubeImages(channel_id: string, history: stri
     // ...
     return [];
 }
+/* eslint-enable */
 
 export async function checkForNewYouTubeVideos(channel_id: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceVideo[]> {
     try {
@@ -76,7 +78,9 @@ export async function checkForNewRedditImages(subreddit: string, history: IHisto
     }
 }
 
+/* eslint-disable */
 export async function checkForNewRedditVideos(subreddit: string, history: IHistoryItem[], options?: IOptions): Promise<ISourceVideo[]> {
     // ...
     return [];
 }
+/* eslint-enable */

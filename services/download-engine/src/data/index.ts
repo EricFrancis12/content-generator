@@ -8,9 +8,8 @@ export async function downloadYouTubeVideo(v: string, outputPath: string, {
 }: {
     quality?: string | number
 } = {}): Promise<ISavedVideo> {
-    const url = `https://youtube.com/watch?v=${v}`;
-
     if (!fs.existsSync(outputPath)) {
+        const url = `https://youtube.com/watch?v=${v}`;
         await new Promise((resolve, reject) => {
             try {
                 ytdl(url, { quality })
@@ -30,26 +29,25 @@ export async function downloadYouTubeVideo(v: string, outputPath: string, {
 }
 
 export async function downloadRedditImage(externalId: string, outputPath: string): Promise<ISavedImage> {
-    const url = `https://i.redd.it/${externalId}`;
-
     if (!fs.existsSync(outputPath)) {
-        await new Promise(async (resolve, reject) => {
-            try {
-                const response = await axios({
-                    url: url,
-                    method: 'GET',
-                    responseType: 'stream'
-                });
+        const url = `https://i.redd.it/${externalId}`;
+        try {
+            const response = await axios({
+                url: url,
+                method: 'GET',
+                responseType: 'stream'
+            });
 
+            await new Promise((resolve, reject) => {
                 const writer = fs.createWriteStream(outputPath);
                 response.data.pipe(writer);
 
                 writer.on('finish', resolve);
                 writer.on('error', reject);
-            } catch (err) {
-                reject(err);
-            }
-        });
+            });
+        } catch (err) {
+            throw new Error('Error downloading Reddit Image');
+        }
     }
     return {
         sourceType: ESourceType.REDDIT,
