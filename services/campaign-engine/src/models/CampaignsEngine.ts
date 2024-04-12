@@ -20,8 +20,11 @@ export default class CampaignsEngine {
         this.task = cron.schedule(cronExpression, main);
     }
 
-    start() {
+    async start() {
         if (this.runTaskImmediately) {
+            const delayMs = 30_000;
+            console.log(`Starting first task in ${delayMs} ms`);
+            await new Promise(resolve => setTimeout(resolve, delayMs));
             main();
         }
         this.task.start();

@@ -5,7 +5,9 @@
         "lib": [
             "ESNext"
         ],
-        "outDir": "build"
+        "outDir": "build",
+        "esModuleInterop": true,
+        "resolveJsonModule": true
     },
     "include": [
         "src"

@@ -3,6 +3,8 @@ services:
     build:
       context: ./services
       dockerfile: ./node-app/Dockerfile
+    volumes:
+      - ./shared-file-system/:/app/shared-file-system
     ports:
       - "3000:3000"
     environment:
@@ -26,6 +28,8 @@ services:
     build:
       context: ./services
       dockerfile: ./download-engine/Dockerfile
+    volumes:
+      - ./shared-file-system/:/app/shared-file-system
     depends_on:
       - node-app
       - rabbitmq
@@ -34,6 +38,8 @@ services:
     build:
       context: ./services
       dockerfile: ./apply-filters-engine/Dockerfile
+    volumes:
+      - ./shared-file-system/:/app/shared-file-system
     depends_on:
       - node-app
       - rabbitmq
@@ -42,6 +48,8 @@ services:
     build:
       context: ./services
       dockerfile: ./publish-engine/Dockerfile
+    volumes:
+      - ./shared-file-system/:/app/shared-file-system
     depends_on:
       - node-app
       - rabbitmq
@@ -50,6 +58,8 @@ services:
     build:
       context: ./services
       dockerfile: ./cleanup-engine/Dockerfile
+    volumes:
+      - ./shared-file-system/:/app/shared-file-system
     depends_on:
       - node-app
 
