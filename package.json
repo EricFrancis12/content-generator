@@ -37,6 +37,6 @@
     "ts-jest": "^29.1.2"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,md,html,css}": "eslint"
+    "**/*.{ts,tsx,md,html,css}": "eslint"
   }
 }
