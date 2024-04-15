@@ -9,8 +9,8 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     fi
 
 COPY ./campaign-engine/src/ /app/src
-COPY ./campaign-engine/package*.json /app
-COPY ./campaign-engine/tsconfig.json /app
+COPY ./campaign-engine/package*.json /app/
+COPY ./campaign-engine/tsconfig.json /app/
 COPY ./_shared/ /app/_shared
 RUN npm run build
 CMD ["npm", "start"]
