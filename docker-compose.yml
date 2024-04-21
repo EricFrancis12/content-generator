@@ -65,10 +65,6 @@ services:
     depends_on:
       - node-app
 
-  ui:
-    depends_on:
-      - node-app
-
   mongo:
     image: mongo
     environment:

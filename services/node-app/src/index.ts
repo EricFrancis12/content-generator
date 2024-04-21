@@ -6,7 +6,7 @@ import config from './config/config';
 import { auth } from './middleware/auth';
 const { MONGO_IP, MONGO_PORT, MONGO_USER, MONGO_PASSWORD } = config;
 
-const mongoUrl = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
+const mongoUrl = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/yes?authSource=admin`;
 
 const connectWithRetry = () => {
     mongoose

@@ -64,9 +64,3 @@ services:
       - NODE_ENV=production
     command: npm start
 
-  ui:
-    build:
-      context: ./services/ui
-      dockerfile: Dockerfile.prod
-    ports:
-      - "3001:80"
