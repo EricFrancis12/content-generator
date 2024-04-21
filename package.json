@@ -8,6 +8,7 @@
     "build": "bash scripts/build.sh",
     "build_node": "node scripts/build.js",
     "start": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
+    "stop": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down",
     "lint": "eslint . --ext .ts --ext .tsx",
     "test": "jest",
     "prepare": "husky install",
