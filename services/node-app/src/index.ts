@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import campaignsRouter from './routes/campaigns/campaignsRouter';
 import amqpRouter from './routes/amqp/amqpRouter';
@@ -20,6 +21,7 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/v1/campaigns', auth, campaignsRouter);

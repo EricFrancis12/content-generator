@@ -10,7 +10,8 @@
         "resolveJsonModule": true
     },
     "include": [
-        "src"
+        "src",
+        "build"
     ],
     "exclude": [
         "node_modules",
