@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node build/src/index.js",
         "build": "npx tsc",
-        "dev": "nodemon -L -e ts --exec \"tsc -p ./tsconfig.json && node ./build/src/index.js\"",
+        "dev": "nodemon -L --ignore \"**/shared-file-system/*\" -e ts --exec \"tsc -p ./tsconfig.json && node ./build/src/index.js\"",
         "test": "jest"
     },
     "keywords": [],
@@ -28,5 +28,10 @@
         "jest": "^29.7.0",
         "nodemon": "^3.1.0",
         "ts-jest": "^29.1.2"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "**/shared-file-system/*"
+        ]
     }
 }

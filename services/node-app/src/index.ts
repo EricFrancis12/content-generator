@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import campaignsRouter from './routes/campaigns/campaignsRouter';
 import amqpRouter from './routes/amqp/amqpRouter';
@@ -20,16 +21,17 @@ const connectWithRetry = () => {
 connectWithRetry();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-app.get('/', async (req, res) => {
-    res.send('GET @ ./');
+app.use('/api/v1/campaigns', auth, campaignsRouter);
+app.use('/api/v1/amqp', auth, amqpRouter);
+
+app.get('*', (req, res) => {
+    const { protocol, hostname, path, query } = req;
+    const queryString = Object.entries(query).map(entry => entry.join('=')).join('&');
+    res.redirect(`${protocol}://${hostname}:3001${path}${queryString ? '?' : ''}${queryString}`);
 });
-
-app.use(auth);
-
-app.use('/api/v1/campaigns', campaignsRouter);
-app.use('/api/v1/amqp', amqpRouter);
 
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => console.log(`Server running on port ${port}`));
