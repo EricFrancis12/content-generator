@@ -15,55 +15,7 @@ services:
       - MONGO_PASSWORD=mypassword
     depends_on:
       - mongo
-      - rabbitmq
-
-  campaign-engine:
-    build:
-      context: ./services
-      dockerfile: ./campaign-engine/Dockerfile
-    depends_on:
-      - node-app
-      - mongo
-      - rabbitmq
-
-  download-engine:
-    build:
-      context: ./services
-      dockerfile: ./download-engine/Dockerfile
-    volumes:
-      - ./shared-file-system/:/app/shared-file-system
-    depends_on:
-      - node-app
-      - rabbitmq
-
-  apply-filters-engine:
-    build:
-      context: ./services
-      dockerfile: ./apply-filters-engine/Dockerfile
-    volumes:
-      - ./shared-file-system/:/app/shared-file-system
-    depends_on:
-      - node-app
-      - rabbitmq
-
-  publish-engine:
-    build:
-      context: ./services
-      dockerfile: ./publish-engine/Dockerfile
-    volumes:
-      - ./shared-file-system/:/app/shared-file-system
-    depends_on:
-      - node-app
-      - rabbitmq
-
-  cleanup-engine:
-    build:
-      context: ./services
-      dockerfile: ./cleanup-engine/Dockerfile
-    volumes:
-      - ./shared-file-system/:/app/shared-file-system
-    depends_on:
-      - node-app
+      - rabbitmq    
 
   ui:
     depends_on:

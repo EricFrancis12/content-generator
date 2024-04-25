@@ -1,27 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import Loader from './components/Loader';
+import PageTitle from './components/PageTitle';
+import Campaigns from './pages/Campaigns';
+import Home from './pages/Home';
+import Content from './pages/Content';
+import Files from './pages/Files';
+import Queues from './pages/Queues';
 
-function App() {
-    function handleClick() {
-        const { protocol, hostname } = window.location;
-        console.log(protocol);
-        console.log(hostname);
-        const url = `${protocol}//${hostname}:3000/api/v1/campaigns`;
-        fetch(url)
-            .then(async res => {
-                console.log(res);
-                const resJson = await res.json();
-                console.log(resJson);
-            });
-    }
+export default function App() {
+    const [loading] = useState<boolean>(false);
+    const { pathname } = useLocation();
 
-    return (
-        <div className='text-red-400'>
-            <h1>Hello from Typescript</h1>
-            <button onClick={handleClick}>
-                Fetch Campaigns
-            </button>
-        </div>
-    );
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return loading ? (
+        <Loader />
+    ) : (
+        <>
+            <Routes>
+                <Route
+                    index
+                    element={
+                        <>
+                            <PageTitle title='Home' />
+                            <Home />
+                        </>
+                    }
+                />
+                <Route
+                    path='/campaigns'
+                    element={
+                        <>
+                            <PageTitle title='Campaigns' />
+                            <Campaigns />
+                        </>
+                    }
+                />
+                <Route
+                    path='/queues'
+                    element={
+                        <>
+                            <PageTitle title='Queues' />
+                            <Queues />
+                        </>
+                    }
+                />
+                <Route
+                    path='/content'
+                    element={
+                        <>
+                            <PageTitle title='Content' />
+                            <Content />
+                        </>
+                    }
+                />
+                <Route
+                    path='/files'
+                    element={
+                        <>
+                            <PageTitle title='Files & Storage' />
+                            <Files />
+                        </>
+                    }
+                />
+            </Routes>
+        </>
+    )
 }
-
-export default App;
