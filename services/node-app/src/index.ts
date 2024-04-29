@@ -1,11 +1,8 @@
 import cors from 'cors';
 import express from 'express';
-import amqpRouter from './routes/amqp/amqpRouter';
-import campaignsRouter from './routes/campaigns/campaignsRouter';
-import contentRouter from './routes/content/contentRouter';
+import apiRouter from './routes/api/apiRouter';
 import mongoose from 'mongoose';
 import config from './config/config';
-import { auth } from './middleware/auth';
 const { MONGO_IP, MONGO_PORT, MONGO_USER, MONGO_PASSWORD } = config;
 
 const mongoUrl = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
@@ -25,9 +22,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/v1/amqp', auth, amqpRouter);
-app.use('/api/v1/campaigns', auth, campaignsRouter);
-app.use('/api/v1/content', auth, contentRouter);
+app.use('/api', apiRouter);
 
 app.get('*', (req, res) => {
     const { protocol, hostname, path, query } = req;
