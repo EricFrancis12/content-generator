@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HeaderDropdown from './HeaderDropdown';
-import LogoIcon from '../../images/logo/logo-icon.svg';
+import LogoIcon from '../../assets/images/logo/logo-icon.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 export default function Header(props: {

@@ -8,7 +8,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
     if (process.env.NODE_ENV !== 'development') {
         const authToken = req.headers.authorization?.split(' ').pop();
         if (authToken !== AUTH_TOKEN && authToken !== SERVICE_TOKEN) {
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: 'Unauthorized'
             });

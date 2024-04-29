@@ -89,7 +89,7 @@ services:
 
   ui:
     build:
-      context: ./services/ui
-      dockerfile: Dockerfile.prod
+      context: ./services
+      dockerfile: ./ui/Dockerfile.prod
     ports:
       - "3001:80"

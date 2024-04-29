@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const AuthContext = React.createContext({
     authToken: '',
-    setAuthToken: (/* eslint-disable */ newAuthToken: string /* eslint-enable */) => null
+    setAuthToken: (/* eslint-disable */ newAuthToken: string /* eslint-enable */): void => { }
 });
 
 export function useAuth() {
@@ -16,7 +17,12 @@ export function useAuth() {
 export function AuthProvider({ children }: {
     children: React.ReactNode
 }) {
-    const [authToken, setAuthToken] = useState('');
+    const [storedAuthToken, setStoredAuthToken] = useLocalStorage('auth-token', '');
+    const [authToken, setAuthToken] = useState(storedAuthToken);
+
+    useEffect(() => {
+        setStoredAuthToken(authToken);
+    }, [authToken, setStoredAuthToken]);
 
     const value = {
         authToken,

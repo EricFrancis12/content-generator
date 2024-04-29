@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { channel } from '../controllers/amqpController';
 import _shared, { TRabbitMQQueue } from '../../_shared';
-const { RABBITMQ_QUEUES,  } = _shared.amqp;
+const { RABBITMQ_QUEUES } = _shared.amqp;
 
 export default function amqpMiddleware(req: Request, res: Response, next: NextFunction) {
     if (!channel) {

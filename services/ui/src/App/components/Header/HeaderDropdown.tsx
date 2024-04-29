@@ -17,7 +17,7 @@ export default function HeaderDropdown() {
             if (
                 !dropdownOpen ||
                 dropdown.current.contains(target as HTMLElement) ||
-                trigger.current.contains(target as HTMLElement)
+                trigger.current?.contains(target as HTMLElement)
             )
                 return;
             setDropdownOpen(false);

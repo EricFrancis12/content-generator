@@ -11,7 +11,7 @@ export async function getAllCampaigns(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -27,7 +27,7 @@ export async function getCampaign(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -43,7 +43,7 @@ export async function createCampaign(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -62,7 +62,7 @@ export async function updateCampaign(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -75,7 +75,7 @@ export async function deleteCampaign(req: Request, res: Response) {
             success: true
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }

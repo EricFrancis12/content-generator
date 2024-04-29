@@ -6,3 +6,5 @@ Dockerfile
 .gitignore
 jest.config.js
 .env.example
+package*.json
+tsconfig.json

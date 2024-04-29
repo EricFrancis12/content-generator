@@ -20,6 +20,12 @@ export default _shared;
 export {
     EImageFileExtension,
     EVideoFileExtension,
+    EFilterComponentType,
+    EContentType,
+    ESourceType,
+    ECronExpression
+};
+export type {
     ICampaign,
     ICampaignOptions,
     TDownloadQueueItem,
@@ -36,10 +42,6 @@ export {
     IOutputHistoryItem,
     TFilterName,
     IFIlterComponent,
-    EFilterComponentType,
     IFilterOptions,
-    TRabbitMQQueue,
-    EContentType,
-    ESourceType,
-    ECronExpression
+    TRabbitMQQueue
 };

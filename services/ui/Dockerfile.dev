@@ -1,7 +1,8 @@
-FROM node
+FROM node:18
 WORKDIR /app
-COPY package.json .
+COPY ./ui/package.json .
 RUN npm install
-COPY . .
+COPY ./ui/ .
+COPY ./_shared/ /app/src/_shared
 EXPOSE 3001
 CMD ["npm", "start"]

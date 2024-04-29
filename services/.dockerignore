@@ -1,6 +1,6 @@
 **/node_modules
 **/build
-**/Dockerfile
+**/Dockerfile*
 **/.dockerignore
 **/.git
 **/.gitignore
@@ -8,3 +8,6 @@
 **/.env.example
 **/test
 **/tests
+
+_shared/package*.json
+_shared/tsconfig.json
