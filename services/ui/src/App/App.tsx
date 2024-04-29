@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import useColorMode from './hooks/useColorMode';
 import Loader from './components/Loader';
 import PageTitle from './components/PageTitle';
 import Campaigns from './pages/Campaigns';
@@ -9,6 +10,8 @@ import Files from './pages/Files';
 import Queues from './pages/Queues';
 
 export default function App() {
+    useColorMode();
+
     const [loading] = useState<boolean>(false);
     const { pathname } = useLocation();
 

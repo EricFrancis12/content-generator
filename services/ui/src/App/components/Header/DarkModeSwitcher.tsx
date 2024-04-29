@@ -1,8 +1,10 @@
 import React from 'react';
-import useColorMode from '../../hooks/useColorMode';
+import { selectColorMode, toggle } from '../../store/reducers/colorModeReducer';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function DarkModeSwitcher() {
-    const [colorMode, setColorMode] = useColorMode();
+    const colorMode = useAppSelector(selectColorMode);
+    const dispatch = useAppDispatch();
 
     return (
         <li>
@@ -12,11 +14,7 @@ export default function DarkModeSwitcher() {
             >
                 <input
                     type='checkbox'
-                    onChange={() => {
-                        if (typeof setColorMode === 'function') {
-                            setColorMode(colorMode === 'light' ? 'dark' : 'light');
-                        }
-                    }}
+                    onChange={() => dispatch(toggle())}
                     className='dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0'
                 />
                 <span

@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import useLocalStorage from './useLocalStorage';
+import { selectColorMode } from '../store/reducers/colorModeReducer';
+import { useAppSelector } from '../store/hooks';
+import { saveToLocalStorage } from './useLocalStorage';
 
 export type TColorMode = 'light' | 'dark';
 
 export default function useColorMode() {
-    const [colorMode, setColorMode] = useLocalStorage<TColorMode>('color-mode', 'light');
+    const colorMode = useAppSelector(selectColorMode);
 
     useEffect(() => {
         const className: TColorMode = 'dark';
@@ -13,7 +15,7 @@ export default function useColorMode() {
         colorMode === 'dark'
             ? bodyClass.add(className)
             : bodyClass.remove(className);
-    }, [colorMode]);
 
-    return [colorMode, setColorMode];
+        saveToLocalStorage('color-mode', colorMode);
+    }, [colorMode]);
 }
