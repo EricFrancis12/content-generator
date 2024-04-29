@@ -1,14 +1,19 @@
 import fs from 'fs';
 import axios from 'axios';
 import FormData from 'form-data';
-import { IOutputHistoryItem } from '../../_shared';
+import _shared, { IOutputHistoryItem } from '../../_shared';
+const { SERVICE_TOKEN } = _shared.constants;
 import config from '../config/config';
 const { TELEGRAM_BOT_TOKEN } = config;
 
 export async function addToOutputHistory(outputHistoryItem: IOutputHistoryItem) {
     const { campaign_id } = outputHistoryItem;
     try {
-        const res = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/output-history`, outputHistoryItem);
+        const res = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/output-history`, outputHistoryItem, {
+            headers: {
+                Authorization: `Bearer ${SERVICE_TOKEN}`
+            }
+        });
         if (res.status >= 300 || res.data?.success !== true) {
             return false;
         }

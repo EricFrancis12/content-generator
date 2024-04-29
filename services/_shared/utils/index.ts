@@ -7,6 +7,12 @@ export function generateInternalId(): string {
     return crypto.randomUUID();
 }
 
+export function getFileExt(filename: string) {
+    const splitOnDot = filename.split('.');
+    const fileExt = splitOnDot[splitOnDot.length - 1];
+    return fileExt.toLowerCase();
+}
+
 export async function copyFileToNewLocation(baseFilePath: string, newFilePath: string) {
     try {
         const fileContent = await fsPromises.readFile(baseFilePath);

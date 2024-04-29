@@ -34,7 +34,7 @@ export async function sendMessageToQueue(req: Request, res: Response) {
         });
     } catch (err) {
         console.error('Error sending message to queue:', err);
-        res.json({
+        res.status(500).json({
             success: false,
         });
     }
@@ -60,7 +60,7 @@ export async function consumeMessageFromQueue(req: Request, res: Response) {
             throw new Error('Error getting message from queue');
         }
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }

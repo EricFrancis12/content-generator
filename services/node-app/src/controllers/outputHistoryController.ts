@@ -11,7 +11,7 @@ export async function getOutputHistory(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -39,12 +39,12 @@ export async function createOutputHistoryItem(req: Request, res: Response) {
                 }
             });
         } else {
-            res.json({
+            res.status(200).json({
                 success: true
             });
         }
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -57,7 +57,7 @@ export async function deleteOutputHistory(req: Request, res: Response) {
             success: true
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }

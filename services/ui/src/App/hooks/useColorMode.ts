@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import useLocalStorage from './useLocalStorage';
 
+export type TColorMode = 'light' | 'dark';
+
 export default function useColorMode() {
-    const [colorMode, setColorMode] = useLocalStorage('color-theme', 'light');
+    const [colorMode, setColorMode] = useLocalStorage<TColorMode>('color-mode', 'light');
 
     useEffect(() => {
-        const className = 'dark';
+        const className: TColorMode = 'dark';
         const bodyClass = window.document.body.classList;
 
         colorMode === 'dark'

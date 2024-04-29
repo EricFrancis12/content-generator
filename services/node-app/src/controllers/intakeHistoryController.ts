@@ -11,7 +11,7 @@ export async function getIntakeHistory(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -39,12 +39,12 @@ export async function createIntakeHistoryItem(req: Request, res: Response) {
                 }
             });
         } else {
-            res.json({
+            res.status(200).json({
                 success: true
             });
         }
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }
@@ -57,7 +57,7 @@ export async function deleteIntakeHistory(req: Request, res: Response) {
             success: true
         });
     } catch (err) {
-        res.json({
+        res.status(500).json({
             success: false
         });
     }

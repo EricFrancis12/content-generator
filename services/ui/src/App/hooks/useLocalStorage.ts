@@ -6,7 +6,6 @@ export default function useLocalStorage<T>(
     key: string,
     initialValue: T
 ): [T, (value: SetValue<T>) => void] {
-    // State to store our value
     // Pass  initial state function to useState so logic is only executed once
     const [storedValue, setStoredValue] = useState(() => {
         try {
@@ -14,9 +13,9 @@ export default function useLocalStorage<T>(
             const item = window.localStorage.getItem(key);
             // Parse stored json or if none return initialValue
             return item ? JSON.parse(item) : initialValue;
-        } catch (error) {
+        } catch (err) {
             // If error also return initialValue
-            console.log(error);
+            console.log(err);
             return initialValue;
         }
     });
@@ -31,9 +30,8 @@ export default function useLocalStorage<T>(
                     : storedValue;
             // Save state
             window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        } catch (error) {
-            // A more advanced implementation would handle the error case
-            console.log(error);
+        } catch (err) {
+            console.log(err);
         }
     }, [key, storedValue]);
 
