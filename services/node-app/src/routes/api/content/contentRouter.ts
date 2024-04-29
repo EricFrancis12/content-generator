@@ -1,9 +1,9 @@
 import express from 'express';
-import upload from '../../middleware/upload';
+import upload from '../../../middleware/upload';
 import {
     getAllContent, getContent, getAllImages, uploadImage, getImage, deleteImage,
     getAllVideos, uploadVideo, getVideo, deleteVideo, deleteContent
-} from '../../controllers/contentController';
+} from '../../../controllers/contentController';
 
 const router = express.Router();
 

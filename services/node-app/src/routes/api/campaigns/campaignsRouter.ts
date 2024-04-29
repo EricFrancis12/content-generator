@@ -2,9 +2,9 @@ import express from 'express';
 import {
     getAllCampaigns, getCampaign, createCampaign,
     updateCampaign, deleteCampaign
-} from '../../controllers/campaignsController';
-import { createOutputHistoryItem, deleteOutputHistory, getOutputHistory } from '../../controllers/outputHistoryController';
-import { createIntakeHistoryItem, deleteIntakeHistory, getIntakeHistory } from '../../controllers/intakeHistoryController';
+} from '../../../controllers/campaignsController';
+import { createOutputHistoryItem, deleteOutputHistory, getOutputHistory } from '../../../controllers/outputHistoryController';
+import { createIntakeHistoryItem, deleteIntakeHistory, getIntakeHistory } from '../../../controllers/intakeHistoryController';
 
 const router = express.Router();
 
