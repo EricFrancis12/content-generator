@@ -15,20 +15,13 @@ export const colorModeSlice = createSlice({
     initialState,
     reducers: {
         toggle: (state: typeof initialState) => {
-            if (state.value === 'light') {
-                state.value = 'dark';
-            } else {
-                state.value = 'light';
-            }
+            state.value = state.value === 'light' ? 'dark' : 'light';
         }
     }
 });
 
 export const { toggle } = colorModeSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectColorMode = (state: RootState) => state.colorMode.value;
 
 export default colorModeSlice.reducer;

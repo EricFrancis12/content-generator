@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/useAuthContext';
+import { selectauthToken, change } from '../../store/reducers/authTokenReducer';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function HeaderDropdown() {
-    const { authToken, setAuthToken } = useAuth();
+    const authToken = useAppSelector(selectauthToken);
+    const dispatch = useAppDispatch();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -73,7 +75,7 @@ export default function HeaderDropdown() {
                             className='px-6 py-4 text-sm font-medium lg:text-base border border-black rounded-lg'
                             placeholder='Auth Token'
                             value={authToken}
-                            onChange={e => setAuthToken(e.target.value)}
+                            onChange={e => dispatch(change(e.target.value))}
                         />
                     </li>
                 </ul>

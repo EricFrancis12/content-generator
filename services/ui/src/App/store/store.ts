@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import authTokenReducer from './reducers/authTokenReducer';
 import colorModeReducer from './reducers/colorModeReducer';
 
 export const store = configureStore({
     reducer: {
-        colorMode: colorModeReducer
+        colorMode: colorModeReducer,
+        authToken: authTokenReducer
     }
 });
 
