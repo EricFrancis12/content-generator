@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../contexts/useAuthContext';
+import { useAppSelector } from '../store/hooks';
+import { selectauthToken } from '../store/reducers/authTokenReducer';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Loader from '../components/Loader';
@@ -8,7 +9,7 @@ import _shared, { EImageFileExtension, EVideoFileExtension } from '../../_shared
 const { getFileExt } = _shared.utils;
 
 export default function Files() {
-    const { authToken } = useAuth();
+    const authToken = useAppSelector(selectauthToken);
 
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);

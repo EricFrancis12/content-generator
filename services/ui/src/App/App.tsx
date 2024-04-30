@@ -20,7 +20,9 @@ export default function App() {
     }, [pathname]);
 
     return loading ? (
-        <Loader />
+        <div className='flex h-screen items-center justify-center bg-white'>
+            <Loader />
+        </div>
     ) : (
         <>
             <Routes>
