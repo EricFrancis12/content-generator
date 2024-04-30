@@ -1,7 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { getValueFromLocalStorage } from '../../hooks/useLocalStorage';
-import { saveToLocalStorage } from '../../hooks/useLocalStorage';
+import { getValueFromLocalStorage, saveToLocalStorage } from '../../hooks/useLocalStorage';
 
 export interface AuthTokenState {
     value: string
@@ -24,6 +23,6 @@ export const authTokenSlice = createSlice({
 
 export const { change } = authTokenSlice.actions;
 
-export const selectauthToken = (state: RootState) => state.authToken.value;
+export const selectauthToken = (state: RootState) => state.authToken;
 
 export default authTokenSlice.reducer;

@@ -1,13 +1,22 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action, createSelector } from '@reduxjs/toolkit';
 import authTokenReducer from './reducers/authTokenReducer';
+import campaignsReducer from './reducers/campaignsReducer';
 import colorModeReducer from './reducers/colorModeReducer';
 
-export const store = configureStore({
+const store = configureStore({
     reducer: {
-        colorMode: colorModeReducer,
-        authToken: authTokenReducer
+        authToken: authTokenReducer,
+        campaigns: campaignsReducer,
+        colorMode: colorModeReducer
     }
 });
+export default store;
+
+export function _storeSelector<T>(selector: (state: RootState) => T): T {
+    const selectSelf = (state: RootState) => state;
+    const createdSelector = createSelector(selectSelf, selector);
+    return createdSelector(store.getState());
+}
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

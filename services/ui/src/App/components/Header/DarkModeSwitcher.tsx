@@ -3,7 +3,7 @@ import { selectColorMode, toggle } from '../../store/reducers/colorModeReducer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function DarkModeSwitcher() {
-    const colorMode = useAppSelector(selectColorMode);
+    const colorMode = useAppSelector(selectColorMode).value;
     const dispatch = useAppDispatch();
 
     return (

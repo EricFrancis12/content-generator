@@ -6,7 +6,7 @@ import { saveToLocalStorage } from './useLocalStorage';
 export type TColorMode = 'light' | 'dark';
 
 export default function useColorMode() {
-    const colorMode = useAppSelector(selectColorMode);
+    const colorMode = useAppSelector(selectColorMode).value;
 
     useEffect(() => {
         const className: TColorMode = 'dark';

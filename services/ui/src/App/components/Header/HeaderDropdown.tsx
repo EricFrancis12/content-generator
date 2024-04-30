@@ -4,7 +4,7 @@ import { selectauthToken, change } from '../../store/reducers/authTokenReducer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function HeaderDropdown() {
-    const authToken = useAppSelector(selectauthToken);
+    const authToken = useAppSelector(selectauthToken).value;
     const dispatch = useAppDispatch();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);

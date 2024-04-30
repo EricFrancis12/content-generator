@@ -22,6 +22,6 @@ export const colorModeSlice = createSlice({
 
 export const { toggle } = colorModeSlice.actions;
 
-export const selectColorMode = (state: RootState) => state.colorMode.value;
+export const selectColorMode = (state: RootState) => state.colorMode;
 
 export default colorModeSlice.reducer;
