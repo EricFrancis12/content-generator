@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { useAppSelector } from '../store/hooks';
 import { selectauthToken } from '../store/reducers/authTokenReducer';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
@@ -15,7 +16,15 @@ export default function Files() {
     const [loading, setLoading] = useState(false);
 
     function handleSubmit() {
-        if (!file || !authToken) return;
+        if (!file) {
+            toast.error('Please upload a file');
+            return;
+        }
+
+        if (!authToken) {
+            toast.error('Auth token missing or invalid');
+            return;
+        }
 
         const { protocol, hostname } = window.location;
         let endpoint = `${protocol}//${hostname}:3000/api/v1/content`;
@@ -28,7 +37,7 @@ export default function Files() {
             endpoint += '/videos';
             formData.append('video', file);
         } else {
-            console.error('Unsupported file type');
+            toast.error('Unsupported file type');
             return;
         }
 
@@ -38,8 +47,16 @@ export default function Files() {
                 Authorization: `Bearer ${authToken}`
             }
         })
-            .then(res => console.log(res))
-            .catch(err => console.error(err))
+            .then(res => {
+                console.log(res);
+                const { success } = res.data;
+                if (success) {
+                    toast.success('File uploaded successfully');
+                } else {
+                    throw new Error('Error uploading file');
+                }
+            })
+            .catch(() => toast.error('Error uploading file'))
             .finally(() => setLoading(false));
     }
 

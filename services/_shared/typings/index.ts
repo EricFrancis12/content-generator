@@ -37,13 +37,17 @@ export interface ICampaignOptions {
 }
 
 export interface IFilter {
-    name: TFilterName,
+    name: EFilterName,
     base: IFIlterComponent,
     ingredient: IFIlterComponent,
     options: IFilterOptions
 }
 
-export type TFilterName = 'concatVideos' | 'overlayVideoOntoVideo' | 'overlayImageOntoVideo';
+export enum EFilterName {
+    concatVideos = 'concatVideos',
+    overlayVideoOntoVideo = 'overlayVideoOntoVideo',
+    overlayImageOntoVideo = 'overlayImageOntoVideo'
+}
 
 export interface IFIlterComponent {
     type: EFilterComponentType,
@@ -56,15 +60,43 @@ export interface IFilterOptions {
     // ...
 }
 
+export interface IConcatVideosOptions extends IFilterOptions {
+    // ...
+}
+
+export type TCorner = 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right';
+
+export interface IOverlayVideoOntoVideoOptions extends IFilterOptions {
+    x?: number,
+    y?: number,
+    corner?: TCorner,
+    scaleIngredientRelativeToSelf?: number,
+    scaleIngredientRelativeToBase?: number,
+    trimTo?: number
+}
+
+export interface IOverlayImageOntoVideoOptions extends IFilterOptions {
+    x?: number,
+    y?: number,
+    corner?: TCorner,
+    scaleIngredientRelativeToSelf?: number,
+    scaleIngredientRelativeToBase?: number
+}
+
 export interface IOutput {
-    outputType: TOutputType,
+    _id: string,
+    outputType: EOutputType,
     contentType: EContentType,
     externalId: string,
     disabled?: boolean,
     options?: IOutputOptions
 }
 
-export type TOutputType = 'keep saved' | 'send content to Telegram channel' | 'send message to Telegram channel';
+export enum EOutputType {
+    KEEP_SAVED = 'KEEP_SAVED',
+    SEND_CONTENT_TO_TELEGRAM_CHANNEL = 'SEND_CONTENT_TO_TELEGRAM_CHANNEL',
+    SEND_MESSAGE_TO_TELEGRAM_CHANNEL = 'SEND_MESSAGE_TO_TELEGRAM_CHANNEL'
+}
 
 export interface IOutputOptions {
     message?: string
@@ -80,7 +112,7 @@ export interface IIntakeHistoryItem extends IHistoryItem {
     // ...
 }
 export interface IOutputHistoryItem extends IHistoryItem {
-    outputType: TOutputType,
+    outputType: EOutputType,
     timestamp: number
 }
 

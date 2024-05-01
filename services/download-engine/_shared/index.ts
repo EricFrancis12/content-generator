@@ -1,8 +1,7 @@
-import _shared from '../../_shared';
-import {
+import _shared, {
     TRabbitMQQueue, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem, ISavedImage, ISavedVideo,
     EContentType, ESourceType
-} from '../../_shared/typings';
+} from '../../_shared';
 
 const shared = {
     ..._shared

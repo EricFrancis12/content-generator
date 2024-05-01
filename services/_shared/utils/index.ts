@@ -1,7 +1,56 @@
 import { basename } from 'path';
 import crypto from 'crypto';
 import { promises as fsPromises } from 'fs';
-import { EContentType, ESourceType, ISavedContent } from '../../_shared';
+import {
+    EContentType, ESourceType, EOutputType, ICampaign, IOutput, ISavedContent,
+    IFilter, EFilterComponentType, EFilterName
+} from '../../_shared';
+
+export function boilerplateCampaign(): ICampaign {
+    return {
+        _id: '',
+        name: '',
+        disabled: false,
+        source: {
+            type: ESourceType.READ_FROM_SAVED,
+            contentType: EContentType.VIDEO,
+            externalId: ''
+        },
+        filters: [],
+        publishTo: [],
+        options: {}
+    };
+}
+
+export function boilerplateFilter(): IFilter {
+    return {
+        name: EFilterName.overlayImageOntoVideo,
+        base: {
+            contentType: EContentType.VIDEO,
+            filterIndex: 0,
+            internalId: '',
+            type: EFilterComponentType.SAVED
+        },
+        ingredient: {
+            contentType: EContentType.VIDEO,
+            filterIndex: 0,
+            internalId: '',
+            type: EFilterComponentType.SAVED
+        },
+        options: {}
+    };
+}
+
+export function boilerplateOutput(): IOutput {
+    return {
+        _id: '',
+        outputType: EOutputType.KEEP_SAVED,
+        contentType: EContentType.VIDEO,
+        externalId: '',
+        disabled: false,
+        options: {}
+    };
+}
 
 export function generateInternalId(): string {
     return crypto.randomUUID();

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ESourceType, EContentType } from '../../_shared';
+import { ESourceType, EContentType, EOutputType } from '../../_shared';
 
 export const outputHistoryItemSchema = new mongoose.Schema({
     sourceType: {
@@ -12,6 +12,11 @@ export const outputHistoryItemSchema = new mongoose.Schema({
         enum: Object.values(EContentType),
         require: [true, 'Output history item must have a content type']
     },
+    outputType: {
+        type: String,
+        enum: Object.values(EOutputType),
+        require: [true, 'Output history item must have a output type']
+    },
     externalId: {
         type: String,
         require: [true, 'Output history item must have an externalId']
@@ -19,10 +24,6 @@ export const outputHistoryItemSchema = new mongoose.Schema({
     campaign_id: {
         type: String,
         require: [true, 'Output history item must have a campaign _id']
-    },
-    outputType: {
-        type: String,
-        require: [true, 'Output history item must have a output type']
     },
     timestamp: {
         type: Number,

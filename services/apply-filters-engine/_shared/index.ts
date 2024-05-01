@@ -1,7 +1,7 @@
-import _shared from '../../_shared';
-import {
+import _shared, {
     EImageFileExtension, EVideoFileExtension, ESourceType, EContentType,
-    ISavedContent, ISavedImage, ISavedVideo, TFilterName, IFIlterComponent, EFilterComponentType, IFilterOptions,
+    ISavedContent, ISavedImage, ISavedVideo, EFilterName, IFIlterComponent, EFilterComponentType,
+    IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     TRabbitMQQueue, TFilterQueueItem, TPublishQueueItem
 } from '../../_shared';
 
@@ -18,10 +18,13 @@ export {
     ISavedContent,
     ISavedImage,
     ISavedVideo,
-    TFilterName,
+    EFilterName,
     IFIlterComponent,
     EFilterComponentType,
     IFilterOptions,
+    IConcatVideosOptions,
+    IOverlayVideoOntoVideoOptions,
+    IOverlayImageOntoVideoOptions,
     TRabbitMQQueue,
     TFilterQueueItem,
     TPublishQueueItem

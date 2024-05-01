@@ -3,10 +3,11 @@ import * as constants from './constants';
 import * as typings from './typings';
 import * as utils from './utils';
 import {
-    EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, TDownloadQueueItem,
-    TFilterQueueItem, TFilterName, IFIlterComponent, EFilterComponentType, IFilterOptions, TPublishQueueItem,
+    EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, IOutput, TDownloadQueueItem,
+    TFilterQueueItem, TPublishQueueItem, EFilterName, IFilter, IFIlterComponent, EFilterComponentType,
+    IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     ISourceContent, ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
-    IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, EContentType, ESourceType, ECronExpression
+    IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, EContentType, ESourceType, EOutputType, ECronExpression
 } from './typings';
 
 const _shared = {
@@ -20,14 +21,17 @@ export default _shared;
 export {
     EImageFileExtension,
     EVideoFileExtension,
+    EFilterName,
     EFilterComponentType,
     EContentType,
     ESourceType,
+    EOutputType,
     ECronExpression
 };
 export type {
     ICampaign,
     ICampaignOptions,
+    IOutput,
     TDownloadQueueItem,
     TFilterQueueItem,
     TPublishQueueItem,
@@ -40,8 +44,11 @@ export type {
     IHistoryItem,
     IIntakeHistoryItem,
     IOutputHistoryItem,
-    TFilterName,
+    IFilter,
     IFIlterComponent,
     IFilterOptions,
+    IConcatVideosOptions,
+    IOverlayVideoOntoVideoOptions,
+    IOverlayImageOntoVideoOptions,
     TRabbitMQQueue
 };
