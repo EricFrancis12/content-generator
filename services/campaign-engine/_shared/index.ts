@@ -1,5 +1,4 @@
-import _shared from '../../_shared';
-import {
+import _shared, {
     ESourceType, EContentType, ICampaign, ICampaignOptions, TDownloadQueueItem,
     ISourceContent, ISourceImage, ISourceVideo, IHistoryItem, IIntakeHistoryItem, ECronExpression
 } from '../../_shared';

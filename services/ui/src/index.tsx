@@ -6,10 +6,12 @@ import store from './App/store/store';
 import App from './App/App';
 import './App/assets/css/style.css';
 import './App/assets/css/satoshi.css';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <Provider store={store}>
+            <Toaster position='top-center' />
             <Router>
                 <App />
             </Router>

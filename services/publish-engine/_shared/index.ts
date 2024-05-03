@@ -1,5 +1,4 @@
-import _shared from '../../_shared';
-import { EContentType, TRabbitMQQueue, TPublishQueueItem, IOutputHistoryItem } from '../../_shared';
+import _shared, { EContentType, TRabbitMQQueue, TPublishQueueItem, IOutputHistoryItem } from '../../_shared';
 
 const shared = {
     ..._shared

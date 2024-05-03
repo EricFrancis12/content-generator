@@ -2,12 +2,14 @@ import { configureStore, ThunkAction, Action, createSelector } from '@reduxjs/to
 import authTokenReducer from './reducers/authTokenReducer';
 import campaignsReducer from './reducers/campaignsReducer';
 import colorModeReducer from './reducers/colorModeReducer';
+import fileSystemReducer from './reducers/fileSystemReducer';
 
 const store = configureStore({
     reducer: {
         authToken: authTokenReducer,
         campaigns: campaignsReducer,
-        colorMode: colorModeReducer
+        colorMode: colorModeReducer,
+        fileSystem: fileSystemReducer
     }
 });
 export default store;
