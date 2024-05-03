@@ -1,15 +1,15 @@
 import React from 'react';
 import './FileSystem.css';
-import FileTree from './FileTree/FileTree';
+import FileTree from './FileTree';
 import { updateItem, addChildren, runDataCleanUp } from './utils';
 import { IFileSystemItem_ui } from '../../typings';
 
 const nestingLevel = 0;
 
-const FileSystem = ({ data, setData }: {
+export default function FileSystem({ data, setData }: {
     data: IFileSystemItem_ui[],
     setData: React.Dispatch<React.SetStateAction<IFileSystemItem_ui[]>>
-}) => {
+}) {
     const handleRename = ({ item, newItem }: {
         item: IFileSystemItem_ui,
         newItem: IFileSystemItem_ui
@@ -43,5 +43,3 @@ const FileSystem = ({ data, setData }: {
         </div>
     )
 }
-
-export default FileSystem;

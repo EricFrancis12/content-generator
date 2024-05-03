@@ -5,7 +5,7 @@ interface MenuItemProps extends LinkHTMLAttributes<any> {
     onClick?: () => void;
 }
 
-export const MenuItem = ({ children, onClick, ...props }: MenuItemProps): ReactElement => {
+export default function MenuItem({ children, onClick, ...props }: MenuItemProps): ReactElement {
     const handleOnClick = (event: MouseEvent<HTMLLIElement>): void => {
         event.preventDefault();
         event.stopPropagation();

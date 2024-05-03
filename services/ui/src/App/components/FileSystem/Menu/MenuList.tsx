@@ -4,7 +4,7 @@ interface MenuListProps {
     children: ReactNode[]
 }
 
-export const MenuList = ({ children }: MenuListProps): ReactElement | null => {
+export default function MenuList({ children }: MenuListProps): ReactElement | null {
     if (children?.length < 1) return null;
 
     return (

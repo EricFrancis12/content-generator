@@ -1,3 +1,9 @@
-export * from './Menu';
-export * from './MenuItem';
-export * from './MenuList';
+import Menu from './Menu';
+import MenuItem from './MenuItem';
+import MenuList from './MenuList';
+
+export {
+    Menu,
+    MenuItem,
+    MenuList
+};

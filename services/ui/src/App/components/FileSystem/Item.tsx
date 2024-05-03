@@ -1,7 +1,7 @@
-import { MdModeEditOutline, MdOutlineFolder, MdOutlineTextSnippet } from 'react-icons/md';
 import React, { ChangeEvent, FocusEvent, FormEvent, MouseEvent, useState } from 'react';
-import './FileSystem.css';
 import { FcFile, FcOpenedFolder } from 'react-icons/fc';
+import { MdModeEditOutline, MdOutlineFolder, MdOutlineTextSnippet } from 'react-icons/md';
+import './FileSystem.css';
 import { EFileSystemItemType } from '../../../_shared';
 import { IFileSystemItem_ui } from '../../typings';
 
@@ -12,7 +12,12 @@ interface ItemProps {
     handleFolder?: () => void;
 }
 
-const Item = ({ item, handleRename, handleFile, handleFolder }: ItemProps) => {
+export default function Item({
+    item,
+    handleRename,
+    handleFile,
+    handleFolder
+}: ItemProps) {
     const [inputVal, setInputVal] = useState(item.name);
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -77,5 +82,3 @@ const Item = ({ item, handleRename, handleFile, handleFolder }: ItemProps) => {
         </div>
     )
 }
-
-export default Item;

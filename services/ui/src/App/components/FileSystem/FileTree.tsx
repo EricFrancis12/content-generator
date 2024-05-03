@@ -1,10 +1,9 @@
 import React, { ComponentProps, ReactElement, useMemo, useState } from 'react';
-import { Menu, MenuItem, MenuList } from '../Menu';
-import { getMarginLeft, randomUUID } from '../utils';
-import Item from '../Item';
-import './FileTree.css';
-import { EFileSystemItemType } from '../../../../_shared';
-import { IFileSystemItem_ui } from '../../../typings';
+import { Menu, MenuItem, MenuList } from './Menu';
+import Item from './Item';
+import { getMarginLeft, randomUUID } from './utils';
+import { EFileSystemItemType } from '../../../_shared';
+import { IFileSystemItem_ui } from '../../typings';
 
 interface InnerComponentProps extends ComponentProps<'div'> {
     options: IFileSystemItem_ui[]
@@ -13,14 +12,13 @@ interface InnerComponentProps extends ComponentProps<'div'> {
     handleAddFileFolder: ({ parentItem, newItem }: { parentItem: IFileSystemItem_ui, newItem: IFileSystemItem_ui }) => void;
 }
 
-const FileTree = ({
+export default function FileTree({
     options,
     nestingLevel,
     handleRename,
     handleAddFileFolder,
     ...props
-}: InnerComponentProps): ReactElement => {
-
+}: InnerComponentProps): ReactElement {
     const [showNestedMenu, setShowNestedMenu] = useState(true);
 
     const onClickRenameIcon = (
@@ -94,7 +92,7 @@ const FileTree = ({
                                     // handle show/hide via className vs unmount/mount component
                                     // to avoid re-render and resetting of showNestedMenu state
                                     // for n-level nesting
-                                    className={showNestedMenu ? 'show' : 'hide'}
+                                    className={showNestedMenu ? 'block' : 'hidden'}
                                     options={children}
                                     nestingLevel={nestingLevel}
                                     handleRename={handleRename}
@@ -118,6 +116,3 @@ const FileTree = ({
         </Menu>
     )
 }
-
-
-export default FileTree;

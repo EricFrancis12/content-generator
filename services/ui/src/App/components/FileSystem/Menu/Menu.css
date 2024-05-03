@@ -1,15 +1,11 @@
 ul,
 li {
-    list-style: none;
     margin: 0;
     padding: 2px 0 0 0;
     cursor: pointer;
+    list-style: none;
 }
 
 svg {
     margin-right: 4px;
-}
-
-.menu {
-    color: white;
 }

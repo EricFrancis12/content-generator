@@ -5,9 +5,9 @@ interface MenuProps {
     children: ReactNode
 }
 
-export const Menu = ({ children, ...props }: MenuProps): ReactElement => {
+export default function Menu({ children, ...props }: MenuProps): ReactElement {
     return (
-        <div className='menu' {...props}>
+        <div className='w-full text-white' {...props}>
             {children}
         </div>
     )

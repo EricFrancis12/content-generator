@@ -1,25 +1,21 @@
 .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 360px;
     margin: 8px;
     padding: 8px;
     background-color: black;
     color: white;
     border-radius: 2px;
-    max-width: 360px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
-}
-
-.menu {
-    width: 100%;
 }
 
 .item {
     display: flex;
     justify-content: space-between;
-    border: 1px solid transparent;
     padding: 4px 4px 0 4px;
+    border: 1px solid transparent;
 }
 
 .item:hover {
@@ -31,16 +27,16 @@
 }
 
 .actions {
+    display: none;
     justify-content: center;
     align-items: center;
-    display: none;
 }
 
 input {
     background-color: black;
-    box-shadow: none;
-    border: 1px solid lightslategray;
     color: white;
+    border: 1px solid lightslategray;
+    box-shadow: none;
 }
 
 form {
