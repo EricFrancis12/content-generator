@@ -34,7 +34,7 @@ const FileSystem = ({ data, setData }: {
     }
 
     return (
-        <div className='flex flex-col max-w-[360px] m-2 p-2 bg-black text-white rounded-sm'>
+        <div className='container'>
             <FileTree
                 options={data}
                 nestingLevel={nestingLevel}

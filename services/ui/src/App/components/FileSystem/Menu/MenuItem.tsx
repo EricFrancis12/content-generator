@@ -15,14 +15,7 @@ export const MenuItem = ({ children, onClick, ...props }: MenuItemProps): ReactE
     }
 
     return (
-        <li
-            {...props}
-            className='m-0 pt-1 cursor-pointer'
-            style={{
-                listStyle: 'none'
-            }}
-            onClick={handleOnClick}
-        >
+        <li {...props} onClick={handleOnClick}>
             {children}
         </li>
     )

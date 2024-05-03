@@ -2,6 +2,7 @@ import React, { ComponentProps, ReactElement, useMemo, useState } from 'react';
 import { Menu, MenuItem, MenuList } from '../Menu';
 import { getMarginLeft, randomUUID } from '../utils';
 import Item from '../Item';
+import './FileTree.css';
 import { EFileSystemItemType } from '../../../../_shared';
 import { IFileSystemItem_ui } from '../../../typings';
 
@@ -93,7 +94,7 @@ const FileTree = ({
                                     // handle show/hide via className vs unmount/mount component
                                     // to avoid re-render and resetting of showNestedMenu state
                                     // for n-level nesting
-                                    className={showNestedMenu ? 'block' : 'hidden'}
+                                    className={showNestedMenu ? 'show' : 'hide'}
                                     options={children}
                                     nestingLevel={nestingLevel}
                                     handleRename={handleRename}

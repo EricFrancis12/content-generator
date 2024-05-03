@@ -1,4 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
+import './Menu.css';
 
 interface MenuProps {
     children: ReactNode
@@ -6,10 +7,7 @@ interface MenuProps {
 
 export const Menu = ({ children, ...props }: MenuProps): ReactElement => {
     return (
-        <div
-            className='w-full text-white [&_svg]:mr-2'
-            {...props}
-        >
+        <div className='menu' {...props}>
             {children}
         </div>
     )
