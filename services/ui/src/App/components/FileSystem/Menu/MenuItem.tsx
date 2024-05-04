@@ -1,12 +1,12 @@
 import React, { ReactElement, ReactNode, MouseEvent, LinkHTMLAttributes } from 'react';
 
-interface MenuItemProps extends LinkHTMLAttributes<any> {
-    children: ReactNode;
-    onClick?: () => void;
+interface MenuItemProps extends LinkHTMLAttributes<HTMLElement> {
+    children: ReactNode,
+    onClick?: () => void
 }
 
 export default function MenuItem({ children, onClick, ...props }: MenuItemProps): ReactElement {
-    const handleOnClick = (event: MouseEvent<HTMLLIElement>): void => {
+    function handleOnClick(event: MouseEvent<HTMLLIElement>): void {
         event.preventDefault();
         event.stopPropagation();
         if (onClick) {

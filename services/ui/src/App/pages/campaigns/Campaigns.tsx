@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectCampaigns, getCampaigns } from '../../store/reducers/campaignsReducer';
 import DefaultLayout from '../../layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Campaign from './Campaign';
+import RefreshButton from '../../components/RefreshButton';
 import Loader from '../../components/Loader';
 
 export default function Campaigns() {
@@ -28,14 +29,10 @@ export default function Campaigns() {
                             <span>Create New Campaign</span>
                         </button>
                     </Link>
-                    <button
+                    <RefreshButton
                         disabled={status === 'loading'}
-                        className='flex gap-2 justify-center items-center p-2 border rounded-lg'
                         onClick={() => dispatch(getCampaigns())}
-                    >
-                        <FontAwesomeIcon icon={faRefresh} />
-                        <span>Refresh</span>
-                    </button>
+                    />
                 </div>
                 {status === 'loading'
                     ? <Loader />

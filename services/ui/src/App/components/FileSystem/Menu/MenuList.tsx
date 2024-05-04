@@ -1,10 +1,8 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-interface MenuListProps {
+export default function MenuList({ children }: {
     children: ReactNode[]
-}
-
-export default function MenuList({ children }: MenuListProps): ReactElement | null {
+}): ReactElement | null {
     if (children?.length < 1) return null;
 
     return (

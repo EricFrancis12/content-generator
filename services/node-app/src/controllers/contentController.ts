@@ -40,7 +40,7 @@ export async function getContent(req: Request, res: Response) {
                 message: 'Content not found'
             });
         }
-        res.status(200).sendFile(savedContent.path, { root: './' });
+        res.status(200).setHeader('Content-Disposition', 'attachment').sendFile(savedContent.path, { root: './' });
     } catch (err) {
         res.status(500).json({
             success: false
@@ -120,7 +120,7 @@ export async function getImage(req: Request, res: Response) {
                 message: 'Image not found'
             });
         }
-        res.status(200).sendFile(image.path, { root: './' });
+        res.status(200).setHeader('Content-Disposition', 'attachment').sendFile(image.path, { root: './' });
     } catch (err) {
         res.status(500).json({
             success: false
@@ -222,7 +222,7 @@ export async function getVideo(req: Request, res: Response) {
                 message: 'Video not found'
             });
         }
-        res.status(200).sendFile(video.path, { root: './' });
+        res.status(200).setHeader('Content-Disposition', 'attachment').sendFile(video.path, { root: './' });
     } catch (err) {
         res.status(500).json({
             success: false
