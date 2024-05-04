@@ -21,6 +21,11 @@ export default function Item({ item }: {
 
     const [loading, setLoading] = useState(false);
 
+    function handleDownloadButtonClick(e: React.MouseEvent<SVGElement>) {
+        e.stopPropagation();
+        window.open(`${protocol}//${hostname}:3000/api/v1/content/${item.internalId}?dl=1`, '_blank');
+    }
+
     function handleDeleteButtonClick(e: React.MouseEvent<SVGElement>) {
         e.stopPropagation();
         if (loading) return;
@@ -56,15 +61,11 @@ export default function Item({ item }: {
             <div className='actions justify-center items-center gap-2'>
                 {item.type === EFileSystemItemType.FILE &&
                     <>
-                        <a
-                            download={item.name}
-                            href={`${protocol}//${hostname}:3000/api/v1/content/${item.internalId}`}
-                        >
-                            <FontAwesomeIcon
-                                icon={faDownload}
-                                className='cursor-pointer'
-                            />
-                        </a>
+                        <FontAwesomeIcon
+                            icon={faDownload}
+                            className='cursor-pointer'
+                            onClick={handleDownloadButtonClick}
+                        />
                         <FontAwesomeIcon
                             icon={faTrashAlt}
                             className='cursor-pointer'
