@@ -29,14 +29,3 @@
 .actions {
     display: none;
 }
-
-input {
-    background-color: black;
-    color: white;
-    border: 1px solid lightslategray;
-    box-shadow: none;
-}
-
-form {
-    display: inline-flex;
-}
