@@ -14,7 +14,7 @@ import _shared, { ICampaign } from '../../../_shared';
 const { boilerplateCampaign } = _shared.utils;
 
 export default function NewCampaign() {
-    const authToken = useAppSelector(selectauthToken);
+    const { value: authToken } = useAppSelector(selectauthToken);
     const dispatch = useAppDispatch();
 
     const [campaign, setCampaign] = useState<ICampaign | null>(boilerplateCampaign());

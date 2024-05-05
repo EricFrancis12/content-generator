@@ -13,7 +13,7 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import CampaignEditor from '../../components/CampaignEditor';
 
 export default function EditCampaign() {
-    const authToken = useAppSelector(selectauthToken);
+    const { value: authToken } = useAppSelector(selectauthToken);
     const dispatch = useAppDispatch();
 
     const { campaign_id } = useParams();

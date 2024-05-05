@@ -10,7 +10,7 @@ import _shared, { EImageFileExtension, EVideoFileExtension } from '../../_shared
 const { getFileExt } = _shared.utils;
 
 export default function Content() {
-    const authToken = useAppSelector(selectauthToken);
+    const { value: authToken } = useAppSelector(selectauthToken);
 
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);

@@ -12,7 +12,7 @@ import { ICampaign } from '../../../_shared';
 export default function Campaign({ campaign }: {
     campaign: ICampaign
 }) {
-    const authToken = useAppSelector(selectauthToken);
+    const { value: authToken } = useAppSelector(selectauthToken);
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false);
