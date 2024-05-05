@@ -7,33 +7,34 @@ export default function useLocalStorage<T>(
     initialValue: T
 ): [T, (value: SetValue<T>) => void] {
     // Pass  initial state function to useState so logic is only executed once
-    const [storedValue, setStoredValue] = useState(() => {
-        try {
-            // Get from local storage by key
-            const item = window.localStorage.getItem(key);
-            // Parse stored json or if none return initialValue
-            return item ? JSON.parse(item) : initialValue;
-        } catch (err) {
-            // If error also return initialValue
-            console.log(err);
-            return initialValue;
-        }
-    });
+    const [storedValue, setStoredValue] = useState(getValueFromLocalStorage(key) || initialValue);
 
     // useEffect to update local storage when the state changes
     useEffect(() => {
-        try {
-            // Allow value to be a function so we have same API as useState
-            const valueToStore =
-                typeof storedValue === 'function'
-                    ? storedValue(storedValue)
-                    : storedValue;
-            // Save state
-            window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        } catch (err) {
-            console.log(err);
-        }
+        const valueToStore =
+            typeof storedValue === 'function'
+                ? storedValue(storedValue)
+                : storedValue;
+        // Save state
+        saveToLocalStorage(key, valueToStore);
     }, [key, storedValue]);
 
     return [storedValue, setStoredValue];
+}
+
+export function getValueFromLocalStorage(key: string) {
+    try {
+        const item = window.localStorage.getItem(key);
+        return item ? JSON.parse(item) : null;
+    } catch (err) {
+        return null;
+    }
+}
+
+export function saveToLocalStorage(key: string, value: string) {
+    try {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (err) {
+        console.log('Error saving to local storage');
+    }
 }

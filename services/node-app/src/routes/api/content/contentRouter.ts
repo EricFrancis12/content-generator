@@ -1,8 +1,8 @@
 import express from 'express';
 import upload from '../../../middleware/upload';
 import {
-    getAllContent, getContent, getAllImages, uploadImage, getImage, deleteImage,
-    getAllVideos, uploadVideo, getVideo, deleteVideo, deleteContent
+    getAllContent, getContent, downloadContentToBrowser, getAllImages, uploadImage, getImage, downloadImageToBrowser, deleteImage,
+    getAllVideos, uploadVideo, getVideo, downloadVideoToBrowser, deleteVideo, deleteContent
 } from '../../../controllers/contentController';
 
 const router = express.Router();
@@ -22,6 +22,10 @@ router
     .delete(deleteImage);
 
 router
+    .route('/images/:internalId/dl')
+    .get(downloadImageToBrowser);
+
+router
     .route('/videos')
     .get(getAllVideos)
     .post(upload.single('video'), uploadVideo);
@@ -32,8 +36,16 @@ router
     .delete(deleteVideo);
 
 router
+    .route('/videos/:internalId/dl')
+    .get(downloadVideoToBrowser);
+
+router
     .route('/:internalId')
     .get(getContent)
     .delete(deleteContent);
+
+router
+    .route('/:internalId/dl')
+    .get(downloadContentToBrowser);
 
 export default router;

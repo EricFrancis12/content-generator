@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 360px;
+    margin: 8px;
+    padding: 8px;
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 4px 0 4px;
+    border: 1px solid transparent;
+}
+
+.item:hover {
+    border: 1px solid rgb(81 79 79 / 80%);
+}
+
+.item:hover > .actions {
+    display: flex;
+}
+
+.actions {
+    display: none;
+}

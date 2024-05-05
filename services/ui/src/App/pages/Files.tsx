@@ -1,61 +1,39 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useAuth } from '../contexts/useAuthContext';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
+import React, { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { selectFileSystem, getFileSystem } from '../store/reducers/fileSystemReducer';
 import DefaultLayout from '../layouts/DefaultLayout';
+import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
+import FileSystem from '../components/FileSystem';
+import RefreshButton from '../components/RefreshButton';
 import Loader from '../components/Loader';
-import _shared, { EImageFileExtension, EVideoFileExtension } from '../../_shared';
-const { getFileExt } = _shared.utils;
 
 export default function Files() {
-    const { authToken } = useAuth();
+    const { value: fileSystem, status } = useAppSelector(selectFileSystem);
+    const dispatch = useAppDispatch();
 
-    const [file, setFile] = useState<File | null>(null);
-    const [loading, setLoading] = useState(false);
-
-    function handleSubmit() {
-        if (!file || !authToken) return;
-
-        const { protocol, hostname } = window.location;
-        let endpoint = `${protocol}//${hostname}:3000/api/v1/content`;
-        const formData = new FormData();
-        const fileExt = getFileExt(file.name);
-        if (fileExt in EImageFileExtension) {
-            endpoint += '/images';
-            formData.append('image', file);
-        } else if (fileExt in EVideoFileExtension) {
-            endpoint += '/videos';
-            formData.append('video', file);
-        } else {
-            console.error('Unsupported file type');
-            return;
-        }
-
-        setLoading(true);
-        axios.post(endpoint, formData, {
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            }
-        })
-            .then(res => console.log(res))
-            .catch(err => console.error(err))
-            .finally(() => setLoading(false));
-    }
+    useEffect(() => {
+        dispatch(getFileSystem());
+    }, [dispatch]);
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName='Files' />
-            <div className='flex h-full w-full'>
-                <div className='flex flex-col items-center gap-4 w-full'>
-                    <input
-                        type='file'
-                        onChange={e => setFile(e.target?.files?.[0] || null)}
+            <div className='flex flex-col items-center gap-4 h-full w-full'>
+                <div className='flex gap-4 w-full'>
+                    <RefreshButton
+                        disabled={status === 'loading'}
+                        onClick={() => dispatch(getFileSystem())}
                     />
-                    {loading
-                        ? <Loader />
-                        : <button onClick={handleSubmit}>Submit</button>
-                    }
                 </div>
+                {status === 'loading'
+                    ? <Loader />
+                    : <div className='flex flex-wrap justify-center gap-4 w-full'>
+                        {status === 'failed'
+                            ? 'Failed to fetch Campaigns...'
+                            : <FileSystem data={[fileSystem]} />
+                        }
+                    </div>
+                }
             </div>
         </DefaultLayout>
     )

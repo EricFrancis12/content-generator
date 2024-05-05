@@ -28,4 +28,5 @@ services:
       - WATCHPACK_POLLING=true
     volumes:
       - ./services/ui/src/App/:/app/src/App
+      - ./services/ui/src/index.tsx:/app/src/index.tsx
       - /app/node_modules
