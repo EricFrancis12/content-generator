@@ -1,8 +1,7 @@
-import _shared from '../../_shared';
-import {
-    ESourceType, EContentType, TRabbitMQQueue,
+import _shared, {
+    ESourceType, EContentType, EOutputType, TRabbitMQQueue,
     EImageFileExtension, EVideoFileExtension
-} from '../../_shared/typings';
+} from '../../_shared';
 
 const shared = {
     ..._shared
@@ -12,6 +11,7 @@ export default shared;
 export {
     ESourceType,
     EContentType,
+    EOutputType,
     TRabbitMQQueue,
     EImageFileExtension,
     EVideoFileExtension

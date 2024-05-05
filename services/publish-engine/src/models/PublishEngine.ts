@@ -1,5 +1,5 @@
 import amqplib from 'amqplib';
-import _shared, { EContentType, TPublishQueueItem } from '../../_shared';
+import _shared, { EContentType, EOutputType, TPublishQueueItem } from '../../_shared';
 const { initRabbitMQ } = _shared.amqp;
 const { copyFileToNewLocation } = _shared.utils;
 import config from '../config/config'
@@ -51,16 +51,16 @@ export default class PublishEngine {
                             }
 
                             let success = false;
-                            if (outputType === 'keep saved') {
+                            if (outputType === EOutputType.KEEP_SAVED) {
                                 const fileName = contentPath.split('/').at(-1);
                                 const contentTypeFolder = contentPath.split('/').at(-2);
                                 if (!!fileName && !!contentTypeFolder) {
                                     const newFilePath = `./shared-file-system/keep-saved-content/${contentTypeFolder}/${fileName}`;
                                     success = await copyFileToNewLocation(contentPath, newFilePath);
                                 }
-                            } else if (outputType === 'send message to Telegram channel' && options?.message) {
+                            } else if (outputType === EOutputType.SEND_MESSAGE_TO_TELEGRAM_CHANNEL && options?.message) {
                                 success = await sendMessageToTelegramChannel(externalId, options.message);
-                            } else if (outputType === 'send content to Telegram channel') {
+                            } else if (outputType === EOutputType.SEND_CONTENT_TO_TELEGRAM_CHANNEL) {
                                 if (contentType === EContentType.IMAGE) {
                                     success = await sendImageToTelegramChannel(externalId, contentPath);
                                 } else if (contentType === EContentType.VIDEO) {

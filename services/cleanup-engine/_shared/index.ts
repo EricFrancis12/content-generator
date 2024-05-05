@@ -1,5 +1,4 @@
-import _shared from '../../_shared';
-import { ICampaign, IIntakeHistoryItem, IOutputHistoryItem, ECronExpression } from '../../_shared';
+import _shared, { ICampaign, IIntakeHistoryItem, IOutputHistoryItem, ECronExpression } from '../../_shared';
 
 const shared = {
     ..._shared

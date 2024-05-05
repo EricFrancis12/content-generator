@@ -1,17 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './App/store/store';
 import App from './App/App';
 import './App/assets/css/style.css';
 import './App/assets/css/satoshi.css';
-import { AuthProvider } from './App/contexts/useAuthContext';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <AuthProvider>
+        <Provider store={store}>
+            <Toaster position='top-center' />
             <Router>
                 <App />
             </Router>
-        </AuthProvider>
+        </Provider >
     </React.StrictMode>
 );

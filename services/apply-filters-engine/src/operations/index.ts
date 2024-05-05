@@ -1,5 +1,8 @@
 import { basename } from 'path';
-import { ESourceType, EContentType, ISavedContent, TFilterName, IFilterOptions } from '../../_shared';
+import {
+    ESourceType, EContentType, ISavedContent, EFilterName,
+    IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions
+} from '../../_shared';
 import _shared from '../../_shared';
 const { generateInternalId } = _shared.utils;
 import { getSavedContentDetails } from '../utils';
@@ -18,12 +21,8 @@ type TOperationFunction = (
 ) => Promise<ISavedContent>;
 
 type TOperations = {
-    [key in TFilterName]?: TOperationFunction
+    [key in EFilterName]?: TOperationFunction
 };
-
-interface IConcatVideosOptions extends IFilterOptions {
-    // ...
-}
 
 const concatVideos: TOperationFunction = async (
     baseVideo,
@@ -57,17 +56,6 @@ const concatVideos: TOperationFunction = async (
             .mergeToFile(outputPath, tempDir)
     });
 };
-
-type TCorner = 'upper-left' | 'upper-right' | 'lower-left' | 'lower-right';
-
-interface IOverlayVideoOntoVideoOptions extends IFilterOptions {
-    x?: number,
-    y?: number,
-    corner?: TCorner,
-    scaleIngredientRelativeToSelf?: number,
-    scaleIngredientRelativeToBase?: number,
-    trimTo?: number
-}
 
 const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVideo, isLastFilter, {
     x = 0,
@@ -144,14 +132,6 @@ const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVi
         command.run();
     });
 };
-
-interface IOverlayImageOntoVideoOptions extends IFilterOptions {
-    x?: number,
-    y?: number,
-    corner?: TCorner,
-    scaleIngredientRelativeToSelf?: number,
-    scaleIngredientRelativeToBase?: number
-}
 
 const overlayImageOntoVideo: TOperationFunction = async (baseVideo, ingredientImage, isLastFilter, {
     x = 0,
