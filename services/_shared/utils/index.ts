@@ -53,6 +53,10 @@ export function boilerplateOutput(): IOutput {
     };
 }
 
+export function bytesToGB(bytes: number) {
+    return bytes / 1000 / 1000 / 1000;
+}
+
 export function generateInternalId(): string {
     return crypto.randomUUID();
 }

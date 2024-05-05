@@ -42,7 +42,10 @@ export default function useFetchCampaign(campaign_id?: string) {
             })
             .finally(() => setLoading(false));
 
-        return () => controller.abort('AbortError');
+        return () => {
+            setLoading(false);
+            controller.abort('AbortError');
+        };
     }, [campaign_id, authToken]);
 
     return {

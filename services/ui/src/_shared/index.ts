@@ -2,7 +2,7 @@ import _shared, {
     ICampaign, IOutput, ESourceType, EContentType, EFilterName, EFilterComponentType, EOutputType,
     EImageFileExtension, EVideoFileExtension, IIntakeHistoryItem, IOutputHistoryItem,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
-    IFileSystemItem, EFileSystemItemType
+    IFileSystemItem, EFileSystemItemType, IDiskSpace
 } from '../../../_shared';
 
 const shared = {
@@ -28,5 +28,6 @@ export {
     IOverlayVideoOntoVideoOptions,
     IOverlayImageOntoVideoOptions,
     IFileSystemItem,
-    EFileSystemItemType
+    EFileSystemItemType,
+    IDiskSpace
 };

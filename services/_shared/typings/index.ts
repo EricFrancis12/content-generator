@@ -209,3 +209,9 @@ export enum EFileSystemItemType {
     FILE = 'FILE',
     FOLDER = 'FOLDER'
 }
+
+export interface IDiskSpace {
+    diskPath: string,
+    free: number,
+    size: number
+}

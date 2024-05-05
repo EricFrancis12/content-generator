@@ -1,6 +1,6 @@
 import _shared, {
     ESourceType, EContentType, EOutputType, TRabbitMQQueue,
-    EImageFileExtension, EVideoFileExtension
+    EImageFileExtension, EVideoFileExtension, IDiskSpace
 } from '../../_shared';
 
 const shared = {
@@ -14,5 +14,6 @@ export {
     EOutputType,
     TRabbitMQQueue,
     EImageFileExtension,
-    EVideoFileExtension
+    EVideoFileExtension,
+    IDiskSpace
 };

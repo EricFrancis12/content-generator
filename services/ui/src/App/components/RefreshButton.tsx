@@ -9,7 +9,7 @@ export default function RefreshButton({ disabled, onClick }: {
     return (
         <button
             disabled={disabled}
-            className='flex gap-2 justify-center items-center p-2 border rounded-lg'
+            className='flex gap-2 justify-center items-center h-[fit-content] p-2 border rounded-lg'
             onClick={onClick}
         >
             <FontAwesomeIcon icon={faRefresh} />

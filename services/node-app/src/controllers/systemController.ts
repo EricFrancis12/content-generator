@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import os from 'os';
-import checkDiskSpace, { DiskSpace } from 'check-disk-space';
+import checkDiskSpace from 'check-disk-space';
+import { IDiskSpace } from '../../_shared';
 
 export async function getDiskSpace(req: Request, res: Response) {
     try {
-        let diskSpace: DiskSpace;
+        let diskSpace: IDiskSpace;
         const platform = os.platform();
         if (platform === 'win32') {
             diskSpace = await checkDiskSpace('C:\\');
