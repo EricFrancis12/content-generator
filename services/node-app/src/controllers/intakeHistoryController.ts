@@ -30,7 +30,8 @@ export async function createIntakeHistoryItem(req: Request, res: Response) {
         if (!historyItemAlreadyExists) {
             const intakeHistoryItem = await IntakeHistoryItem.create({
                 ...req.body,
-                campaign_id: req.params.campaign_id
+                campaign_id: req.params.campaign_id,
+                timestamp: Date.now()
             });
             res.status(200).json({
                 success: true,

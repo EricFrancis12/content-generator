@@ -106,14 +106,14 @@ export interface IHistoryItem {
     sourceType: ESourceType,
     contentType: EContentType,
     campaign_id: string,
-    externalId: string
+    externalId: string,
+    timestamp: number
 }
 export interface IIntakeHistoryItem extends IHistoryItem {
     // ...
 }
 export interface IOutputHistoryItem extends IHistoryItem {
-    outputType: EOutputType,
-    timestamp: number
+    outputType: EOutputType
 }
 
 export enum ESourceType {

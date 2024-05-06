@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectauthToken } from '../../store/reducers/authTokenReducer';
@@ -11,6 +10,7 @@ import useFetchCampaign from '../../hooks/useFetchCampaign';
 import DefaultLayout from '../../layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import CampaignEditor from '../../components/CampaignEditor';
+import Button from '../../components/Button';
 
 export default function EditCampaign() {
     const { value: authToken } = useAppSelector(selectauthToken);
@@ -54,18 +54,22 @@ export default function EditCampaign() {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName='Edit Campaign' links={[{ text: ' Campaigns /', to: '/campaigns' }]} />
+            <Breadcrumb
+                pageName='Edit Campaign'
+                links={[
+                    { text: ' Campaigns /', to: '/campaigns' },
+                    { text: ` ${campaign?.name || 'Campaign'} /`, to: `/campaigns/${campaign?._id || ''}` }
+                ]}
+            />
             <CampaignEditor campaign={campaign} setCampaign={setCampaign} />
             <div className='flex flex-col items-center gap-4 h-full w-full mt-2'>
                 {campaign &&
-                    <button
+                    <Button
+                        text='Save'
+                        icon={faSave}
                         disabled={!campaign || loading}
-                        className='flex gap-2 justify-center items-center p-2 border rounded-lg'
                         onClick={saveCampaign}
-                    >
-                        <FontAwesomeIcon icon={faSave} />
-                        <span>Save</span>
-                    </button>
+                    />
                 }
             </div>
         </DefaultLayout>

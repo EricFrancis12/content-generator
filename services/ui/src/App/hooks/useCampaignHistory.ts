@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { _storeSelector } from '../store/store';
 import { IIntakeHistoryItem, IOutputHistoryItem } from '../../_shared';
 
-type THistoryType = 'intake' | 'output';
+export type THistoryType = 'intake' | 'output';
 
 export default function useCampaignHistory(campaign_id?: string, type: THistoryType = 'intake') {
     const authToken = _storeSelector(state => state.authToken).value;
@@ -24,6 +24,9 @@ export default function useCampaignHistory(campaign_id?: string, type: THistoryT
 
         setLoading(true);
         fetch(endpoint, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            },
             signal: controller.signal
         })
             .then(res => res.json())
@@ -43,7 +46,10 @@ export default function useCampaignHistory(campaign_id?: string, type: THistoryT
             })
             .finally(() => setLoading(false));
 
-        return () => controller.abort('AbortError');
+        return () => {
+            setLoading(false);
+            controller.abort('AbortError');
+        };
     }, [campaign_id, authToken, type]);
 
     if (type === 'intake') {

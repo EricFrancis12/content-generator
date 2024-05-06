@@ -9,7 +9,9 @@ export default function useFetchCampaign(campaign_id?: string) {
     const [campaign, setCampaign] = useState<ICampaign | null>(null);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    useEffect(fetchCampaign, [campaign_id, authToken]);
+
+    function fetchCampaign() {
         const controller = new AbortController();
         if (!campaign_id) {
             toast.error('No Campaign ID specified');
@@ -46,11 +48,12 @@ export default function useFetchCampaign(campaign_id?: string) {
             setLoading(false);
             controller.abort('AbortError');
         };
-    }, [campaign_id, authToken]);
+    }
 
     return {
         campaign,
         setCampaign,
+        fetchCampaign,
         loading,
         setLoading
     };

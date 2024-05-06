@@ -7,6 +7,7 @@ import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectauthToken } from '../../store/reducers/authTokenReducer';
 import { getCampaigns } from '../../store/reducers/campaignsReducer';
+import useToggleCampaignDisabled from '../../hooks/useToggleCampaignDisabled';
 import { ICampaign } from '../../../_shared';
 
 export default function Campaign({ campaign }: {
@@ -17,38 +18,7 @@ export default function Campaign({ campaign }: {
 
     const [loading, setLoading] = useState(false);
 
-    function toggleCampaignDisabled(campaign: ICampaign) {
-        if (loading) return;
-        if (!authToken) {
-            toast.error('Auth token missing or invalid');
-            return;
-        }
-
-        const { protocol, hostname } = window.location;
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns/${campaign._id}`;
-        const body: ICampaign = {
-            ...structuredClone(campaign),
-            disabled: !campaign.disabled
-        };
-
-        setLoading(true);
-        axios.patch(endpoint, body, {
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            }
-        })
-            .then(res => {
-                const { success } = res.data;
-                if (success) {
-                    toast.success('Campaign updated successfully');
-                    dispatch(getCampaigns());
-                } else {
-                    throw new Error('Server was unable to update Campaign');
-                }
-            })
-            .catch(() => toast.error('Error updating Campaign'))
-            .finally(() => setLoading(false));
-    }
+    const { toggleCampaignDisabled, loading: toggleCampaignDisabledLoading } = useToggleCampaignDisabled(campaign);
 
     function deleteCampaign(campaign: ICampaign) {
         if (loading) return;
@@ -85,7 +55,7 @@ export default function Campaign({ campaign }: {
                 <div className='flex items-center gap-2 w-full'>
                     <div
                         className={(campaign.disabled ? 'bg-red-400' : 'bg-green-400') + ' h-[10px] w-[10px] rounded-full cursor-pointer hover:opacity-70'}
-                        onClick={() => toggleCampaignDisabled(campaign)}
+                        onClick={toggleCampaignDisabled}
                     />
                     <Link className='max-w-[180px]' to={`/campaigns/${campaign._id}`}>
                         <h3
@@ -102,7 +72,7 @@ export default function Campaign({ campaign }: {
                     </Link>
                 </div>
                 <div className='flex items-center gap-2'>
-                    {loading
+                    {(loading || toggleCampaignDisabledLoading)
                         ? 'Loading...'
                         : <>
                             <Link to={`/campaigns/${campaign._id}/edit`}>

@@ -30,7 +30,8 @@ export async function createOutputHistoryItem(req: Request, res: Response) {
         if (!historyItemAlreadyExists) {
             const outputHistoryItem = await OutputHistoryItem.create({
                 ...req.body,
-                campaign_id: req.params.campaign_id
+                campaign_id: req.params.campaign_id,
+                timestamp: Date.now()
             });
             res.status(200).json({
                 success: true,
