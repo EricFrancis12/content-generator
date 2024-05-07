@@ -49,8 +49,8 @@ export default function ViewCampaign() {
                         : <>
                             <ToggleCampaignDisabled campaign={campaign} />
                             <div className='flex flex-wrap justify-center gap-4'>
-                                <History history={intakeHistory} title='Intake History' />
-                                <History history={outputHistory} title='Output History' />
+                                <History history={intakeHistory} type='intake' />
+                                <History history={outputHistory} type='output' />
                             </div>
                         </>
                 }
