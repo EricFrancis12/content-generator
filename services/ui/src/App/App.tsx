@@ -9,6 +9,7 @@ import NewCampaign from './pages/Campaigns/NewCampaign';
 import ViewCampaign from './pages/Campaigns/ViewCampaign';
 import Home from './pages/Home';
 import Content from './pages/Content';
+import UploadContent from './pages/Content/UploadContent';
 import Files from './pages/Files';
 import Queues from './pages/Queues';
 
@@ -89,6 +90,15 @@ export default function App() {
                         <>
                             <PageTitle title='Content' />
                             <Content />
+                        </>
+                    }
+                />
+                <Route
+                    path='/content/upload'
+                    element={
+                        <>
+                            <PageTitle title='Upload Content' />
+                            <UploadContent />
                         </>
                     }
                 />
