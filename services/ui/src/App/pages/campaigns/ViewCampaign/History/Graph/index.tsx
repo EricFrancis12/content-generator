@@ -1,16 +1,12 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { localeSourceType } from '../../../../utils';
-import { timestampToLocaleDate, formatOutputType } from '../utils';
-import { EOutputType, IHistoryItem } from '../../../../../_shared';
-import { THistoryType } from '../../../../hooks/useCampaignHistory';
-import NoHistory from './NoHistory';
-
-interface IData extends IHistoryItem {
-    date: string,
-    amt: number,
-    outputType?: EOutputType
-}
+import { localeSourceType } from '../../../../../utils';
+import { formatOutputType } from '../../utils';
+import { EOutputType, IHistoryItem } from '../../../../../../_shared';
+import { IData } from '../../typings';
+import { THistoryType } from '../../../../../hooks/useCampaignHistory';
+import useDataArray from './useDataArray';
+import NoHistory from '../NoHistory';
 
 const lineColors = ['blue', 'green', 'purple', 'orange'];
 
@@ -18,27 +14,7 @@ export default function Graph({ type, history }: {
     type: THistoryType,
     history: IHistoryItem[]
 }) {
-    const dataArray: IData[] = sortAlphebetically(history.reduce((acc, curr) => {
-        const newAcc = [...acc];
-        const date = timestampToLocaleDate(curr.timestamp);
-        const index = newAcc.findIndex(a => a.date === date);
-        if (index >= 0) {
-            newAcc[index] = { ...newAcc[index], amt: newAcc[index].amt + 1 };
-        } else {
-            newAcc.push({ ...curr, date, amt: 1 })
-        }
-        return newAcc;
-    }, [] as IData[]));
-
-    function sortAlphebetically(data: IData[]) {
-        return data.sort((a, b) => {
-            const typeA = a.date.toLowerCase();
-            const typeB = b.date.toLowerCase();
-            if (typeA < typeB) return -1;
-            if (typeA > typeB) return 1;
-            return 0;
-        });
-    }
+    const dataArray: IData[] = useDataArray(history);
 
     function makeLineName(type: THistoryType, data: IData) {
         const { sourceType, outputType, externalId } = data;
