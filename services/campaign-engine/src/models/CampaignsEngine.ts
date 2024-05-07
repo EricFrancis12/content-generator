@@ -80,7 +80,8 @@ const main = async () => {
                     sourceType,
                     contentType,
                     campaign_id: campaign._id,
-                    externalId: content.externalId
+                    externalId: content.externalId,
+                    timestamp: Date.now()
                 });
             }
         }

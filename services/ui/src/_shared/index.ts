@@ -1,6 +1,6 @@
 import _shared, {
     ICampaign, IOutput, ESourceType, EContentType, EFilterName, EFilterComponentType, EOutputType,
-    EImageFileExtension, EVideoFileExtension, IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem,
+    EImageFileExtension, EVideoFileExtension, IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, IQueue,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     IFileSystemItem, EFileSystemItemType, IDiskSpace
 } from '../../../_shared';
@@ -23,6 +23,8 @@ export {
     IHistoryItem,
     IIntakeHistoryItem,
     IOutputHistoryItem,
+    TRabbitMQQueue,
+    IQueue,
     TCorner,
     IFilterOptions,
     IConcatVideosOptions,

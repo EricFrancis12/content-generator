@@ -1,5 +1,5 @@
 import _shared, {
-    ESourceType, EContentType, EOutputType, TRabbitMQQueue,
+    ESourceType, EContentType, EOutputType, TRabbitMQQueue, IQueue,
     EImageFileExtension, EVideoFileExtension, IDiskSpace
 } from '../../_shared';
 
@@ -13,6 +13,7 @@ export {
     EContentType,
     EOutputType,
     TRabbitMQQueue,
+    IQueue,
     EImageFileExtension,
     EVideoFileExtension,
     IDiskSpace

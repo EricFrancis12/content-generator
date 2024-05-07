@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useAppSelector } from '../store/hooks';
-import { selectauthToken } from '../store/reducers/authTokenReducer';
-import DefaultLayout from '../layouts/DefaultLayout';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import Loader from '../components/Loader';
-import _shared, { EImageFileExtension, EVideoFileExtension } from '../../_shared';
+import { useAppSelector } from '../../store/hooks';
+import { selectauthToken } from '../../store/reducers/authTokenReducer';
+import DefaultLayout from '../../layouts/DefaultLayout';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Loader from '../../components/Loader';
+import _shared, { EImageFileExtension, EVideoFileExtension } from '../../../_shared';
 const { getFileExt } = _shared.utils;
 
 export default function Content() {
