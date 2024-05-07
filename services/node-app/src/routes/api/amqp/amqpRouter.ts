@@ -1,8 +1,12 @@
 import express from 'express';
-import { consumeMessageFromQueue, sendMessageToQueue } from '../../../controllers/amqpController';
+import { getAllQueues, consumeMessageFromQueue, sendMessageToQueue } from '../../../controllers/amqpController';
 import amqpMiddleware from '../../../middleware/amqpMiddleware';
 
 const router = express.Router();
+
+router
+    .route('/queues')
+    .get(amqpMiddleware, getAllQueues);
 
 router
     .route('/queues/:queue_name')

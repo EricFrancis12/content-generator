@@ -191,6 +191,12 @@ export type TPublishQueueItem = {
 
 export type TRabbitMQQueue = 'download' | 'apply-filters' | 'publish';
 
+export interface IQueue {
+    name: string,
+    messageCount: number,
+    consumerCount: number
+}
+
 export enum ECronExpression {
     EVERY_MINUTE = '* * * * *',
     EVERY_TWO_MINUTES = '*/2 * * * *',

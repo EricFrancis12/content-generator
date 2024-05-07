@@ -1,15 +1,53 @@
 import type { Request, Response } from 'express';
 import amqplib from 'amqplib';
-import _shared from '../../_shared';
-const { initRabbitMQ, RABBITMQ_EXCHANGE } = _shared.amqp;
+import _shared, { IQueue } from '../../_shared';
+const { initRabbitMQ, RABBITMQ_EXCHANGE, RABBITMQ_QUEUES } = _shared.amqp;
 import config from '../config/config';
 const { RABBITMQ_IP, RABBITMQ_PORT } = config;
 
-export let channel: amqplib.Channel | null = null;
+export let channel: amqplib.Channel;
 const ampqUrl = `amqp://${RABBITMQ_IP}:${RABBITMQ_PORT}`;
 const connectWithRetry = initRabbitMQ(ampqUrl);
 
-connectWithRetry().then(_channel => channel = _channel);
+connectWithRetry().then(_channel => {
+    if (_channel) {
+        channel = _channel;
+    }
+});
+
+export async function getAllQueues(req: Request, res: Response) {
+    try {
+        if (!channel) {
+            throw new Error('Channel does not exist');
+        }
+
+        const proms = RABBITMQ_QUEUES.map(queue => channel.checkQueue(queue));
+        const settledProms = await Promise.allSettled(proms);
+        const queues: IQueue[] = [];
+        settledProms.forEach(settledProm => {
+            if (settledProm.status === 'fulfilled') {
+                const { consumerCount, messageCount, queue } = settledProm.value;
+                queues.push({
+                    name: queue,
+                    messageCount,
+                    consumerCount
+                });
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            data: {
+                queues
+            }
+        });
+    } catch (err) {
+        console.error('Error sending message to queue:', err);
+        res.status(500).json({
+            success: false,
+        });
+    }
+}
 
 export async function sendMessageToQueue(req: Request, res: Response) {
     try {

@@ -11,7 +11,6 @@ const router = express.Router();
 router.use('/v1/amqp', auth, amqpRouter);
 router.use('/v1/campaigns', auth, campaignsRouter);
 router.use('/v1/content', auth, contentRouter);
-
 router.use('/v1/file-system', auth, fileSystemRouter);
 router.use('/v1/system', auth, systemRouter);
 
