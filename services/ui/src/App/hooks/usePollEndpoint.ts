@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useAppSelector } from '../store/hooks';
 import { selectauthToken } from '../store/reducers/authTokenReducer';
@@ -11,6 +11,8 @@ export default function usePollEndpoint(
 ) {
     const { value: authToken } = useAppSelector(selectauthToken);
 
+    const [loading, setLoading] = useState(false);
+
     const poller = useRef(new Clock(fetchEndpoint, ms));
 
     useEffect(() => {
@@ -21,13 +23,15 @@ export default function usePollEndpoint(
     function fetchEndpoint() {
         if (!authToken) return;
 
+        setLoading(true);
         axios.get(endpoint, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
         })
             .then(callback)
-            .catch();
+            .catch(onError)
+            .finally(() => setLoading(false));
     }
 
     function start() {
@@ -40,7 +44,8 @@ export default function usePollEndpoint(
 
     return {
         start,
-        stop
+        stop,
+        loading
     };
 }
 
