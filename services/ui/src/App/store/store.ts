@@ -3,13 +3,15 @@ import authTokenReducer from './reducers/authTokenReducer';
 import campaignsReducer from './reducers/campaignsReducer';
 import colorModeReducer from './reducers/colorModeReducer';
 import fileSystemReducer from './reducers/fileSystemReducer';
+import queuesReducer from './reducers/queuesReducer';
 
 const store = configureStore({
     reducer: {
         authToken: authTokenReducer,
         campaigns: campaignsReducer,
         colorMode: colorModeReducer,
-        fileSystem: fileSystemReducer
+        fileSystem: fileSystemReducer,
+        queues: queuesReducer
     }
 });
 export default store;

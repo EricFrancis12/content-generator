@@ -3,14 +3,14 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import useColorMode from './hooks/useColorMode';
 import Loader from './components/Loader';
 import PageTitle from './components/PageTitle';
-import Campaigns from './pages/campaigns/Campaigns';
+import Campaigns from './pages/Campaigns';
+import EditCampaign from './pages/Campaigns/EditCampaign';
+import NewCampaign from './pages/Campaigns/NewCampaign';
+import ViewCampaign from './pages/Campaigns/ViewCampaign';
 import Home from './pages/Home';
 import Content from './pages/Content';
 import Files from './pages/Files';
 import Queues from './pages/Queues';
-import EditCampaign from './pages/campaigns/EditCampaign';
-import NewCampaign from './pages/campaigns/NewCampaign';
-import ViewCampaign from './pages/campaigns/ViewCampaign';
 
 export default function App() {
     useColorMode();

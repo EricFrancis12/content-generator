@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { selectauthToken } from '../store/reducers/authTokenReducer';
-import { selectFileSystem, getFileSystem } from '../store/reducers/fileSystemReducer';
-import DefaultLayout from '../layouts/DefaultLayout';
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import FileSystem from '../components/FileSystem';
-import RefreshButton from '../components/RefreshButton';
-import Loader from '../components/Loader';
-import { IDiskSpace } from '../../_shared';
-import _shared from '../../_shared';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import { selectauthToken } from '../../store/reducers/authTokenReducer';
+import { selectFileSystem, getFileSystem } from '../../store/reducers/fileSystemReducer';
+import DefaultLayout from '../../layouts/DefaultLayout';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import FileSystem from '../../components/FileSystem';
+import RefreshButton from '../../components/RefreshButton';
+import Loader from '../../components/Loader';
+import _shared, { IDiskSpace } from '../../../_shared';
 const { bytesToGB } = _shared.utils;
 
 export default function Files() {
