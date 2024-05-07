@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectCampaigns, getCampaigns } from '../../store/reducers/campaignsReducer';
 import DefaultLayout from '../../layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Campaign from './Campaign';
+import Button from '../../components/Button';
 import RefreshButton from '../../components/RefreshButton';
 import Loader from '../../components/Loader';
 
@@ -23,16 +23,16 @@ export default function Campaigns() {
             <Breadcrumb pageName='Campaigns' />
             <div className='flex flex-col items-center gap-4 h-full w-full'>
                 <div className='flex gap-4 w-full'>
-                    <Link to='/campaigns/new'>
-                        <button className='flex gap-2 justify-center items-center p-2 border rounded-lg'>
-                            <FontAwesomeIcon icon={faPlus} />
-                            <span>Create New Campaign</span>
-                        </button>
-                    </Link>
                     <RefreshButton
                         disabled={status === 'loading'}
                         onClick={() => dispatch(getCampaigns())}
                     />
+                    <Link to='/campaigns/new'>
+                        <Button
+                            text='Create New Campaign'
+                            icon={faPlus}
+                        />
+                    </Link>
                 </div>
                 {status === 'loading'
                     ? <Loader />

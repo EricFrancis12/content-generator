@@ -1,6 +1,6 @@
 import _shared, {
     ICampaign, IOutput, ESourceType, EContentType, EFilterName, EFilterComponentType, EOutputType,
-    EImageFileExtension, EVideoFileExtension, IIntakeHistoryItem, IOutputHistoryItem,
+    EImageFileExtension, EVideoFileExtension, IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     IFileSystemItem, EFileSystemItemType, IDiskSpace
 } from '../../../_shared';
@@ -20,6 +20,7 @@ export {
     EOutputType,
     EImageFileExtension,
     EVideoFileExtension,
+    IHistoryItem,
     IIntakeHistoryItem,
     IOutputHistoryItem,
     TCorner,

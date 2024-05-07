@@ -19,6 +19,10 @@ export const intakeHistoryItemSchema = new mongoose.Schema({
     campaign_id: {
         type: String,
         require: [true, 'Intake history item must have a campaign _id']
+    },
+    timestamp: {
+        type: Number,
+        require: [true, 'Intake history item must have a timestamp']
     }
 });
 
