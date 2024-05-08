@@ -12,8 +12,12 @@ export default function Queue({ queue, queuesHistory }: {
 }) {
     const data: IData[] = frontFillRestOfArrayUpTo(
         queuesHistory.map(({ value }, index) => {
-            const { messageCount, consumerCount } = value.filter(_queue => _queue.name === queue.name)[0];
-            return ({ messageCount, consumerCount, reverseIndex: queuesHistory.length - index - 1 });
+            const _queue: IQueue_ui = value.filter(_queue => _queue.name === queue.name)[0];
+            return {
+                messageCount: _queue?.messageCount || 0,
+                consumerCount: _queue?.consumerCount || 0,
+                reverseIndex: queuesHistory.length - index - 1
+            };
         }) as IData[],
         { messageCount: 0, consumerCount: 0, reverseIndex: '' },
         MAX_QUEUE_HISTORY_LENGTH
