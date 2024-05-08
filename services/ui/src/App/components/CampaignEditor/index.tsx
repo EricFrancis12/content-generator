@@ -182,12 +182,12 @@ export default function CampaignEditor({ campaign, setCampaign }: {
                 </ComponentGroup>
                 <ComponentGroup>
                     <ToggleExpandedContent
-                        title={`Publish To (${campaign.filters.length}):`}
+                        title={`Publish To (${campaign.publishTo.length}):`}
                         icon={faFileExport}
                         className='flex flex-col gap-8 sm:gap-4 w-full px-3 py-2'
                     >
-                        {campaign.publishTo.map(output => (
-                            <div key={output._id} className='flex flex-col gap-4 px-2 py-4 border rounded-lg'>
+                        {campaign.publishTo.map((output, index) => (
+                            <div key={index} className='flex flex-col gap-4 px-2 py-4 border rounded-lg'>
                                 <div className='flex justify-end items-center w-full'>
                                     <FontAwesomeIcon
                                         icon={faTrashAlt}
@@ -195,38 +195,38 @@ export default function CampaignEditor({ campaign, setCampaign }: {
                                         style={{
                                             transition: 'color 0.15s ease'
                                         }}
-                                        onClick={() => setCampaign({ ...campaign, publishTo: campaign.publishTo.filter(_output => _output._id !== output._id) })}
+                                        onClick={() => setCampaign({ ...campaign, publishTo: campaign.publishTo.filter((_, _index) => _index !== index) })}
                                     />
                                 </div>
                                 <Dropdown
                                     title='Output Type:'
                                     value={output.outputType}
                                     items={outputTypes}
-                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map(_output => _output._id === output._id ? { ..._output, outputType: e.target.value as EOutputType } : _output) })}
+                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, outputType: e.target.value as EOutputType } : _output) })}
                                 />
                                 <Dropdown
                                     title='Content Type:'
                                     value={output.contentType}
                                     items={contentTypes}
-                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map(_output => _output._id === output._id ? { ..._output, contentType: e.target.value as EContentType } : _output) })}
+                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, contentType: e.target.value as EContentType } : _output) })}
                                 />
                                 <Input
                                     title='External ID:'
                                     value={output.externalId}
-                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map(_output => _output._id === output._id ? { ..._output, externalId: e.target.value } : _output) })}
+                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, externalId: e.target.value } : _output) })}
                                 />
                                 <Dropdown
                                     title='Disabled:'
                                     value={String(output.disabled || false).toUpperCase()}
                                     items={trueOrFalseStrings}
-                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map(_output => _output._id === output._id ? { ..._output, disabled: e.target.value.toLowerCase() === 'true' ? true : false } : _output) })}
+                                    onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, disabled: e.target.value.toLowerCase() === 'true' ? true : false } : _output) })}
                                 />
                                 {(output.outputType === EOutputType.SEND_CONTENT_TO_TELEGRAM_CHANNEL ||
                                     output.outputType === EOutputType.SEND_MESSAGE_TO_TELEGRAM_CHANNEL) &&
                                     <Input
                                         title='Message:'
                                         value={output.options?.message || ''}
-                                        onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map(_output => _output._id === output._id ? { ..._output, options: { ..._output.options, message: e.target.value } } : _output) })}
+                                        onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, options: { ..._output.options, message: e.target.value } } : _output) })}
                                     />
                                 }
                             </div>

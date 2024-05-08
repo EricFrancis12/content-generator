@@ -84,7 +84,6 @@ export interface IOverlayImageOntoVideoOptions extends IFilterOptions {
 }
 
 export interface IOutput {
-    _id: string,
     outputType: EOutputType,
     contentType: EContentType,
     externalId: string,

@@ -44,7 +44,6 @@ export function boilerplateFilter(): IFilter {
 
 export function boilerplateOutput(): IOutput {
     return {
-        _id: '',
         outputType: EOutputType.KEEP_SAVED,
         contentType: EContentType.VIDEO,
         externalId: '',
