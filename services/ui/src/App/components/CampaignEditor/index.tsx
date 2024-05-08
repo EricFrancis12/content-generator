@@ -21,9 +21,6 @@ export default function CampaignEditor({ campaign, setCampaign }: {
     const filterComponentTypes: EFilterComponentType[] = Object.values(EFilterComponentType);
     const outputTypes: EOutputType[] = Object.values(EOutputType);
 
-    let a;
-    console.log(structuredClone(campaign));
-
     return !campaign
         ? <></>
         : (

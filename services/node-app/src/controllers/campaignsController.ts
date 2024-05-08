@@ -45,7 +45,6 @@ export async function createCampaign(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false
         });
@@ -53,8 +52,9 @@ export async function createCampaign(req: Request, res: Response) {
 }
 
 export async function updateCampaign(req: Request, res: Response) {
+    const campaign_id = req.params.campaign_id;
     try {
-        const campaign = await Campaign.findByIdAndUpdate(req.params.campaign_id, req.body, {
+        const campaign = await Campaign.findByIdAndUpdate(campaign_id, { ...req.body, _id: campaign_id }, {
             new: true,
             runValidators: true
         });
