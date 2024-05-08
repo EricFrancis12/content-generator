@@ -35,7 +35,9 @@ export async function getCampaign(req: Request, res: Response) {
 
 export async function createCampaign(req: Request, res: Response) {
     try {
-        const campaign = await Campaign.create(req.body);
+        const bodyClone = { ...req.body };
+        delete bodyClone._id;
+        const campaign = await Campaign.create(bodyClone);
         res.status(201).json({
             success: true,
             data: {
