@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { redirect } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -45,7 +44,7 @@ export default function NewCampaign() {
                 if (success) {
                     toast.success('Campaign created successfully');
                     dispatch(getCampaigns());
-                    redirect('/campaigns');
+                    window.location.href = '/campaigns';
                 } else {
                     throw new Error('Server was unable to create campaign');
                 }
