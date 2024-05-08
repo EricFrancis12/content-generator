@@ -21,9 +21,37 @@ export default function Item({ item }: {
 
     const [loading, setLoading] = useState(false);
 
-    function handleDownloadButtonClick(e: React.MouseEvent<SVGElement>) {
+    async function handleDownloadButtonClick(e: React.MouseEvent<SVGElement>) {
         e.stopPropagation();
-        window.open(`${protocol}//${hostname}:3000/api/v1/content/${item.internalId}?dl=1`, '_blank');
+        if (!authToken) {
+            toast.error('Auth token missing or invalid');
+            return;
+        }
+
+        const endpoint = `${protocol}//${hostname}:3000/api/v1/content/${item.internalId}?dl=1`;
+        try {
+            const res = await fetch(endpoint, {
+                headers: {
+                    Authorization: `Bearer ${authToken}`
+                }
+            });
+            if (!res.ok) {
+                toast.error('Failed to download file');
+                return;
+            }
+
+            const blob = await res.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = item.internalId || 'file';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            toast.error('Error downloading file');
+        }
     }
 
     function handleDeleteButtonClick(e: React.MouseEvent<SVGElement>) {
