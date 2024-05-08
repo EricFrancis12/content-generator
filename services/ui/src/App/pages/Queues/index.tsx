@@ -22,7 +22,7 @@ export default function Queues() {
     usePollEndpoint(endpoint, 2000, ({ data }) => {
         const newQueues = data.data?.queues as IQueue[];
         let value: IQueue[] = newQueues;
-        
+
         if (data?.success && newQueues) {
             dispatch(update(newQueues));
         } else {
@@ -36,12 +36,15 @@ export default function Queues() {
     });
 
     const uiQueues: IQueue_ui[] = [
-        ...RABBITMQ_QUEUES.map(queueName => ({
-            name: queueName as string,
-            messageCount: 0,
-            consumerCount: 0,
-            disabled: !queues.some(queue => queue.name === queueName)
-        })),
+        ...RABBITMQ_QUEUES.map(queueName => {
+            const queue = queues.find(queue => queue.name === queueName);
+            return ({
+                name: queueName as string,
+                messageCount: queue?.messageCount || 0,
+                consumerCount: queue?.consumerCount || 0,
+                disabled: !queue
+            });
+        }),
         ...queues.filter(queue => !RABBITMQ_QUEUES.includes(queue.name as TRabbitMQQueue))
     ];
 
