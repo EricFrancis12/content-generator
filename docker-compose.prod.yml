@@ -8,6 +8,7 @@ services:
       dockerfile: ./node-app/Dockerfile
       args:
         NODE_ENV: production
+    restart: always
     environment:
       - NODE_ENV=production
       - AUTH_TOKEN=${AUTH_TOKEN}
@@ -19,6 +20,7 @@ services:
       dockerfile: ./campaign-engine/Dockerfile
       args:
         NODE_ENV: production
+    restart: always
     environment:
       - NODE_ENV=production
     depends_on:
@@ -33,6 +35,7 @@ services:
       dockerfile: ./download-engine/Dockerfile
       args:
         NODE_ENV: production
+    restart: always
     environment:
       - NODE_ENV=production
     volumes:
@@ -48,6 +51,7 @@ services:
       dockerfile: ./apply-filters-engine/Dockerfile
       args:
         NODE_ENV: production
+    restart: always
     environment:
       - NODE_ENV=production
     volumes:
@@ -63,6 +67,7 @@ services:
       dockerfile: ./publish-engine/Dockerfile
       args:
         NODE_ENV: production
+    restart: always
     environment:
       - NODE_ENV=production
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
@@ -79,6 +84,7 @@ services:
       dockerfile: ./cleanup-engine/Dockerfile
       args:
         NODE_ENV: production
+    restart: always
     environment:
       - NODE_ENV=production
     volumes:
@@ -91,5 +97,6 @@ services:
     build:
       context: ./services
       dockerfile: ./ui/Dockerfile.prod
+    restart: always
     ports:
       - "3001:80"

@@ -23,6 +23,7 @@ services:
 
   mongo:
     image: mongo
+    restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=mypassword
@@ -32,6 +33,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
     hostname: "rabbit"
+    restart: always
     ports:
       - 5672:5672
       - 15672:15672
