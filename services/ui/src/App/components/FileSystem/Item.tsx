@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import './FileSystem.css';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 import { FcFile, FcOpenedFolder } from 'react-icons/fc';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectauthToken } from '../../store/reducers/authTokenReducer';
 import { getFileSystem } from '../../store/reducers/fileSystemReducer';
-import './FileSystem.css';
+import { useFileDownloadContext } from '../../contexts/FileDownloadContext';
 import { EFileSystemItemType } from '../../../_shared';
 import { IFileSystemItem_ui } from '../../typings';
 
@@ -16,6 +17,8 @@ export default function Item({ item }: {
 }) {
     const { protocol, hostname } = window.location;
 
+    const { downloadFileFromEndpoint } = useFileDownloadContext();
+
     const { value: authToken } = useAppSelector(selectauthToken);
     const dispatch = useAppDispatch();
 
@@ -23,35 +26,38 @@ export default function Item({ item }: {
 
     async function handleDownloadButtonClick(e: React.MouseEvent<SVGElement>) {
         e.stopPropagation();
-        if (!authToken) {
-            toast.error('Auth token missing or invalid');
-            return;
-        }
 
         const endpoint = `${protocol}//${hostname}:3000/api/v1/content/${item.internalId}?dl=1`;
-        try {
-            const res = await fetch(endpoint, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`
-                }
-            });
-            if (!res.ok) {
-                toast.error('Failed to download file');
-                return;
-            }
+        downloadFileFromEndpoint({ endpoint, name: item.internalId });
 
-            const blob = await res.blob();
-            const blobUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = item.internalId || 'file';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(blobUrl);
-        } catch (err) {
-            toast.error('Error downloading file');
-        }
+        // if (!authToken) {
+        //     toast.error('Auth token missing or invalid');
+        //     return;
+        // }
+
+        // try {
+        //     const res = await fetch(endpoint, {
+        //         headers: {
+        //             Authorization: `Bearer ${authToken}`
+        //         }
+        //     });
+        //     if (!res.ok) {
+        //         toast.error('Failed to download file');
+        //         return;
+        //     }
+
+        //     const blob = await res.blob();
+        //     const blobUrl = window.URL.createObjectURL(blob);
+        //     const a = document.createElement('a');
+        //     a.style.display = 'none';
+        //     a.href = blobUrl;
+        //     a.download = item.internalId || 'file';
+        //     document.body.appendChild(a);
+        //     a.click();
+        //     window.URL.revokeObjectURL(blobUrl);
+        // } catch (err) {
+        //     toast.error('Error downloading file');
+        // }
     }
 
     function handleDeleteButtonClick(e: React.MouseEvent<SVGElement>) {

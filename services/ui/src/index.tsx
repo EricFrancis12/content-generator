@@ -6,6 +6,7 @@ import store from './App/store/store';
 import App from './App/App';
 import './App/assets/css/style.css';
 import './App/assets/css/satoshi.css';
+import { FileDownloadProvider } from './App/contexts/FileDownloadContext';
 import { Toaster } from 'react-hot-toast';
 import QueuesPoller from './App/components/QueuesPoller';
 
@@ -14,9 +15,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Provider store={store}>
             <Toaster position='top-center' />
             <QueuesPoller />
-            <Router>
-                <App />
-            </Router>
+            <FileDownloadProvider>
+                <Router>
+                    <App />
+                </Router>
+            </FileDownloadProvider>
         </Provider >
     </React.StrictMode>
 );
