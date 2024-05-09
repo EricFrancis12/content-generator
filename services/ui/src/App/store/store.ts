@@ -4,6 +4,7 @@ import campaignsReducer from './reducers/campaignsReducer';
 import colorModeReducer from './reducers/colorModeReducer';
 import fileSystemReducer from './reducers/fileSystemReducer';
 import queuesReducer from './reducers/queuesReducer';
+import queuesHistoryReducer from './reducers/queuesHistoryReducer';
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         campaigns: campaignsReducer,
         colorMode: colorModeReducer,
         fileSystem: fileSystemReducer,
-        queues: queuesReducer
+        queues: queuesReducer,
+        queuesHistory: queuesHistoryReducer
     }
 });
 export default store;
