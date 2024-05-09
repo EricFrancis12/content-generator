@@ -1,24 +1,24 @@
 import fs from 'fs';
 import axios from 'axios';
-import ytdl from 'ytdl-core';
+import ytdl, { ChooseFormatQuality } from 'ytdl-core';
 import { ISavedImage, ISavedVideo, EContentType, ESourceType } from '../../_shared';
 
+type ExtendString<T extends string> = T | Omit<string, T>;
+
 export async function downloadYouTubeVideo(v: string, outputPath: string, {
-    quality = '22'
+    quality = ['22', 'highest']
 }: {
-    quality?: string | number
+    quality?: ExtendString<ChooseFormatQuality> | number | ExtendString<ChooseFormatQuality>[] | number[];
 } = {}): Promise<ISavedVideo> {
     if (!fs.existsSync(outputPath)) {
         const url = `https://youtube.com/watch?v=${v}`;
         await new Promise((resolve, reject) => {
-            try {
-                ytdl(url, { quality })
-                    .pipe(fs.createWriteStream(outputPath))
-                    .on('error', (err) => reject(err))
-                    .on('finish', () => resolve(true));
-            } catch (err) {
-                reject(err);
-            }
+            const stream = ytdl(url, { quality });
+            stream.on('error', (err) => reject(err));
+            
+            stream.pipe(fs.createWriteStream(outputPath))
+                .on('finish', () => resolve(true))
+                .on('error', (err) => reject(err));
         });
     }
     return {
