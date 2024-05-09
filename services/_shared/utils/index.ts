@@ -4,7 +4,7 @@ import { basename } from 'path';
 import {
     EContentType, ESourceType, EOutputType, ICampaign, IOutput, ISavedContent,
     IFilter, EFilterComponentType, EFilterName, IFileSystemItem,
-    EFileSystemItemType
+    EFileSystemItemType, EImageFileExtension, EVideoFileExtension
 } from '../../_shared';
 
 export function boilerplateCampaign(): ICampaign {
@@ -72,6 +72,28 @@ export function getFileExt(filename: string) {
     const splitOnDot = filename.split('.');
     const fileExt = splitOnDot[splitOnDot.length - 1];
     return fileExt.toLowerCase();
+}
+
+export function getContentTypeFromFileExt(fileExt: string | EImageFileExtension | EVideoFileExtension) {
+    const _fileExt = fileExt as string;
+    const imageFileExtensions = Object.values(EImageFileExtension) as string[];
+    const videoFileExtensions = Object.values(EVideoFileExtension) as string[];
+    if (imageFileExtensions.includes(_fileExt)) {
+        return EContentType.IMAGE;
+    } else if (videoFileExtensions.includes(_fileExt)) {
+        return EContentType.VIDEO;
+    }
+    return EContentType.UNKNOWN;
+}
+
+export function getSourceTypeFromFilePath(filePath: string) {
+    const dirNames = filePath.split('/');
+    const sourceTypeImpliedByDir = dirNames.at(-3);
+    const sourceTypesLowercase: string[] = Object.keys(ESourceType).map(key => key.toLowerCase());
+    if (sourceTypeImpliedByDir && sourceTypesLowercase.includes(sourceTypeImpliedByDir.toLowerCase())) {
+        return ESourceType[sourceTypeImpliedByDir.toUpperCase() as ESourceType];
+    }
+    return ESourceType.READ_FROM_SAVED;
 }
 
 export async function copyFileToNewLocation(baseFilePath: string, newFilePath: string) {
@@ -143,27 +165,17 @@ export async function getSharedFileSystemModel(): Promise<IFileSystemItem> {
 }
 
 export async function getSavedContent(): Promise<ISavedContent[]> {
-    const sourceContentProm = getAllNestedFilePaths('./shared-file-system/source-content');
-    const uploadedContentProm = getAllNestedFilePaths('./shared-file-system/uploaded-content');
-    const WIPFiltersContentProm = getAllNestedFilePaths('./shared-file-system/WIP-filters-content');
-
-    const sourceContent = await sourceContentProm;
-    const uploadedContent = await uploadedContentProm;
-    const WIPFiltersContent = await WIPFiltersContentProm;
-    const filePaths = [...sourceContent, ...uploadedContent, ...WIPFiltersContent];
-
-    return filePaths
-        .map(filePath => {
-            const dirNames = filePath.split('/');
-            const contentType = dirNames.at(-2) === 'videos' ? EContentType.VIDEO : dirNames.at(-2) === 'images' ? EContentType.IMAGE : EContentType.UNKNOWN;
-            const sourceType = dirNames.at(-3) === 'Instagram' ? ESourceType.INSTAGRAM : dirNames.at(-3) === 'TikTok' ? ESourceType.TIKTOK : dirNames.at(-3) === 'YouTube' ? ESourceType.YOUTUBE : ESourceType.READ_FROM_SAVED;
-            return {
-                sourceType: sourceType as ESourceType,
-                contentType: contentType as EContentType,
-                path: filePath
-            };
-        })
-        .filter(item => !!item.sourceType && !!item.contentType);
+    const filePaths = await getAllNestedFilePaths('./shared-file-system');
+    return filePaths.map(filePath => {
+        const fileExt = getFileExt(filePath);
+        const contentType = getContentTypeFromFileExt(fileExt);
+        const sourceType = getSourceTypeFromFilePath(filePath);
+        return {
+            sourceType,
+            contentType,
+            path: filePath
+        };
+    });
 }
 
 export async function getSavedContentViaInternalId(internalId: string): Promise<ISavedContent | null> {
