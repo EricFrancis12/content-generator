@@ -9,6 +9,7 @@ export type TFileDownload = {
 };
 export type TFileDownloadContext = {
     downloadFileFromEndpoint: ({ endpoint, name }: { endpoint: string, name?: string }, arg2?: any) => any,
+    fileDownload: TFileDownload | null,
     downloading: boolean,
     progress: number
 };
@@ -53,40 +54,50 @@ export function FileDownloadProvider({ children }: {
                 return;
             }
 
-            const contentLength = parseInt(res?.headers?.get('Content-Length') || '0');
-            const reader = res?.body?.getReader();
+            const contentLength = res.headers.get('content-length');
+            const total = parseInt(contentLength || '0', 10);
 
-            if (contentLength && reader) {
-                let loaded = 0;
+            const reader = res?.body?.getReader();
+            if (reader) {
+                let receivedLength = 0;
+                const chunks = [];
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
-                    loaded += value.length;
-                    const percentage = (loaded / contentLength) * 100;
-                    setProgress(percentage);
-                }
-            }
 
-            const blob = await res.blob();
-            const blobUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = name;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(blobUrl);
+                    chunks.push(value);
+                    receivedLength += value.length;
+
+                    // Calculate progress percentage
+                    const progress = Math.round((receivedLength / total) * 100);
+                    setProgress(progress);
+                }
+
+                // Combine all chunks into a single blob
+                const blob = new Blob(chunks);
+
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(blobUrl);
+            }
         } catch (err) {
+            console.log(err);
+            toast.error('Error downloading file');
+        } finally {
             setFileDownload(null);
             setDownloading(false);
             setProgress(0);
-            console.log(err);
-            toast.error('Error downloading file');
         }
     }
 
     const value: TFileDownloadContext = {
         downloadFileFromEndpoint,
+        fileDownload,
         downloading,
         progress
     };
@@ -114,9 +125,11 @@ function DownloadProgress({ name, progress, hidden }: {
             <div
                 className='absolute flex flex-col justify-center items-center gap-2 p-2 bg-slate-200 border rounded-md'
                 style={{
-                    top: '5%',
-                    right: '5%',
-                    minWidth: '10%'
+                    bottom: '1.5vw',
+                    left: '1.5vw',
+                    minWidth: '10vw',
+                    maxWidth: '80%',
+                    zIndex: 10000
                 }}
             >
                 <div>{`Downloading ${name}`}</div>
