@@ -3,7 +3,8 @@ import ToggleExpandedContent from '../../../components/ToggleExpandedContent';
 import Graph, { IData } from './Graph';
 import Rows from './Rows';
 import { MAX_QUEUE_HISTORY_LENGTH } from '../';
-import { IQueue_ui, TQueuesHistory } from '../typings';
+import { TQueuesHistory } from '../../../../_shared';
+import { IQueue_ui } from '../typings';
 import { frontFillRestOfArrayUpTo } from '../utils';
 
 export default function Queue({ queue, queuesHistory }: {

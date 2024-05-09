@@ -196,6 +196,13 @@ export interface IQueue {
     consumerCount: number
 }
 
+export type TQueueHistory = {
+    timestamp: number,
+    value: IQueue[]
+};
+
+export type TQueuesHistory = TQueueHistory[];
+
 export enum ECronExpression {
     EVERY_MINUTE = '* * * * *',
     EVERY_TWO_MINUTES = '*/2 * * * *',

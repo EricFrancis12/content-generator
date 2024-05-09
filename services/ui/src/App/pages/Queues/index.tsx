@@ -5,8 +5,8 @@ import DefaultLayout from '../../layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import usePollEndpoint from '../../hooks/usePollEndpoint';
 import Queue from './Queue';
-import { IQueue_ui, TQueuesHistory } from './typings';
-import _shared, { TRabbitMQQueue, IQueue } from '../../../_shared';
+import { IQueue_ui } from './typings';
+import _shared, { TRabbitMQQueue, IQueue, TQueuesHistory } from '../../../_shared';
 const { RABBITMQ_QUEUES } = _shared.amqp;
 
 export const MAX_QUEUE_HISTORY_LENGTH = 50;
