@@ -7,8 +7,8 @@ import {
     TFilterQueueItem, TPublishQueueItem, EFilterName, IFilter, IFIlterComponent, EFilterComponentType,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     ISourceContent, ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
-    IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, IQueue, EContentType, ESourceType, EOutputType,
-    ECronExpression, IFileSystemItem, EFileSystemItemType, IDiskSpace
+    IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, IQueue, TQueueHistory, TQueuesHistory,
+    EContentType, ESourceType, EOutputType, ECronExpression, IFileSystemItem, EFileSystemItemType, IDiskSpace
 } from './typings';
 
 const _shared = {
@@ -55,6 +55,8 @@ export type {
     IOverlayImageOntoVideoOptions,
     TRabbitMQQueue,
     IQueue,
+    TQueueHistory,
+    TQueuesHistory,
     IFileSystemItem,
     IDiskSpace
 };

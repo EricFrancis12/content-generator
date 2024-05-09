@@ -1,15 +1,17 @@
 import React from 'react';
+import { useAppSelector } from '../../../store/hooks';
+import { selectQueuesHistory, MAX_QUEUES_HISTORY_LENGTH } from '../../../store/reducers/queuesHistoryReducer';
 import ToggleExpandedContent from '../../../components/ToggleExpandedContent';
 import Graph, { IData } from './Graph';
 import Rows from './Rows';
-import { MAX_QUEUE_HISTORY_LENGTH } from '../';
-import { IQueue_ui, TQueuesHistory } from '../typings';
+import { IQueue_ui } from '../typings';
 import { frontFillRestOfArrayUpTo } from '../utils';
 
-export default function Queue({ queue, queuesHistory }: {
-    queue: IQueue_ui,
-    queuesHistory: TQueuesHistory
+export default function Queue({ queue }: {
+    queue: IQueue_ui
 }) {
+    const { value: queuesHistory } = useAppSelector(selectQueuesHistory);
+
     const data: IData[] = frontFillRestOfArrayUpTo(
         queuesHistory.map(({ value }, index) => {
             const _queue: IQueue_ui = value.filter(_queue => _queue.name === queue.name)[0];
@@ -20,7 +22,7 @@ export default function Queue({ queue, queuesHistory }: {
             };
         }) as IData[],
         { messageCount: 0, consumerCount: 0, reverseIndex: '' },
-        MAX_QUEUE_HISTORY_LENGTH
+        MAX_QUEUES_HISTORY_LENGTH
     );
 
     return (
