@@ -1,5 +1,6 @@
 import * as amqp from './amqp';
 import * as constants from './constants';
+import * as loggers from './loggers';
 import * as typings from './typings';
 import * as utils from './utils';
 import {
@@ -14,6 +15,7 @@ import {
 const _shared = {
     amqp,
     constants,
+    loggers,
     utils,
     typings
 };

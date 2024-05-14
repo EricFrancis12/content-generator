@@ -7,7 +7,7 @@ services:
       dockerfile: ./api/Dockerfile
     volumes:
       - ./shared-file-system/:/app/shared-file-system
-      - ./logs/api/:/app/logs/api
+      - ./logs/:/app/logs
     ports:
       - "3000:3000"
     environment:

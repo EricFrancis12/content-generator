@@ -71,10 +71,9 @@ services:
       - ./shared-file-system/:/app/shared-file-system
       - ./logs/publish-engine/:/app/logs/publish-engine
       - /app/node_modules
-    env_file:
-      - ./services/publish-engine/.env
     environment:
       - NODE_ENV=development
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
     depends_on:
       - api
       - rabbitmq

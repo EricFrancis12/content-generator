@@ -8,3 +8,4 @@ jest.config.js
 .env.example
 package*.json
 tsconfig.json
+build.config.default.json
