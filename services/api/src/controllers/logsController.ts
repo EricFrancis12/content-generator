@@ -18,10 +18,10 @@ export async function getAllLogs(req: Request, res: Response) {
             error: [],
             info: []
         };
-        for (const logName in logs) {
-            const logFilePath = `./logs/${serviceName}/${logName}.log`;
+        for (const logLevel in logs) {
+            const logFilePath = `./logs/${serviceName}/${logLevel}.log`;
             const log = await readLogFile(logFilePath);
-            logs[logName as keyof typeof logs] = log;
+            logs[logLevel as keyof typeof logs] = log;
         }
         res.status(200).json({
             success: true,
@@ -37,9 +37,9 @@ export async function getAllLogs(req: Request, res: Response) {
 }
 
 export async function getLog(req: Request, res: Response) {
-    const { serviceName, logName } = req.params;
+    const { serviceName, logLevel } = req.params;
     try {
-        const logFilePath = `./logs/${serviceName}/${logName}.log`;
+        const logFilePath = `./logs/${serviceName}/${logLevel}.log`;
         const log = await readLogFile(logFilePath);
         res.status(200).json({
             success: true,
@@ -55,7 +55,7 @@ export async function getLog(req: Request, res: Response) {
 }
 
 export async function createLog(req: Request, res: Response) {
-    const { logName } = req.params;
+    const { logLevel } = req.params;
     const message = req.body.message || '';
     try {
         if (!message) {
@@ -65,9 +65,9 @@ export async function createLog(req: Request, res: Response) {
             });
         }
 
-        if (logName === 'error') {
+        if (logLevel === 'error') {
             errorLogger.error(message);
-        } else if (logName === 'info') {
+        } else if (logLevel === 'info') {
             infoLogger.info(message);
         } else {
             return res.status(404).json({

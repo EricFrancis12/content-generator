@@ -9,7 +9,7 @@ router
     .get(auth, getAllLogs);
 
 router
-    .route('/:serviceName/logs/:logName')
+    .route('/:serviceName/logs/:logLevel')
     .get(auth, getLog)
     .post(createLog);
 
