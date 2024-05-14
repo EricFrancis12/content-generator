@@ -1,12 +1,14 @@
 import type { Request, Response } from 'express';
-import { errorLogger, infoLogger } from '../config/loggers';
+import winston from 'winston';
 import _shared, { EServiceName } from '../../_shared';
+const { fileTransportsIfEnabled } = _shared.loggers;
 const { readLogFile } = _shared.utils;
+
+const serviceNames: string[] = Object.values(EServiceName);
 
 export async function getAllLogs(req: Request, res: Response) {
     const { serviceName } = req.params;
     try {
-        const serviceNames: string[] = Object.values(EServiceName);
         if (!serviceNames.includes(serviceName)) {
             return res.status(404).json({
                 success: false,
@@ -55,9 +57,16 @@ export async function getLog(req: Request, res: Response) {
 }
 
 export async function createLog(req: Request, res: Response) {
-    const { logLevel } = req.params;
+    const { serviceName, logLevel } = req.params;
     const message = req.body.message || '';
     try {
+        if (!serviceNames.includes(serviceName)) {
+            return res.status(404).json({
+                success: false,
+                message: 'Service not found'
+            });
+        }
+
         if (!message) {
             return res.status(400).json({
                 success: false,
@@ -65,10 +74,19 @@ export async function createLog(req: Request, res: Response) {
             });
         }
 
+        const logger = winston.createLogger({
+            level: logLevel,
+            format: winston.format.json(),
+            transports: [
+                new winston.transports.Console(),
+                ...fileTransportsIfEnabled({ filename: `${logLevel}.log`, dirname: `./logs/${serviceName}` })
+            ]
+        });
+
         if (logLevel === 'error') {
-            errorLogger.error(message);
+            logger.error(message);
         } else if (logLevel === 'info') {
-            infoLogger.info(message);
+            logger.info(message);
         } else {
             return res.status(404).json({
                 success: false,
