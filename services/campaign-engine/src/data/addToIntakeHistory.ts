@@ -6,7 +6,7 @@ const { SERVICE_TOKEN } = _shared.constants;
 export default async function addToIntakeHistory(intakeHistoryItem: IIntakeHistoryItem) {
     const { campaign_id } = intakeHistoryItem;
     try {
-        const res = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/intake-history`, intakeHistoryItem, {
+        const res = await axios.post(`http://api:3000/api/v1/campaigns/${campaign_id}/intake-history`, intakeHistoryItem, {
             headers: {
                 Authorization: `Bearer ${SERVICE_TOKEN}`
             }

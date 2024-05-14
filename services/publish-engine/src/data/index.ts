@@ -9,7 +9,7 @@ const { TELEGRAM_BOT_TOKEN } = config;
 export async function addToOutputHistory(outputHistoryItem: IOutputHistoryItem) {
     const { campaign_id } = outputHistoryItem;
     try {
-        const res = await axios.post(`http://node-app:3000/api/v1/campaigns/${campaign_id}/output-history`, outputHistoryItem, {
+        const res = await axios.post(`http://api:3000/api/v1/campaigns/${campaign_id}/output-history`, outputHistoryItem, {
             headers: {
                 Authorization: `Bearer ${SERVICE_TOKEN}`
             }

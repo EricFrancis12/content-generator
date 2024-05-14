@@ -1,18 +1,18 @@
 version: "3"
 
 services:
-  node-app:
+  api:
     build:
       context: ./services
-      dockerfile: ./node-app/Dockerfile
+      dockerfile: ./api/Dockerfile
       args:
         NODE_ENV: development
     volumes:
-      - ./services/node-app/src/:/app/src
+      - ./services/api/src/:/app/src
       - ./services/_shared/:/app/_shared
       - /app/node_modules
     env_file:
-      - ./services/node-app/.env
+      - ./services/api/.env
     environment:
       - NODE_ENV=development
     command: npm run dev

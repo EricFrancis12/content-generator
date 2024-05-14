@@ -1,10 +1,10 @@
 version: "3"
 
 services:
-  node-app:
+  api:
     build:
       context: ./services
-      dockerfile: ./node-app/Dockerfile
+      dockerfile: ./api/Dockerfile
     volumes:
       - ./shared-file-system/:/app/shared-file-system
     ports:
@@ -19,7 +19,7 @@ services:
 
   ui:
     depends_on:
-      - node-app
+      - api
 
   mongo:
     image: mongo

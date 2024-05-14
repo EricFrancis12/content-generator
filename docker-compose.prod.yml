@@ -2,10 +2,10 @@
 version: "3"
 
 services:
-  node-app:
+  api:
     build:
       context: ./services
-      dockerfile: ./node-app/Dockerfile
+      dockerfile: ./api/Dockerfile
       args:
         NODE_ENV: production
     restart: always
@@ -24,7 +24,7 @@ services:
     environment:
       - NODE_ENV=production
     depends_on:
-      - node-app
+      - api
       - mongo
       - rabbitmq
     command: npm start
@@ -41,7 +41,7 @@ services:
     volumes:
       - ./shared-file-system/:/app/shared-file-system
     depends_on:
-      - node-app
+      - api
       - rabbitmq
     command: npm start
 
@@ -57,7 +57,7 @@ services:
     volumes:
       - ./shared-file-system/:/app/shared-file-system
     depends_on:
-      - node-app
+      - api
       - rabbitmq
     command: npm start
 
@@ -74,7 +74,7 @@ services:
     volumes:
       - ./shared-file-system/:/app/shared-file-system
     depends_on:
-      - node-app
+      - api
       - rabbitmq
     command: npm start
 
@@ -90,7 +90,7 @@ services:
     volumes:
       - ./shared-file-system/:/app/shared-file-system
     depends_on:
-      - node-app
+      - api
     command: npm start
 
   ui:

@@ -5,7 +5,7 @@ const { SERVICE_TOKEN } = _shared.constants;
 
 export default async function addToDownloadQueue(downloadQueueItem: TDownloadQueueItem) {
     try {
-        const res = await axios.post('http://node-app:3000/api/v1/amqp/queues/download', downloadQueueItem, {
+        const res = await axios.post('http://api:3000/api/v1/amqp/queues/download', downloadQueueItem, {
             headers: {
                 Authorization: `Bearer ${SERVICE_TOKEN}`
             }

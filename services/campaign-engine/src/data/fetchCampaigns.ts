@@ -5,7 +5,7 @@ const { SERVICE_TOKEN } = _shared.constants;
 
 export default async function fetchCampaigns() {
     try {
-        const res = await axios.get('http://node-app:3000/api/v1/campaigns', {
+        const res = await axios.get('http://api:3000/api/v1/campaigns', {
             headers: {
                 Authorization: `Bearer ${SERVICE_TOKEN}`
             }

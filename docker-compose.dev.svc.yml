@@ -15,7 +15,7 @@ services:
       - NODE_ENV=development
       - CRON_EXPRESSION=* * * * * # every minute
     depends_on:
-      - node-app
+      - api
       - mongo
       - rabbitmq
     command: npm run dev
@@ -34,7 +34,7 @@ services:
     environment:
       - NODE_ENV=development      
     depends_on:
-      - node-app
+      - api
       - rabbitmq
     command: npm run dev
 
@@ -52,7 +52,7 @@ services:
     environment:
       - NODE_ENV=development
     depends_on:
-      - node-app
+      - api
       - rabbitmq
     command: npm run dev
 
@@ -72,7 +72,7 @@ services:
     environment:
       - NODE_ENV=development
     depends_on:
-      - node-app
+      - api
       - rabbitmq
     command: npm run dev
 
@@ -91,5 +91,5 @@ services:
       - NODE_ENV=development
       - CRON_EXPRESSION=* * * * * # every minute
     depends_on:
-      - node-app
+      - api
     command: npm run dev
