@@ -1,4 +1,6 @@
-import _shared from '../../_shared';
-const { initErrorLogger } = _shared.loggers;
+import _shared, { EServiceName } from '../../_shared';
+const { initErrorLogger, initInfoLogger } = _shared.loggers;
 
-export const errorLogger = initErrorLogger('api');
+export const errorLogger = initErrorLogger(EServiceName.API);
+
+export const infoLogger = initInfoLogger(EServiceName.API);

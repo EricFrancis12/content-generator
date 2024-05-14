@@ -1,5 +1,5 @@
 import _shared, {
-    EImageFileExtension, EVideoFileExtension, ESourceType, EContentType,
+    EServiceName, EImageFileExtension, EVideoFileExtension, ESourceType, EContentType,
     ISavedContent, ISavedImage, ISavedVideo, EFilterName, IFIlterComponent, EFilterComponentType,
     IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     TRabbitMQQueue, TFilterQueueItem, TPublishQueueItem
@@ -11,6 +11,7 @@ const shared = {
 
 export default shared;
 export {
+    EServiceName,
     EImageFileExtension,
     EVideoFileExtension,
     ESourceType,

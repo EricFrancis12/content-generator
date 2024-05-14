@@ -1,5 +1,5 @@
 import _shared, {
-    ESourceType, EContentType, ICampaign, ICampaignOptions, TDownloadQueueItem,
+    EServiceName, ESourceType, EContentType, ICampaign, ICampaignOptions, TDownloadQueueItem,
     ISourceContent, ISourceImage, ISourceVideo, IHistoryItem, IIntakeHistoryItem, ECronExpression
 } from '../../_shared';
 
@@ -9,6 +9,7 @@ const shared = {
 
 export default shared;
 export {
+    EServiceName,
     ESourceType,
     EContentType,
     ICampaign,

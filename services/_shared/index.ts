@@ -4,7 +4,7 @@ import * as loggers from './loggers';
 import * as typings from './typings';
 import * as utils from './utils';
 import {
-    EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, IOutput, TDownloadQueueItem,
+    EServiceName, EImageFileExtension, EVideoFileExtension, ICampaign, ICampaignOptions, IOutput, TDownloadQueueItem,
     TFilterQueueItem, TPublishQueueItem, EFilterName, IFilter, IFIlterComponent, EFilterComponentType,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     ISourceContent, ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
@@ -22,6 +22,7 @@ const _shared = {
 
 export default _shared;
 export {
+    EServiceName,
     EImageFileExtension,
     EVideoFileExtension,
     EFilterName,

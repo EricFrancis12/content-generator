@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { promises as fsPromises } from 'fs';
+import fs, { promises as fsPromises } from 'fs';
 import { basename } from 'path';
 import {
     EContentType, ESourceType, EOutputType, ICampaign, IOutput, ISavedContent,
@@ -185,4 +185,21 @@ export async function getSavedContentViaInternalId(internalId: string): Promise<
         return _internalId === internalId;
     });
     return result ?? null;
+}
+
+export async function readLogFile(filePath: string): Promise<{ [key: string]: string }[]> {
+    if (fs.existsSync(filePath)) {
+        const logFileContent = await fsPromises.readFile(filePath, { encoding: 'utf8' });
+        return logFileContent
+            .split('\n')
+            .filter(line => !!line)
+            .map(line => {
+                try {
+                    return JSON.parse(line);
+                } catch (err) {
+                    return {};
+                }
+            });
+    }
+    return [];
 }

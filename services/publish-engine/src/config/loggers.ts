@@ -1,4 +1,4 @@
-import _shared from '../../_shared';
+import _shared, { EServiceName } from '../../_shared';
 const { initErrorLogger } = _shared.loggers;
 
-export const errorLogger = initErrorLogger('publish-engine');
+export const errorLogger = initErrorLogger(EServiceName.PUBLISH_ENGINE);
