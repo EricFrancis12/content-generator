@@ -10,6 +10,7 @@ services:
     volumes:
       - ./services/campaign-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
+      - ./logs/campaign-engine/:/app/logs/campaign-engine
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -30,6 +31,7 @@ services:
       - ./services/download-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
       - ./shared-file-system/:/app/shared-file-system
+      - ./logs/download-engine/:/app/logs/download-engine
       - /app/node_modules
     environment:
       - NODE_ENV=development      
@@ -48,6 +50,7 @@ services:
       - ./services/apply-filters-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
       - ./shared-file-system/:/app/shared-file-system
+      - ./logs/apply-filters-engine/:/app/logs/apply-filters-engine
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -66,6 +69,7 @@ services:
       - ./services/publish-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
       - ./shared-file-system/:/app/shared-file-system
+      - ./logs/publish-engine/:/app/logs/publish-engine
       - /app/node_modules
     env_file:
       - ./services/publish-engine/.env
@@ -86,6 +90,7 @@ services:
       - ./services/cleanup-engine/src/:/app/src
       - ./services/_shared/:/app/_shared
       - ./shared-file-system/:/app/shared-file-system
+      - ./logs/cleanup-engine/:/app/logs/cleanup-engine
       - /app/node_modules
     environment:
       - NODE_ENV=development
