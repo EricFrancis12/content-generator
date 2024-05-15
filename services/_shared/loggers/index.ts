@@ -1,10 +1,10 @@
 import winston from 'winston';
-import { DISABLE_LOG_FILES } from '../constants'
+import { DISABLE_LOG_FILES } from '../constants';
 import { EServiceName } from '../typings';
 
-export const fileTransportsIfEnabled = (options?: winston.transports.FileTransportOptions) => DISABLE_LOG_FILES === true ? [] : [new winston.transports.File(options)];
+const fileTransportsIfEnabled = (options?: winston.transports.FileTransportOptions) => DISABLE_LOG_FILES === true ? [] : [new winston.transports.File(options)];
 
-export function initErrorLogger(serviceName: EServiceName) {
+export function initLogger(serviceName: EServiceName) {
     const errorLogger = winston.createLogger({
         level: 'error',
         format: winston.format.json(),
@@ -13,10 +13,7 @@ export function initErrorLogger(serviceName: EServiceName) {
             ...fileTransportsIfEnabled({ filename: 'error.log', dirname: `./logs/${serviceName}` })
         ]
     });
-    return errorLogger;
-}
 
-export function initInfoLogger(serviceName: EServiceName) {
     const infoLogger = winston.createLogger({
         level: 'info',
         format: winston.format.json(),
@@ -25,5 +22,10 @@ export function initInfoLogger(serviceName: EServiceName) {
             ...fileTransportsIfEnabled({ filename: 'info.log', dirname: `./logs/${serviceName}` })
         ]
     });
-    return infoLogger;
+
+    return {
+        error: (message: string, callback?: winston.LogCallback) => errorLogger.error(message, callback),
+        info: (message: string, callback?: winston.LogCallback) => infoLogger.info(message, callback)
+    };
 }
+

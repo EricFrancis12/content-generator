@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
-import winston from 'winston';
 import _shared, { EServiceName } from '../../_shared';
-const { fileTransportsIfEnabled } = _shared.loggers;
+const { initLogger } = _shared.loggers;
 const { readLogFile } = _shared.utils;
 
 const serviceNames: string[] = Object.values(EServiceName);
@@ -74,19 +73,12 @@ export async function createLog(req: Request, res: Response) {
             });
         }
 
-        const logger = winston.createLogger({
-            level: logLevel,
-            format: winston.format.json(),
-            transports: [
-                new winston.transports.Console(),
-                ...fileTransportsIfEnabled({ filename: `${logLevel}.log`, dirname: `./logs/${serviceName}` })
-            ]
-        });
+        const { error, info } = initLogger(serviceName as EServiceName);
 
         if (logLevel === 'error') {
-            logger.error(message);
+            error(message);
         } else if (logLevel === 'info') {
-            logger.info(message);
+            info(message);
         } else {
             return res.status(404).json({
                 success: false,

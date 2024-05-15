@@ -1,4 +1,4 @@
 import _shared, { EServiceName } from '../../_shared';
-const { initErrorLogger } = _shared.loggers;
+const { initLogger } = _shared.loggers;
 
-export const errorLogger = initErrorLogger(EServiceName.DOWNLOAD_ENGINE);
+export const logger = initLogger(EServiceName.DOWNLOAD_ENGINE);
