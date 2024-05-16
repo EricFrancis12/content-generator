@@ -9,6 +9,6 @@ export { formatErr } from '../utils';
 export const consoleLogger = winston.createLogger({
     level: 'error',
     transports: [
-        new winston.transports.Console({ format: consoleTransportFormat(EServiceName._SHARED) }),
+        new winston.transports.Console({ format: consoleTransportFormat(EServiceName._SHARED) })
     ]
 });
