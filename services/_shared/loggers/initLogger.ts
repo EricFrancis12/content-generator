@@ -7,20 +7,20 @@ const { combine, colorize, label, timestamp, printf, json } = winston.format;
 
 const fileTransportsIfEnabled = (options?: winston.transports.FileTransportOptions) => DISABLE_LOG_FILES === true ? [] : [new File(options)];
 
-export default function initLogger(serviceName: EServiceName) {
-    const consoleTransportFormat = combine(
-        colorize({ all: true }),
-        label({ label: `[${serviceName}]` }),
-        timestamp({ format: 'YY-MM-DD HH:mm:ss' }),
-        printf(({ label, timestamp, level, message }) => `${level} ${timestamp} ${label}: ${message}`)
-    );
+export const consoleTransportFormat = (serviceName: EServiceName) => combine(
+    colorize({ all: true }),
+    label({ label: `[${serviceName}]` }),
+    timestamp({ format: 'YY-MM-DD HH:mm:ss' }),
+    printf(({ label, timestamp, level, message }) => `${level} ${timestamp} ${label}: ${message}`)
+);
 
+export default function initLogger(serviceName: EServiceName) {
     const fileTransportFormat = combine(timestamp(), json());
 
     const errorLogger = winston.createLogger({
         level: 'error',
         transports: [
-            new Console({ format: consoleTransportFormat }),
+            new Console({ format: consoleTransportFormat(serviceName) }),
             ...fileTransportsIfEnabled({ filename: 'error.log', dirname: `./logs/${serviceName}`, format: fileTransportFormat })
         ]
     });
@@ -28,7 +28,7 @@ export default function initLogger(serviceName: EServiceName) {
     const infoLogger = winston.createLogger({
         level: 'info',
         transports: [
-            new Console({ format: consoleTransportFormat }),
+            new Console({ format: consoleTransportFormat(serviceName) }),
             ...fileTransportsIfEnabled({ filename: 'info.log', dirname: `./logs/${serviceName}`, format: fileTransportFormat })
         ]
     });
