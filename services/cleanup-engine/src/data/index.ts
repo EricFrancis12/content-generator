@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ICampaign, IIntakeHistoryItem, IOutputHistoryItem } from '../../_shared';
-import _shared from '../../_shared';
+import { logger, formatErr } from '../config/loggers';
+import _shared, { ICampaign, IIntakeHistoryItem, IOutputHistoryItem } from '../../_shared';
 const { SERVICE_TOKEN } = _shared.constants;
 
 export async function fetchCampaigns() {
@@ -16,7 +16,7 @@ export async function fetchCampaigns() {
         }
         return campaigns;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }
@@ -34,7 +34,7 @@ export async function fetchIntakeHistory(campaign_id: string) {
         }
         return intakeHistory;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }
@@ -52,7 +52,7 @@ export async function fetchOutputHistory(campaign_id: string) {
         }
         return outputHistory;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }

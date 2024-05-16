@@ -3,6 +3,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 import _shared, { IOutputHistoryItem } from '../../_shared';
 const { SERVICE_TOKEN } = _shared.constants;
+import { logger, formatErr } from '../config/loggers';
 import config from '../config/config';
 const { TELEGRAM_BOT_TOKEN } = config;
 
@@ -19,14 +20,14 @@ export async function addToOutputHistory(outputHistoryItem: IOutputHistoryItem) 
         }
         return true;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return false;
     }
 }
 
 export async function sendMessageToTelegramChannel(chatId: string, message: string) {
     if (!TELEGRAM_BOT_TOKEN) {
-        console.error('Invalid or missing telegram bot token');
+        logger.error('Invalid or missing telegram bot token');
         return false;
     }
 
@@ -46,7 +47,7 @@ export async function sendMessageToTelegramChannel(chatId: string, message: stri
         );
         return true
     } catch (err) {
-        console.error('err');
+        logger.error(formatErr(err));
         return false;
     }
 }
@@ -54,7 +55,7 @@ export async function sendMessageToTelegramChannel(chatId: string, message: stri
 
 export async function sendImageToTelegramChannel(chatId: string, path: string) {
     if (!TELEGRAM_BOT_TOKEN) {
-        console.error('Invalid or missing telegram bot token');
+        logger.error('Invalid or missing telegram bot token');
         return false;
     }
 
@@ -74,14 +75,14 @@ export async function sendImageToTelegramChannel(chatId: string, path: string) {
         );
         return true;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return false;
     }
 }
 
 export async function sendVideoToTelegramChannel(chatId: string, path: string) {
     if (!TELEGRAM_BOT_TOKEN) {
-        console.error('Invalid or missing telegram bot token');
+        logger.error('Invalid or missing telegram bot token');
         return false;
     }
 
@@ -101,7 +102,7 @@ export async function sendVideoToTelegramChannel(chatId: string, path: string) {
         );
         return true;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return false;
     }
 }

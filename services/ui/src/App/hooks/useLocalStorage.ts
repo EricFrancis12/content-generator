@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { sendLogToApi } from '../utils';
 
 type SetValue<T> = T | ((val: T) => T);
 
@@ -35,6 +36,6 @@ export function saveToLocalStorage(key: string, value: string) {
     try {
         window.localStorage.setItem(key, JSON.stringify(value));
     } catch (err) {
-        console.log('Error saving to local storage');
+        sendLogToApi('error', 'Error saving to local storage');
     }
 }

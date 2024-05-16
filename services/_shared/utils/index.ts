@@ -203,3 +203,12 @@ export async function readLogFile(filePath: string): Promise<{ [key: string]: st
     }
     return [];
 }
+
+export function formatErr(err: unknown) {
+    if (err instanceof Error) {
+        return err.message;
+    } else if (typeof err === 'string') {
+        return err;
+    }
+    return 'Unknown Error';
+}

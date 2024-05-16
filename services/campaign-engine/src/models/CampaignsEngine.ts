@@ -4,6 +4,7 @@ import {
     addToIntakeHistory, checkForNewRedditImages, fetchIntakeHistory
 } from '../data';
 import { ESourceType, EContentType, TDownloadQueueItem, ISourceImage, ISourceVideo } from '../../_shared';
+import { logger } from '../config/loggers';
 import config from '../config/config';
 const { CRON_EXPRESSION } = config;
 
@@ -23,7 +24,7 @@ export default class CampaignsEngine {
     async start() {
         if (this.runTaskImmediately) {
             const delayMs = 30_000;
-            console.log(`Starting first task in ${delayMs} ms`);
+            logger.info(`Starting first task in ${delayMs} ms`);
             await new Promise(resolve => setTimeout(resolve, delayMs));
             main();
         }
@@ -36,7 +37,7 @@ export default class CampaignsEngine {
 }
 
 const main = async () => {
-    console.log('Starting scheduled task');
+    logger.info('Starting scheduled task');
     const campaigns = await fetchCampaigns();
     for (let i = 0; i < campaigns.length; i++) {
         const campaign = campaigns[i];
@@ -52,16 +53,16 @@ const main = async () => {
             if (contentType === EContentType.VIDEO) {
                 newContent = await checkForNewYouTubeVideos(externalId, intakeHistory, campaign?.options);
             } else {
-                console.error('YouTube content types other than VIDEO not yet implimented');
+                logger.error('YouTube content types other than VIDEO not yet implimented');
             }
         } else if (sourceType === ESourceType.REDDIT) {
             if (contentType === EContentType.IMAGE) {
                 newContent = await checkForNewRedditImages(externalId, intakeHistory, campaign?.options);
             } else {
-                console.error('Reddit content types other than IMAGE not yet implimented');
+                logger.error('Reddit content types other than IMAGE not yet implimented');
             }
         } else {
-            console.error('Source types other than YOUTUBE not yet implimented');
+            logger.error('Source types other than YOUTUBE not yet implimented');
         }
 
         for (let j = 0; j < newContent.length; j++) {
@@ -86,5 +87,5 @@ const main = async () => {
             }
         }
     }
-    console.log('Scheduled task finished');
+    logger.info('Scheduled task finished');
 };

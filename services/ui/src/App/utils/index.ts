@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { ESourceType } from '../../_shared';
 import type { TPagination } from '../typings';
+import _shared, { ESourceType } from '../../_shared';
+const { formatErr } = _shared.utils;
 
 export type { TPagination } from '../typings';
+export { formatErr };
 
 export function generatePagination({ currentPage, totalPages }: {
     currentPage: number,

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { z } from 'zod';
-import { ISourceImage, ESourceType } from '../../_shared';
 import { IOptions } from '.';
+import { logger, formatErr } from '../config/loggers';
+import { ISourceImage, ESourceType } from '../../_shared';
 
 interface IOptionsReddit extends IOptions {
     selector?: 'new' | 'hot' | 'controversial';
@@ -39,7 +40,7 @@ export default async function getRecentRedditImages(subreddit: string, options?:
             };
         });
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }

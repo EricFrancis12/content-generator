@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import amqplib from 'amqplib';
+import { logger, formatErr } from '../config/loggers';
 import _shared, { IQueue } from '../../_shared';
 const { initRabbitMQ, RABBITMQ_EXCHANGE, RABBITMQ_QUEUES } = _shared.amqp;
 import config from '../config/config';
@@ -42,7 +43,7 @@ export async function getAllQueues(req: Request, res: Response) {
             }
         });
     } catch (err) {
-        console.error('Error sending message to queue:', err);
+        logger.error(`Error sending message to queue: ${formatErr(err)}`);
         res.status(500).json({
             success: false,
         });
@@ -71,7 +72,7 @@ export async function sendMessageToQueue(req: Request, res: Response) {
             success: true
         });
     } catch (err) {
-        console.error('Error sending message to queue:', err);
+        logger.error(`Error sending message to queue: ${formatErr(err)}`);
         res.status(500).json({
             success: false,
         });
@@ -98,6 +99,7 @@ export async function consumeMessageFromQueue(req: Request, res: Response) {
             throw new Error('Error getting message from queue');
         }
     } catch (err) {
+        logger.error(`Error consuming message from queue: ${formatErr(err)}`);
         res.status(500).json({
             success: false
         });

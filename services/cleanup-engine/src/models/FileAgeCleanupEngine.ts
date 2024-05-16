@@ -2,6 +2,7 @@ import { promises as fsPromises } from 'fs';
 import cron from 'node-cron';
 import _shared from '../../_shared';
 const { getAllNestedFilePaths } = _shared.utils;
+import { logger, formatErr } from '../config/loggers';
 import config from '../config/config';
 import { getFileDate } from '../utils';
 const { CRON_EXPRESSION, MAX_FILE_AGE } = config;
@@ -32,7 +33,7 @@ export default class FileAgeCleanupEngine {
 }
 
 const main = async () => {
-    console.log('FileAgeCleanupEngine: Starting scheduled task');
+    logger.info('FileAgeCleanupEngine: Starting scheduled task');
 
     const outputContentProm = getAllNestedFilePaths('./shared-file-system/output-content');
     const sourceContentProm = getAllNestedFilePaths('./shared-file-system/source-content');
@@ -51,14 +52,14 @@ const main = async () => {
                 const birthtime = unixTimestamp * 1000;
                 const minAcceptableTime = Date.now() - MAX_FILE_AGE;
                 if (birthtime < minAcceptableTime) {
-                    console.log(`Attempting to delete: ${filePath}`);
+                    logger.info(`Attempting to delete: ${filePath}`);
                     await fsPromises.unlink(filePath);
-                    console.log(`Successfully deleted: ${filePath}`);
+                    logger.info(`Successfully deleted: ${filePath}`);
                 }
             }
         } catch (err) {
-            console.error(err);
+            logger.error(formatErr(err));
         }
     }
-    console.log('FileAgeCleanupEngine: Scheduled task finished');
+    logger.info('FileAgeCleanupEngine: Scheduled task finished');
 }
