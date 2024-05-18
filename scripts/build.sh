@@ -27,7 +27,7 @@ fi
 # Add the SERVICE_TOKEN to the config
 if [ "$DEFAULT_BUILD_CONFIG" != "{}" ]; then
     # If the config is not empty, add a comma before adding SERVICE_TOKEN
-    BUILD_CONFIG="${DEFAULT_BUILD_CONFIG%?}, \"SERVICE_TOKEN\": \"$SERVICE_TOKEN\"}"
+    BUILD_CONFIG="${DEFAULT_BUILD_CONFIG%?} \"SERVICE_TOKEN\": \"$SERVICE_TOKEN\"}"
 else
     # If the config is empty, just add SERVICE_TOKEN
     BUILD_CONFIG="{ \"SERVICE_TOKEN\": \"$SERVICE_TOKEN\" }"
