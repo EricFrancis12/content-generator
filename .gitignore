@@ -1,5 +1,6 @@
 node_modules
-.env
 build
-**/build.config.json
+logs/*
 **/shared-file-system/*
+**/build.config.json
+**/.env

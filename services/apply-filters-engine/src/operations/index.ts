@@ -1,9 +1,9 @@
 import { basename } from 'path';
-import {
+import { logger } from '../config/loggers';
+import _shared, {
     ESourceType, EContentType, ISavedContent, EFilterName,
     IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions
 } from '../../_shared';
-import _shared from '../../_shared';
 const { generateInternalId } = _shared.utils;
 import { getSavedContentDetails } from '../utils';
 
@@ -43,10 +43,10 @@ const concatVideos: TOperationFunction = async (
             .input(ingredientVideo.path)
             .on('error', reject)
             .on('start', () => {
-                console.log(`Starting concat for ${baseVideoName} and ${ingredientVideoName}`);
+                logger.info(`Starting concat for ${baseVideoName} and ${ingredientVideoName}`);
             })
             .on('end', () => {
-                console.log(`Concat finished for ${baseVideoName} and ${ingredientVideoName}`);
+                logger.info(`Concat finished for ${baseVideoName} and ${ingredientVideoName}`);
                 resolve({
                     sourceType: ESourceType.CREATED_BY_FILTER,
                     contentType: EContentType.VIDEO,
@@ -114,15 +114,12 @@ const overlayVideoOntoVideo: TOperationFunction = async (baseVideo, ingredientVi
         command.complexFilter(complexFilter);
         command.output(outputPath);
         command.outputOptions(['-c:a copy']);
-        command.on('start', (command) => {
-            console.log(command);
-        });
         command.on('error', reject);
         command.on('start', () => {
-            console.log(`Starting overlay for ${baseVideoName} and ${ingredientVideoName}`);
+            logger.info(`Starting overlay for ${baseVideoName} and ${ingredientVideoName}`);
         });
         command.on('end', () => {
-            console.log(`Overlay finished for ${baseVideoName} and ${ingredientVideoName}`);
+            logger.info(`Overlay finished for ${baseVideoName} and ${ingredientVideoName}`);
             resolve({
                 sourceType: ESourceType.CREATED_BY_FILTER,
                 contentType: EContentType.VIDEO,
@@ -183,15 +180,12 @@ const overlayImageOntoVideo: TOperationFunction = async (baseVideo, ingredientIm
         command.complexFilter(complexFilter);
         command.output(outputPath);
         command.outputOptions(['-c:a copy']);
-        command.on('start', (command) => {
-            console.log(command);
-        });
         command.on('error', reject);
         command.on('start', () => {
-            console.log(`Starting overlay for ${baseVideoName} and ${ingredientVideoName}`);
+            logger.info(`Starting overlay for ${baseVideoName} and ${ingredientVideoName}`);
         });
         command.on('end', () => {
-            console.log(`Overlay finished for ${baseVideoName} and ${ingredientVideoName}`);
+            logger.info(`Overlay finished for ${baseVideoName} and ${ingredientVideoName}`);
             resolve({
                 sourceType: ESourceType.CREATED_BY_FILTER,
                 contentType: EContentType.VIDEO,

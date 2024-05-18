@@ -1,5 +1,5 @@
 import _shared, {
-    TRabbitMQQueue, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem, ISavedImage, ISavedVideo,
+    EServiceName, TRabbitMQQueue, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem, ISavedImage, ISavedVideo,
     EContentType, ESourceType
 } from '../../_shared';
 
@@ -9,6 +9,7 @@ const shared = {
 
 export default shared;
 export {
+    EServiceName,
     TRabbitMQQueue,
     TDownloadQueueItem,
     TFilterQueueItem,

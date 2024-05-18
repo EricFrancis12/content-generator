@@ -1,5 +1,5 @@
 import _shared, {
-    ESourceType, EContentType, EOutputType, TRabbitMQQueue, IQueue,
+    EServiceName, ESourceType, EContentType, EOutputType, TRabbitMQQueue, IQueue,
     EImageFileExtension, EVideoFileExtension, IDiskSpace
 } from '../../_shared';
 
@@ -9,6 +9,7 @@ const shared = {
 
 export default shared;
 export {
+    EServiceName,
     ESourceType,
     EContentType,
     EOutputType,

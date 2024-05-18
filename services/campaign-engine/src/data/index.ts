@@ -5,6 +5,8 @@ import addToDownloadQueue from './addToDownloadQueue';
 import addToIntakeHistory from './addToIntakeHistory';
 import getRecentYouTubeVideos from './getRecentYouTubeVideos';
 import getRecentRedditImages from './getRecentRedditImages';
+import { logger, formatErr } from '../config/loggers';
+
 
 export {
     fetchCampaigns,
@@ -57,7 +59,7 @@ export async function checkForNewYouTubeVideos(channel_id: string, history: IHis
         }));
         return newVideos;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }
@@ -73,7 +75,7 @@ export async function checkForNewRedditImages(subreddit: string, history: IHisto
         }));
         return newImages;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }

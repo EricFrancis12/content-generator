@@ -1,5 +1,16 @@
 
 
+export enum EServiceName {
+    _SHARED = '_shared',
+    API = 'api',
+    APPLY_FILTERS_ENGINE = 'apply-filters-engine',
+    CAMPAIGN_ENGINE = 'campaign-engine',
+    CLEANUP_ENGINE = 'cleanup-engine',
+    DOWNLOAD_ENGINE = 'download-engine',
+    PUBLISH_ENGINE = 'publish-engine',
+    UI = 'ui'
+}
+
 export enum EImageFileExtension {
     jpg = 'jpg',
     jpeg = 'jpeg',

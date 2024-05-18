@@ -3,6 +3,7 @@ import _shared, { ISavedContent, TFilterQueueItem, TPublishQueueItem, IFIlterCom
 const { initRabbitMQ, RABBITMQ_EXCHANGE } = _shared.amqp;
 const { getSavedContentViaInternalId } = _shared.utils;
 import operations from '../operations';
+import { logger, formatErr } from '../config/loggers';
 import config from '../config/config';
 const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_FILTER_QUEUE, RABBITMQ_PUBLISH_QUEUE } = config;
 
@@ -37,8 +38,8 @@ export default class ApplyFiltersEngine {
             return this.channel.consume(RABBITMQ_FILTER_QUEUE, async (msg) => {
                 if (msg != null) {
                     const filterQueueItem = JSON.parse(msg.content.toString()) as TFilterQueueItem;
-                    console.log('Received new message: ');
-                    console.log(filterQueueItem);
+                    logger.info('Received new message: ');
+                    logger.info(JSON.stringify(filterQueueItem));
                     const { sourceType, filters, contentPath } = filterQueueItem;
 
                     const results: ISavedContent[] = [];
@@ -47,7 +48,7 @@ export default class ApplyFiltersEngine {
                         const { name, base, ingredient, options } = filters[i];
                         const operation = operations[name];
                         if (!operation) {
-                            console.error('Operation not found');
+                            logger.error('Operation not found');
                             break;
                         }
 
@@ -57,7 +58,7 @@ export default class ApplyFiltersEngine {
                         const baseContentPath = await baseContentPathProm;
                         const ingredientContentPath = await ingredientContentPathProm;
                         if (!baseContentPath || !ingredientContentPath) {
-                            console.error('Missing Base and/or Ingredient content path');
+                            logger.error('Missing Base and/or Ingredient content path');
                             break;
                         }
 
@@ -77,7 +78,7 @@ export default class ApplyFiltersEngine {
                             const result = await operation(baseContent, ingredientContent, isLastFilter, options);
                             results.push(result);
                         } catch (err) {
-                            console.error(err);
+                            logger.error(formatErr(err));
                             errored = true;
                             break;
                         }

@@ -2,6 +2,7 @@ import amqplib from 'amqplib';
 import _shared, { EContentType, EOutputType, TPublishQueueItem } from '../../_shared';
 const { initRabbitMQ } = _shared.amqp;
 const { copyFileToNewLocation } = _shared.utils;
+import { logger, formatErr } from '../config/loggers';
 import config from '../config/config'
 import { addToOutputHistory, sendImageToTelegramChannel, sendMessageToTelegramChannel, sendVideoToTelegramChannel } from '../data';
 const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_PUBLISH_QUEUE } = config;
@@ -38,8 +39,8 @@ export default class PublishEngine {
                 if (msg != null) {
                     try {
                         const publishQueueItem = JSON.parse(msg.content.toString()) as TPublishQueueItem;
-                        console.log('Received new message: ');
-                        console.log(publishQueueItem);
+                        logger.info('Received new message: ');
+                        logger.info(JSON.stringify(publishQueueItem));
                         const { campaign_id, sourceType, publishTo, contentPath } = publishQueueItem;
 
                         for (let i = 0; i < publishTo.length; i++) {
@@ -66,10 +67,10 @@ export default class PublishEngine {
                                 } else if (contentType === EContentType.VIDEO) {
                                     success = await sendVideoToTelegramChannel(externalId, contentPath);
                                 } else {
-                                    console.error(`Unknown output content type: ${contentType}`);
+                                    logger.error(`Unknown output content type: ${contentType}`);
                                 }
                             } else {
-                                console.error(`Unknown output type: ${outputType}`);
+                                logger.error(`Unknown output type: ${outputType}`);
                             }
 
                             if (success) {
@@ -84,7 +85,7 @@ export default class PublishEngine {
                             }
                         }
                     } catch (err) {
-                        console.error(err);
+                        logger.error(formatErr(err));
                     }
                     this.channel?.ack(msg);
                 }

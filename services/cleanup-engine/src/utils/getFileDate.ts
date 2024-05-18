@@ -1,4 +1,5 @@
 import { exec } from 'child_process';
+import { logger, formatErr } from '../config/loggers';
 
 type TArg = {
     stdout: string,
@@ -24,7 +25,7 @@ const executeCommand = async (cmd: string): Promise<string | null> => {
             return stdout;
         }
     } catch (err) {
-        console.error(err instanceof Error ? err : 'Error executing command at getFileDate()');
+        logger.error(formatErr(err));
     }
     return null;
 };
@@ -46,7 +47,7 @@ const getFileDate = async (filePath: string): Promise<number | null> => {
             return unixTimestamp || null;
         }
     } catch (err) {
-        console.error(`getFileDate() => ${err}`);
+        logger.error(formatErr(err));
     }
     return null;
 };

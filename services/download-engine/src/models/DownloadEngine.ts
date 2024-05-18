@@ -3,6 +3,7 @@ import { downloadRedditImage, downloadYouTubeVideo } from '../data';
 import _shared, { EContentType, ESourceType, TDownloadQueueItem, TFilterQueueItem, TPublishQueueItem } from '../../_shared';
 const { initRabbitMQ, RABBITMQ_EXCHANGE } = _shared.amqp;
 const { generateInternalId } = _shared.utils;
+import { logger, formatErr } from '../config/loggers';
 import config from '../config/config';
 const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_DOWNLOAD_QUEUE, RABBITMQ_FILTER_QUEUE, RABBITMQ_PUBLISH_QUEUE } = config;
 
@@ -38,8 +39,8 @@ export default class DownloadEngine {
                 if (msg != null) {
                     try {
                         const downloadQueueItem = JSON.parse(msg.content.toString()) as TDownloadQueueItem;
-                        console.log('Received new message: ');
-                        console.log(downloadQueueItem);
+                        logger.info('Received new message: ');
+                        logger.info(JSON.stringify(downloadQueueItem));
                         const { sourceType, contentType, externalId, filters } = downloadQueueItem;
                         const internalId = generateInternalId();
                         if (sourceType === ESourceType.YOUTUBE) {
@@ -62,7 +63,7 @@ export default class DownloadEngine {
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
                                 }
                             } else {
-                                console.error('YouTube content types other than VIDEO not yet implimented');
+                                logger.error('YouTube content types other than VIDEO not yet implimented');
                             }
                         } else if (sourceType === ESourceType.REDDIT) {
                             if (contentType === EContentType.IMAGE) {
@@ -84,13 +85,13 @@ export default class DownloadEngine {
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
                                 }
                             } else {
-                                console.error('Reddit content types other than IMAGE not yet implimented');
+                                logger.error('Reddit content types other than IMAGE not yet implimented');
                             }
                         } else {
-                            console.error('Source types other than YOUTUBE not yet implimented');
+                            logger.error('Source types other than YOUTUBE not yet implimented');
                         }
                     } catch (err) {
-                        console.error(err);
+                        logger.error(formatErr(err));
                     }
                     this.channel?.ack(msg);
                 }

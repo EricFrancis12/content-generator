@@ -7,7 +7,8 @@
   "dependencies": {
     "@tsconfig/node18": "^18.2.4",
     "@types/amqplib": "^0.10.5",
-    "amqplib": "^0.10.3"
+    "amqplib": "^0.10.3",
+    "winston": "^3.13.0"
   },
   "scripts": {
     "test": "jest"

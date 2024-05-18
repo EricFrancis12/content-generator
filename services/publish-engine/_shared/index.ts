@@ -1,4 +1,4 @@
-import _shared, { EContentType, EOutputType, TRabbitMQQueue, TPublishQueueItem, IOutputHistoryItem } from '../../_shared';
+import _shared, { EServiceName, EContentType, EOutputType, TRabbitMQQueue, TPublishQueueItem, IOutputHistoryItem } from '../../_shared';
 
 const shared = {
     ..._shared
@@ -6,6 +6,7 @@ const shared = {
 
 export default shared;
 export {
+    EServiceName,
     EContentType,
     EOutputType,
     TRabbitMQQueue,

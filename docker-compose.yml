@@ -7,6 +7,7 @@ services:
       dockerfile: ./api/Dockerfile
     volumes:
       - ./shared-file-system/:/app/shared-file-system
+      - ./logs/:/app/logs
     ports:
       - "3000:3000"
     environment:
@@ -18,6 +19,8 @@ services:
       - rabbitmq    
 
   ui:
+    volumes:
+      - ./logs/ui/:/app/logs/ui
     depends_on:
       - api
 

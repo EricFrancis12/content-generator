@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import toast from 'react-hot-toast';
 import { useAppSelector } from '../store/hooks';
 import { selectauthToken } from '../store/reducers/authTokenReducer';
+import { sendLogToApi, formatErr } from '../utils'
 
 export type TFileDownload = {
     name: string,
@@ -86,7 +87,7 @@ export function FileDownloadProvider({ children }: {
                 window.URL.revokeObjectURL(blobUrl);
             }
         } catch (err) {
-            console.log(err);
+            sendLogToApi('error', formatErr(err));
             toast.error('Error downloading file');
         } finally {
             setFileDownload(null);

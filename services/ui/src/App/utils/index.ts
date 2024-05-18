@@ -1,6 +1,10 @@
-import { ESourceType } from '../../_shared';
+import axios from 'axios';
+import type { TPagination } from '../typings';
+import _shared, { ESourceType } from '../../_shared';
+const { formatErr } = _shared.utils;
 
-export type TPagination = '<<' | '<' | number | '...' | '>' | '>>';
+export type { TPagination } from '../typings';
+export { formatErr };
 
 export function generatePagination({ currentPage, totalPages }: {
     currentPage: number,
@@ -48,4 +52,11 @@ export function localeSourceType(sourceType: ESourceType) {
         default:
             return '';
     }
+}
+
+export function sendLogToApi(logLevel: 'error' | 'info', message: string) {
+    const { protocol, hostname } = window.location;
+    const endpoint = `${protocol}//${hostname}:3000/api/v1/services/ui/logs/${logLevel}`;
+    axios.post(endpoint, { message })
+        .catch(err => { });
 }

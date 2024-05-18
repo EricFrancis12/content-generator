@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { TDownloadQueueItem } from '../../_shared';
-import _shared from '../../_shared';
+import { logger, formatErr } from '../config/loggers';
+import _shared, { TDownloadQueueItem } from '../../_shared';
 const { SERVICE_TOKEN } = _shared.constants;
 
 export default async function addToDownloadQueue(downloadQueueItem: TDownloadQueueItem) {
@@ -15,7 +15,7 @@ export default async function addToDownloadQueue(downloadQueueItem: TDownloadQue
         }
         return true;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return false;
     }
 }

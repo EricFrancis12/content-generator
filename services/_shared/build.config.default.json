@@ -1,0 +1,4 @@
+{
+    "DISABLE_LOG_FILES": false,
+    "SERVICE_TOKEN": "run 'make build' to produce a build config file"
+}

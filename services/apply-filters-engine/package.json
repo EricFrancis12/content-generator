@@ -22,7 +22,8 @@
         "amqplib": "^0.10.3",
         "fluent-ffmpeg": "^2.1.2",
         "os": "^0.1.2",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.3",
+        "winston": "^3.13.0"
     },
     "devDependencies": {
         "@types/jest": "^29.5.12",

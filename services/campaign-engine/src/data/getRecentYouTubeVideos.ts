@@ -5,6 +5,7 @@ import ytdl from 'ytdl-core';
 import { z } from 'zod';
 import { ISourceVideo, ESourceType } from '../../_shared';
 import { isShortVideo, isLongVideo } from '../utils';
+import { logger, formatErr } from '../config/loggers';
 import config from '../config/config';
 const { MIN_ALLOWED_VIDEO_LENGTH, MAX_ALLOWED_VIDEO_LENGTH } = config;
 import { IOptions } from '.';
@@ -33,7 +34,7 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
         const parsedData: TParsedData | Error = await new Promise((resolve, reject) => {
             parser.parseString(data, (parseErr, parsedData) => {
                 if (parseErr) {
-                    console.error(new Error(parseErr.message));
+                    logger.error(new Error(parseErr.message).message);
                     reject(parseErr);
                 } else {
                     resolve(parsedData);
@@ -83,7 +84,7 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
             externalId: item.videoDetails.videoId
         }));
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return [];
     }
 }

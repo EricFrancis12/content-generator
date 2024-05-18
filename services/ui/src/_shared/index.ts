@@ -1,5 +1,5 @@
 import _shared, {
-    ICampaign, IOutput, ESourceType, EContentType, EFilterName, EFilterComponentType, EOutputType,
+    EServiceName, ICampaign, IOutput, ESourceType, EContentType, EFilterName, EFilterComponentType, EOutputType,
     EImageFileExtension, EVideoFileExtension, IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem,
     TRabbitMQQueue, IQueue, TQueueHistory, TQueuesHistory,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
@@ -12,6 +12,7 @@ const shared = {
 
 export default shared;
 export {
+    EServiceName,
     ICampaign,
     IOutput,
     ESourceType,

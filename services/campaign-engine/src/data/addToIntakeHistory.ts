@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { IIntakeHistoryItem } from '../../_shared';
-import _shared from '../../_shared';
+import { logger, formatErr } from '../config/loggers';
+import _shared, { IIntakeHistoryItem } from '../../_shared';
 const { SERVICE_TOKEN } = _shared.constants;
 
 export default async function addToIntakeHistory(intakeHistoryItem: IIntakeHistoryItem) {
@@ -16,7 +16,7 @@ export default async function addToIntakeHistory(intakeHistoryItem: IIntakeHisto
         }
         return true;
     } catch (err) {
-        console.error(err);
+        logger.error(formatErr(err));
         return false;
     }
 }

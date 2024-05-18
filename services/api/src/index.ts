@@ -2,18 +2,22 @@ import cors from 'cors';
 import express from 'express';
 import apiRouter from './routes/api/apiRouter';
 import mongoose from 'mongoose';
+import { logger } from './config/loggers';
+import _shared from '../_shared';
+const { consoleLogger } = _shared.loggers;
 import config from './config/config';
 const { MONGO_IP, MONGO_PORT, MONGO_USER, MONGO_PASSWORD } = config;
 
 const mongoUrl = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
 
 const connectWithRetry = () => {
+    const timeout = 5000;
     mongoose
         .connect(mongoUrl)
-        .then(() => console.log('Connected to DB'))
-        .catch(err => {
-            console.error(err);
-            setTimeout(connectWithRetry, 5000);
+        .then(() => logger.info('Connected to DB'))
+        .catch(() => {
+            consoleLogger.error(`Error connecting to Moongo DB. Trying again in ${(timeout / 1000).toFixed(0)} seconds.`);
+            setTimeout(connectWithRetry, timeout);
         });
 }
 connectWithRetry();
@@ -32,8 +36,8 @@ app.get('*', (req, res) => {
 
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    logger.info(`Server running on port ${port}`);
     if (process.env.NODE_ENV === 'development') {
-        console.log('~ NOTICE: Auth middleware and other security features are disabled while running in development mode.');
+        logger.info('~ NOTICE: Auth middleware and other security features are disabled while running in development mode.');
     }
 });
