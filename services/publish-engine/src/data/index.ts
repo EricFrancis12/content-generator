@@ -1,6 +1,10 @@
 import { basename } from 'path';
 import axios from 'axios';
 import ffmpeg from 'fluent-ffmpeg';
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
+import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath);
 import _shared, { EContentType, ESourceType, ISavedImage, IOutputHistoryItem } from '../../_shared';
 const { SERVICE_TOKEN } = _shared.constants;
 import { logger, formatErr } from '../config/loggers';
@@ -36,7 +40,10 @@ export async function takeScreenshotOfVideo(videoPath: string, outputPath: strin
                 folder,
                 filename
             })
-            .on('error', () => resolve(null))
+            .on('error', (err) => {
+                console.error(err);
+                resolve(null);
+            })
             .on('end', () => resolve({
                 contentType: EContentType.IMAGE,
                 sourceType: ESourceType.CREATED_BY_FILTER,

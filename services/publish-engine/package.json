@@ -13,6 +13,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@ffmpeg-installer/ffmpeg": "^1.1.0",
+        "@ffprobe-installer/ffprobe": "^2.1.2",
         "@tsconfig/node18": "^18.2.2",
         "@types/amqplib": "^0.10.5",
         "@types/fluent-ffmpeg": "^2.1.24",

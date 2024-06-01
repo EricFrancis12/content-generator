@@ -57,12 +57,12 @@ export async function postVideoToInstagramAccount({
             : null;
 
         if (!coverImagePath) {
-            const outputPath = `../../shared-file-system/WIP-filters-content/temp/screenshot-${crypto.randomUUID()}.jpg`;
+            const outputPath = `./shared-file-system/WIP-filters-content/temp/screenshot-${crypto.randomUUID()}.jpg`;
             const screenshotImage = await takeScreenshotOfVideo(path, outputPath);
             if (screenshotImage) {
                 coverImagePath = screenshotImage.path;
             } else {
-                return false;
+                throw new Error('Error taking screenshot of video');
             }
         }
 
