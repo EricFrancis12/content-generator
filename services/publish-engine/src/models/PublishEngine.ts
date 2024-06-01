@@ -4,8 +4,11 @@ const { initRabbitMQ } = _shared.amqp;
 const { copyFileToNewLocation } = _shared.utils;
 import { logger, formatErr } from '../config/loggers';
 import config from '../config/config'
-import { addToOutputHistory, sendImageToTelegramChannel, sendMessageToTelegramChannel, sendVideoToTelegramChannel } from '../data';
 const { RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_PUBLISH_QUEUE } = config;
+import {
+    addToOutputHistory, postImageToInstagramAccount, postVideoToInstagramAccount,
+    sendImageToTelegramChannel, sendMessageToTelegramChannel, sendVideoToTelegramChannel
+} from '../data';
 
 export default class PublishEngine {
     channel: amqplib.Channel | null;
@@ -66,6 +69,21 @@ export default class PublishEngine {
                                     success = await sendImageToTelegramChannel(externalId, contentPath);
                                 } else if (contentType === EContentType.VIDEO) {
                                     success = await sendVideoToTelegramChannel(externalId, contentPath);
+                                } else {
+                                    logger.error(`Unknown output content type: ${contentType}`);
+                                }
+                            } else if (outputType === EOutputType.POST_CONTENT_TO_INSTAGRAM_ACCOUNT && !!options?.username && !!options?.password) {
+                                const { username, password, description } = options;
+                                const arg = {
+                                    username,
+                                    password,
+                                    path: contentPath,
+                                    description
+                                };
+                                if (contentType === EContentType.IMAGE) {
+                                    success = await postImageToInstagramAccount(arg);
+                                } else if (contentType === EContentType.VIDEO) {
+                                    success = await postVideoToInstagramAccount(arg);
                                 } else {
                                     logger.error(`Unknown output content type: ${contentType}`);
                                 }
