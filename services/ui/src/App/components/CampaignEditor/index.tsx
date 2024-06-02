@@ -229,6 +229,25 @@ export default function CampaignEditor({ campaign, setCampaign }: {
                                         onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, options: { ..._output.options, message: e.target.value } } : _output) })}
                                     />
                                 }
+                                {output.outputType === EOutputType.POST_CONTENT_TO_INSTAGRAM_ACCOUNT &&
+                                    <>
+                                        <Input
+                                            title='Username:'
+                                            value={output.options?.username || ''}
+                                            onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, options: { ..._output.options, username: e.target.value } } : _output) })}
+                                        />
+                                        <Input
+                                            title='Password:'
+                                            value={output.options?.password || ''}
+                                            onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, options: { ..._output.options, password: e.target.value } } : _output) })}
+                                        />
+                                        <Input
+                                            title='Description:'
+                                            value={output.options?.description || ''}
+                                            onChange={e => setCampaign({ ...campaign, publishTo: campaign.publishTo.map((_output, _index) => _index === index ? { ..._output, options: { ..._output.options, description: e.target.value } } : _output) })}
+                                        />
+                                    </>
+                                }
                             </div>
                         ))}
                         <AddButton
