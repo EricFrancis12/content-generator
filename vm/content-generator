@@ -1,5 +1,7 @@
 # This nginx.conf file is used for serving the ui and api
 # when ran on an Ubuntu virtual machine.
+#
+# It should be located at: "/etc/nginx/sites-enabled/content-generator"
 
 server {
     listen 80;
