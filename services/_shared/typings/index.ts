@@ -99,18 +99,32 @@ export interface IOutput {
     contentType: EContentType,
     externalId: string,
     disabled?: boolean,
-    options?: IOutputOptions
+    options?: TOutputOptions
 }
 
 export enum EOutputType {
     KEEP_SAVED = 'KEEP_SAVED',
     SEND_CONTENT_TO_TELEGRAM_CHANNEL = 'SEND_CONTENT_TO_TELEGRAM_CHANNEL',
-    SEND_MESSAGE_TO_TELEGRAM_CHANNEL = 'SEND_MESSAGE_TO_TELEGRAM_CHANNEL'
+    SEND_MESSAGE_TO_TELEGRAM_CHANNEL = 'SEND_MESSAGE_TO_TELEGRAM_CHANNEL',
+    POST_CONTENT_TO_INSTAGRAM_ACCOUNT = 'POST_CONTENT_TO_INSTAGRAM_ACCOUNT'
 }
 
-export interface IOutputOptions {
+export type TOutputOptions = {
+    username?: string,
+    password?: string,
+    description?: string,
     message?: string
-}
+};
+
+export type TOutputOptions_Instagram = {
+    username: string,
+    password: string,
+    description?: string
+};
+
+export type TOutputOptions_Telegram = {
+    message?: string
+};
 
 export interface IHistoryItem {
     sourceType: ESourceType,

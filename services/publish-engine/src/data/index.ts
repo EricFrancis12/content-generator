@@ -1,11 +1,16 @@
-import fs from 'fs';
+import { basename } from 'path';
 import axios from 'axios';
-import FormData from 'form-data';
-import _shared, { IOutputHistoryItem } from '../../_shared';
+import ffmpeg from 'fluent-ffmpeg';
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
+import { path as ffprobePath } from '@ffprobe-installer/ffprobe';
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath);
+import _shared, { EContentType, ESourceType, ISavedImage, IOutputHistoryItem } from '../../_shared';
 const { SERVICE_TOKEN } = _shared.constants;
 import { logger, formatErr } from '../config/loggers';
-import config from '../config/config';
-const { TELEGRAM_BOT_TOKEN } = config;
+
+export * from './Instagram';
+export * from './Telegram';
 
 export async function addToOutputHistory(outputHistoryItem: IOutputHistoryItem) {
     const { campaign_id } = outputHistoryItem;
@@ -25,84 +30,24 @@ export async function addToOutputHistory(outputHistoryItem: IOutputHistoryItem) 
     }
 }
 
-export async function sendMessageToTelegramChannel(chatId: string, message: string) {
-    if (!TELEGRAM_BOT_TOKEN) {
-        logger.error('Invalid or missing telegram bot token');
-        return false;
-    }
-
-    try {
-        const formData = new FormData();
-        formData.append('chat_id', chatId);
-        formData.append('text', message);
-
-        await axios.post(
-            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-        );
-        return true
-    } catch (err) {
-        logger.error(formatErr(err));
-        return false;
-    }
-}
-
-
-export async function sendImageToTelegramChannel(chatId: string, path: string) {
-    if (!TELEGRAM_BOT_TOKEN) {
-        logger.error('Invalid or missing telegram bot token');
-        return false;
-    }
-
-    try {
-        const formData = new FormData();
-        formData.append('chat_id', chatId);
-        formData.append('photo', fs.createReadStream(path))
-
-        await axios.post(
-            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-        );
-        return true;
-    } catch (err) {
-        logger.error(formatErr(err));
-        return false;
-    }
-}
-
-export async function sendVideoToTelegramChannel(chatId: string, path: string) {
-    if (!TELEGRAM_BOT_TOKEN) {
-        logger.error('Invalid or missing telegram bot token');
-        return false;
-    }
-
-    try {
-        const formData = new FormData();
-        formData.append('chat_id', chatId);
-        formData.append('video', fs.createReadStream(path))
-
-        await axios.post(
-            `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendVideo`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-        );
-        return true;
-    } catch (err) {
-        logger.error(formatErr(err));
-        return false;
-    }
+export async function takeScreenshotOfVideo(videoPath: string, outputPath: string): Promise<ISavedImage | null> {
+    const filename = basename(outputPath);
+    const folder = outputPath.split('/').slice(0, -1).join('/');
+    return new Promise(resolve => {
+        ffmpeg(videoPath)
+            .screenshots({
+                timestamps: [0],
+                folder,
+                filename
+            })
+            .on('error', (err) => {
+                console.error(err);
+                resolve(null);
+            })
+            .on('end', () => resolve({
+                contentType: EContentType.IMAGE,
+                sourceType: ESourceType.CREATED_BY_FILTER,
+                path: outputPath
+            }));
+    });
 }
