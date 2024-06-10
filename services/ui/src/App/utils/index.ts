@@ -6,6 +6,12 @@ const { formatErr } = _shared.utils;
 export type { TPagination } from '../typings';
 export { formatErr };
 
+export function apiURL(path: string): string {
+    const { protocol, hostname } = window.location;
+    const port = process.env.NODE_ENV === 'development' ? ':3000' : '';
+    return `${protocol}//${hostname}${port}${path}`;
+}
+
 export function generatePagination({ currentPage, totalPages }: {
     currentPage: number,
     totalPages: number

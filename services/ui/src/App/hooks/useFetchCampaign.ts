@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { _storeSelector } from '../store/store';
 import { ICampaign } from '../../_shared';
+import { apiURL } from '../utils';
 
 export default function useFetchCampaign(campaign_id?: string) {
     const authToken = _storeSelector(state => state.authToken).value;
@@ -23,8 +24,7 @@ export default function useFetchCampaign(campaign_id?: string) {
         }
 
         setLoading(true);
-        const { protocol, hostname } = window.location;
-        fetch(`${protocol}//${hostname}:3000/api/v1/campaigns/${campaign_id}`, {
+        fetch(apiURL(`/api/v1/campaigns/${campaign_id}`), {
             headers: {
                 Authorization: `Bearer ${authToken}`
             },

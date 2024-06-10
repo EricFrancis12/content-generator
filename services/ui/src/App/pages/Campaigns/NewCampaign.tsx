@@ -10,6 +10,7 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import CampaignEditor from '../../components/CampaignEditor';
 import Button from '../../components/Button';
 import _shared, { ICampaign } from '../../../_shared';
+import { apiURL } from '../../utils';
 const { boilerplateCampaign } = _shared.utils;
 
 export default function NewCampaign() {
@@ -30,8 +31,7 @@ export default function NewCampaign() {
             return;
         }
 
-        const { protocol, hostname } = window.location;
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns`;
+        const endpoint = apiURL(`/api/v1/campaigns`);
 
         setLoading(true);
         axios.post(endpoint, campaign, {

@@ -13,6 +13,8 @@ import Files from './pages/Files';
 import Queues from './pages/Queues';
 
 export default function App() {
+    console.log(process.env);
+
     useColorMode();
 
     const [loading] = useState<boolean>(false);
