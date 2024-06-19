@@ -34,7 +34,7 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
         const parsedData: TParsedData | Error = await new Promise((resolve, reject) => {
             parser.parseString(data, (parseErr, parsedData) => {
                 if (parseErr) {
-                    logger.error(new Error(parseErr.message).message);
+                    logger.error('Error parsing YouTube rss feed: ' + new Error(parseErr.message).message);
                     reject(parseErr);
                 } else {
                     resolve(parsedData);
@@ -84,7 +84,7 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
             externalId: item.videoDetails.videoId
         }));
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error getting recent YouTube videos: ' + formatErr(err));
         return [];
     }
 }

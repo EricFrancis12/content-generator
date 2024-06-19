@@ -59,7 +59,7 @@ export async function checkForNewYouTubeVideos(channel_id: string, history: IHis
         }));
         return newVideos;
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error checking for new YouTube videos: ' + formatErr(err));
         return [];
     }
 }
@@ -75,7 +75,7 @@ export async function checkForNewRedditImages(subreddit: string, history: IHisto
         }));
         return newImages;
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error checking for new Reddit images: ' + formatErr(err));
         return [];
     }
 }

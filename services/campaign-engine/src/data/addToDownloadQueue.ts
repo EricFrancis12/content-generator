@@ -15,7 +15,7 @@ export default async function addToDownloadQueue(downloadQueueItem: TDownloadQue
         }
         return true;
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error adding item to download queue: ' + formatErr(err));
         return false;
     }
 }
