@@ -11,6 +11,7 @@ import DefaultLayout from '../../layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import CampaignEditor from '../../components/CampaignEditor';
 import Button from '../../components/Button';
+import { apiURL } from '../../utils';
 
 export default function EditCampaign() {
     const { value: authToken } = useAppSelector(selectauthToken);
@@ -30,8 +31,7 @@ export default function EditCampaign() {
             return;
         }
 
-        const { protocol, hostname } = window.location;
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns/${campaign._id}`;
+        const endpoint = apiURL(`/api/v1/campaigns/${campaign._id}`);
 
         setLoading(true);
         axios.patch(endpoint, campaign, {

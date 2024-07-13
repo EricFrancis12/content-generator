@@ -4,11 +4,11 @@ import { RootState, _storeSelector } from '../store';
 import { EFileSystemItemType, IFileSystemItem } from '../../../_shared';
 import { IFileSystemItem_ui } from '../../typings';
 import { randomUUID } from '../../components/FileSystem/utils';
+import { apiURL } from '../../utils';
 
 export function fetchFileSystem() {
     const authToken = _storeSelector(state => state.authToken).value;
-    const { protocol, hostname } = window.location;
-    const endpoint = `${protocol}//${hostname}:3000/api/v1/file-system`;
+    const endpoint = apiURL(`/api/v1/file-system`);
     return axios.get(endpoint, {
         headers: {
             Authorization: `Bearer ${authToken}`

@@ -9,6 +9,7 @@ import FileSystem from '../../components/FileSystem';
 import RefreshButton from '../../components/RefreshButton';
 import Loader from '../../components/Loader';
 import _shared, { IDiskSpace } from '../../../_shared';
+import { apiURL } from '../../utils';
 const { bytesToGB } = _shared.utils;
 
 export default function Files() {
@@ -33,9 +34,8 @@ export default function Files() {
             return;
         }
 
-        const { protocol, hostname } = window.location;
         setLoadingDiskSpace(true);
-        fetch(`${protocol}//${hostname}:3000/api/v1/system/diskspace`, {
+        fetch(apiURL(`/api/v1/system/diskspace`), {
             headers: {
                 Authorization: `Bearer ${authToken}`
             },

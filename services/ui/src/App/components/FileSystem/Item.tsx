@@ -11,12 +11,11 @@ import { getFileSystem } from '../../store/reducers/fileSystemReducer';
 import { useFileDownloadContext } from '../../contexts/FileDownloadContext';
 import { EFileSystemItemType } from '../../../_shared';
 import { IFileSystemItem_ui } from '../../typings';
+import { apiURL } from '../../utils';
 
 export default function Item({ item }: {
     item: IFileSystemItem_ui
 }) {
-    const { protocol, hostname } = window.location;
-
     const { downloadFileFromEndpoint } = useFileDownloadContext();
 
     const { value: authToken } = useAppSelector(selectauthToken);
@@ -27,7 +26,7 @@ export default function Item({ item }: {
     async function handleDownloadButtonClick(e: React.MouseEvent<SVGElement>) {
         e.stopPropagation();
 
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/content/${item.internalId}?dl=1`;
+        const endpoint = apiURL(`/api/v1/content/${item.internalId}?dl=1`);
         downloadFileFromEndpoint({ endpoint, name: item.internalId });
     }
 
@@ -40,7 +39,7 @@ export default function Item({ item }: {
         }
 
         setLoading(true);
-        axios.delete(`${protocol}//${hostname}:3000/api/v1/content/${item.internalId}`, {
+        axios.delete(apiURL(`/api/v1/content/${item.internalId}`), {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

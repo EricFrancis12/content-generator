@@ -4,5 +4,6 @@ COPY ./ui/package.json .
 RUN npm install
 COPY ./ui/ .
 COPY ./_shared/ /app/src/_shared
+ENV NODE_ENV=development
 EXPOSE 3001
 CMD ["npm", "start"]

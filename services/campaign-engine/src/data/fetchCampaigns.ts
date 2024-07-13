@@ -16,7 +16,7 @@ export default async function fetchCampaigns() {
         }
         return campaigns;
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error fetching campaigns: ' + formatErr(err));
         return [];
     }
 }

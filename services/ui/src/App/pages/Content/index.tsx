@@ -10,6 +10,7 @@ import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import File from './File';
 import _shared, { EImageFileExtension, EVideoFileExtension } from '../../../_shared';
+import { apiURL } from '../../utils';
 const { getFileExt } = _shared.utils;
 
 export default function UploadContent() {
@@ -29,8 +30,7 @@ export default function UploadContent() {
             return;
         }
 
-        const { protocol, hostname } = window.location;
-        let endpoint = `${protocol}//${hostname}:3000/api/v1/content`;
+        let endpoint = apiURL(`/api/v1/content`);
         const formData = new FormData();
         const fileExt = getFileExt(file.name);
         if (fileExt in EImageFileExtension) {
