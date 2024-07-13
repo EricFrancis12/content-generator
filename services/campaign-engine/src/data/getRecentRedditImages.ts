@@ -22,11 +22,9 @@ type TRedditApiResultSchema = z.infer<typeof RedditApiResultSchema>;
 export default async function getRecentRedditImages(subreddit: string, options?: IOptionsReddit): Promise<ISourceImage[]> {
     try {
         const selector = options?.selector ?? 'hot';
-        const url = `https://api.reddit.com/r/${subreddit}/${selector}`;
-        const res = await axios.get(url);
-        const redditApiResultSchema: TRedditApiResultSchema = res.data;
-        const { success } = RedditApiResultSchema.safeParse(redditApiResultSchema);
-        if (!success) {
+        const redditApiResultSchema = await fetchRedditImages(subreddit, selector)
+        if (redditApiResultSchema instanceof Error) {
+            logger.error(redditApiResultSchema.message);
             return [];
         }
 
@@ -42,5 +40,20 @@ export default async function getRecentRedditImages(subreddit: string, options?:
     } catch (err) {
         logger.error(formatErr(err));
         return [];
+    }
+}
+
+export async function fetchRedditImages(subreddit: string, selector: string): Promise<TRedditApiResultSchema | Error> {
+    try {
+        const url = `https://api.reddit.com/r/${subreddit}/${selector}`;
+        const res = await axios.get(url);
+        const redditApiResultSchema: TRedditApiResultSchema = res.data;
+        const { success } = RedditApiResultSchema.safeParse(redditApiResultSchema);
+        if (!success) {
+            return new Error('Received Reddit data in an unknown format');
+        }
+        return redditApiResultSchema;
+    } catch (err) {
+        return new Error('Error fetching Reddit images');
     }
 }

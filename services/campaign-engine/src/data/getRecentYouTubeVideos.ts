@@ -26,22 +26,11 @@ type TParsedData = z.infer<typeof ParsedDataSchema>;
 export default async function getRecentYouTubeVideos(channel_id: string, options?: IOptionsYouTube): Promise<ISourceVideo[]> {
     try {
         const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}`;
-        const res = await axios.get(rssFeedUrl);
-        const data: unknown = res.data;
-
-        if (typeof data !== 'string') return [];
-
-        const parsedData: TParsedData | Error = await new Promise((resolve, reject) => {
-            parser.parseString(data, (parseErr, parsedData) => {
-                if (parseErr) {
-                    logger.error(new Error(parseErr.message).message);
-                    reject(parseErr);
-                } else {
-                    resolve(parsedData);
-                }
-            });
-        });
-        if (parsedData instanceof Error) return [];
+        const parsedData = await fetchYouTubeRSSFeed(rssFeedUrl);
+        if (parsedData instanceof Error) {
+            logger.error(parsedData.message);
+            return [];
+        }
 
         const { success } = ParsedDataSchema.safeParse(parsedData);
         if (!success) return [];
@@ -86,5 +75,27 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
     } catch (err) {
         logger.error(formatErr(err));
         return [];
+    }
+}
+
+export async function fetchYouTubeRSSFeed(rssFeedUrl: string): Promise<TParsedData | Error> {
+    try {
+        const res = await axios.get(rssFeedUrl);
+        const data: unknown = res.data;
+
+        if (typeof data !== 'string') return new Error('data is not a string');
+
+        const parsedData: TParsedData | Error = await new Promise((resolve) => {
+            parser.parseString(data, (parseErr, parsedData) => {
+                if (parseErr) {
+                    resolve(parseErr);
+                } else {
+                    resolve(parsedData);
+                }
+            });
+        });
+        return parsedData;
+    } catch (err) {
+        return new Error('Error fetching YouTube RSS feed');
     }
 }
