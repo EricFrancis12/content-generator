@@ -9,6 +9,7 @@ import { selectauthToken } from '../../store/reducers/authTokenReducer';
 import { getCampaigns } from '../../store/reducers/campaignsReducer';
 import useToggleCampaignDisabled from '../../hooks/useToggleCampaignDisabled';
 import { ICampaign } from '../../../_shared';
+import { apiURL } from '../../utils';
 
 export default function Campaign({ campaign }: {
     campaign: ICampaign
@@ -27,8 +28,7 @@ export default function Campaign({ campaign }: {
             return;
         }
 
-        const { protocol, hostname } = window.location;
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns/${campaign._id}`;
+        const endpoint = apiURL(`/api/v1/campaigns/${campaign._id}`);
 
         setLoading(true);
         axios.delete(endpoint, {

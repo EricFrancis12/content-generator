@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { selectauthToken } from '../store/reducers/authTokenReducer';
 import { getCampaigns } from '../store/reducers/campaignsReducer';
 import { ICampaign } from '../../_shared';
+import { apiURL } from '../utils';
 
 export default function useToggleCampaignDisabled(campaign: ICampaign) {
     const { value: authToken } = useAppSelector(selectauthToken);
@@ -19,8 +20,7 @@ export default function useToggleCampaignDisabled(campaign: ICampaign) {
             return;
         }
 
-        const { protocol, hostname } = window.location;
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns/${campaign._id}`;
+        const endpoint = apiURL(`/api/v1/campaigns/${campaign._id}`);
         const body: ICampaign = {
             ...structuredClone(campaign),
             disabled: !campaign.disabled

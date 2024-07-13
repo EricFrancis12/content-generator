@@ -16,7 +16,7 @@ export default async function fetchIntakeHistory(campaign_id: string) {
         }
         return intakeHistory;
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error fetching intake history: ' + formatErr(err));
         return [];
     }
 }

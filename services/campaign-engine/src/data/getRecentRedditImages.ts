@@ -38,7 +38,7 @@ export default async function getRecentRedditImages(subreddit: string, options?:
             };
         });
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error getting recent Reddit images: ' + formatErr(err));
         return [];
     }
 }

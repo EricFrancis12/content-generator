@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { _storeSelector } from '../store/store';
 import { IIntakeHistoryItem, IOutputHistoryItem } from '../../_shared';
+import { apiURL } from '../utils';
 
 export type THistoryType = 'intake' | 'output';
 
@@ -19,8 +20,7 @@ export default function useCampaignHistory(campaign_id?: string, type: THistoryT
             return;
         }
 
-        const { protocol, hostname } = window.location;
-        const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns/${campaign_id}/${type === 'intake' ? 'intake-history' : 'output-history'}`;
+        const endpoint = apiURL(`/api/v1/campaigns/${campaign_id}/${type === 'intake' ? 'intake-history' : 'output-history'}`);
 
         setLoading(true);
         fetch(endpoint, {

@@ -2,11 +2,11 @@ import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState, _storeSelector } from '../store';
 import { ICampaign } from '../../../_shared';
+import { apiURL } from '../../utils';
 
 export function fetchCampaigns() {
     const authToken = _storeSelector(state => state.authToken).value;
-    const { protocol, hostname } = window.location;
-    const endpoint = `${protocol}//${hostname}:3000/api/v1/campaigns`;
+    const endpoint = apiURL(`/api/v1/campaigns`);
     return axios.get(endpoint, {
         headers: {
             Authorization: `Bearer ${authToken}`

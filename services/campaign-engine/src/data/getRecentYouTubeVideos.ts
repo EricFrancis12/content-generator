@@ -73,7 +73,7 @@ export default async function getRecentYouTubeVideos(channel_id: string, options
             externalId: item.videoDetails.videoId
         }));
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error getting recent YouTube videos: ' + formatErr(err));
         return [];
     }
 }

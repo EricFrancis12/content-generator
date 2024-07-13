@@ -16,7 +16,7 @@ export default async function addToIntakeHistory(intakeHistoryItem: IIntakeHisto
         }
         return true;
     } catch (err) {
-        logger.error(formatErr(err));
+        logger.error('Error adding item to intake history: ' + formatErr(err));
         return false;
     }
 }
