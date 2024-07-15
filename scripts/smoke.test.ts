@@ -1,7 +1,9 @@
 import axios from 'axios';
 import xml2js from 'xml2js';
-import { RedditApiResultSchema, TRedditApiResultSchema } from '../services/campaign-engine/src/data/getRecentRedditImages';
-import { ParsedDataSchema, TParsedData } from '../services/campaign-engine/src/data/getRecentYouTubeVideos';
+import {
+    ParsedDataSchema, TParsedData,
+    RedditApiResultSchema, TRedditApiResultSchema
+} from '../services/campaign-engine/src/data/types';
 
 const parser = new xml2js.Parser();
 

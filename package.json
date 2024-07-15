@@ -33,7 +33,6 @@
         "@types/xml2js": "^0.4.14",
         "@typescript-eslint/eslint-plugin": "^7.6.0",
         "@typescript-eslint/parser": "^7.6.0",
-        "amqplib": "^0.10.4",
         "axios": "^1.7.2",
         "eslint": "^8.0.0",
         "eslint-plugin-react": "^7.34.1",
@@ -47,9 +46,5 @@
     },
     "lint-staged": {
         "**/*.{ts,tsx}": "eslint"
-    },
-    "dependencies": {
-        "@types/amqplib": "^0.10.5",
-        "winston": "^3.13.1"
     }
 }

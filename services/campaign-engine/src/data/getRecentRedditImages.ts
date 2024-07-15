@@ -1,23 +1,12 @@
 import axios from 'axios';
-import { z } from 'zod';
 import { IOptions } from '.';
 import { logger, formatErr } from '../config/loggers';
 import { ISourceImage, ESourceType } from '../../_shared';
+import { RedditApiResultSchema, TRedditApiResultSchema } from './types';
 
 interface IOptionsReddit extends IOptions {
     selector?: 'new' | 'hot' | 'controversial';
 }
-
-export const RedditApiResultSchema = z.object({
-    data: z.object({
-        children: z.array(z.object({
-            data: z.object({
-                url: z.string()
-            })
-        }))
-    })
-});
-export type TRedditApiResultSchema = z.infer<typeof RedditApiResultSchema>;
 
 export default async function getRecentRedditImages(subreddit: string, options?: IOptionsReddit): Promise<ISourceImage[]> {
     try {

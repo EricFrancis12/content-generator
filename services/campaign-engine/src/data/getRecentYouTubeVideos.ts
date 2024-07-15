@@ -2,26 +2,17 @@ import axios from 'axios';
 import xml2js from 'xml2js';
 const parser = new xml2js.Parser();
 import ytdl from 'ytdl-core';
-import { z } from 'zod';
 import { ISourceVideo, ESourceType } from '../../_shared';
 import { isShortVideo, isLongVideo } from '../utils';
 import { logger, formatErr } from '../config/loggers';
 import config from '../config/config';
 const { MIN_ALLOWED_VIDEO_LENGTH, MAX_ALLOWED_VIDEO_LENGTH } = config;
 import { IOptions } from '.';
+import { ParsedDataSchema, TParsedData } from './types';
 
 interface IOptionsYouTube extends IOptions {
     // ...
 }
-
-export const ParsedDataSchema = z.object({
-    feed: z.object({
-        entry: z.array(z.object({
-            ['yt:videoId']: z.array(z.string())
-        }))
-    })
-});
-export type TParsedData = z.infer<typeof ParsedDataSchema>;
 
 export default async function getRecentYouTubeVideos(channel_id: string, options?: IOptionsYouTube): Promise<ISourceVideo[]> {
     try {
