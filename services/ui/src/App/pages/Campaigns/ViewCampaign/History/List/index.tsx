@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Pagination from '../../../../../components/Pagination';
-import { generatePagination, TPagination } from '../../../../../utils';
+import Pagination, { handlePaginationClick } from '../../../../../components/Pagination';
+import { generatePagination } from '../../../../../utils';
 import { IHistoryItem } from '../../../../../../_shared';
 import NoHistory from '../NoHistory';
 import SearchQuery from './SearchQuery';
@@ -29,21 +29,7 @@ export default function List({ history }: {
         setCurrentPage(1);
     }
 
-    function handlePaginationClick(p: TPagination) {
-        if (typeof p === 'number') {
-            setCurrentPage(p);
-        } else if (p === '<<') {
-            setCurrentPage(1);
-        } else if (p === '<') {
-            const newCurrentPage = currentPage - 1 > 0 ? currentPage - 1 : 1;
-            setCurrentPage(newCurrentPage);
-        } else if (p === '>') {
-            const newCurrentPage = currentPage + 1 <= totalPages ? currentPage + 1 : totalPages;
-            setCurrentPage(newCurrentPage);
-        } else if (p === '>>') {
-            setCurrentPage(totalPages);
-        }
-    }
+
 
     return (
         <div className='w-full p-2'>
@@ -64,7 +50,12 @@ export default function List({ history }: {
                     <Pagination
                         pagination={pagination}
                         currentPage={currentPage}
-                        onClick={handlePaginationClick}
+                        onClick={pagination => handlePaginationClick({
+                            pagination,
+                            totalPages,
+                            currentPage,
+                            setCurrentPage,
+                        })}
                     />
                 </>
             }

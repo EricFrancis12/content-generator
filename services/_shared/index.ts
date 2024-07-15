@@ -9,7 +9,7 @@ import {
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
     ISourceContent, ISourceImage, ISourceVideo, ISavedContent, ISavedImage, ISavedVideo,
     IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem, TRabbitMQQueue, IQueue, TQueueHistory, TQueuesHistory,
-    EContentType, ESourceType, EOutputType, ECronExpression, IFileSystemItem, EFileSystemItemType, IDiskSpace
+    EContentType, ESourceType, EOutputType, ECronExpression, IFileSystemItem, EFileSystemItemType, IDiskSpace, TLogData, TLog
 } from './typings';
 
 const _shared = {
@@ -61,5 +61,7 @@ export type {
     TQueueHistory,
     TQueuesHistory,
     IFileSystemItem,
-    IDiskSpace
+    IDiskSpace,
+    TLogData,
+    TLog,
 };

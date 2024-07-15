@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action, createSelector } from '@reduxjs/toolkit';
 import authTokenReducer from './reducers/authTokenReducer';
 import campaignsReducer from './reducers/campaignsReducer';
+import logDataReducer from './reducers/logDataReducer';
 import colorModeReducer from './reducers/colorModeReducer';
 import fileSystemReducer from './reducers/fileSystemReducer';
 import queuesReducer from './reducers/queuesReducer';
@@ -12,6 +13,7 @@ const store = configureStore({
         campaigns: campaignsReducer,
         colorMode: colorModeReducer,
         fileSystem: fileSystemReducer,
+        logData: logDataReducer,
         queues: queuesReducer,
         queuesHistory: queuesHistoryReducer
     }

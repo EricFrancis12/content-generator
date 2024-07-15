@@ -21,3 +21,24 @@ export default function Pagination({ pagination, currentPage, onClick = () => { 
         </div>
     )
 }
+
+export function handlePaginationClick({ pagination, totalPages, currentPage, setCurrentPage }: {
+    pagination: TPagination;
+    totalPages: number;
+    currentPage: number;
+    setCurrentPage: (n: number) => void;
+}): void {
+    if (typeof pagination === 'number') {
+        setCurrentPage(pagination);
+    } else if (pagination === '<<') {
+        setCurrentPage(1);
+    } else if (pagination === '<') {
+        const newCurrentPage = currentPage - 1 > 0 ? currentPage - 1 : 1;
+        setCurrentPage(newCurrentPage);
+    } else if (pagination === '>') {
+        const newCurrentPage = currentPage + 1 <= totalPages ? currentPage + 1 : totalPages;
+        setCurrentPage(newCurrentPage);
+    } else if (pagination === '>>') {
+        setCurrentPage(totalPages);
+    }
+}

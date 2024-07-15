@@ -8,24 +8,28 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     const sidebarLinks = [
         {
             name: 'Home',
-            href: '/'
+            href: '/',
         },
         {
             name: 'Campaigns',
-            href: '/campaigns'
+            href: '/campaigns',
         },
         {
             name: 'Queues',
-            href: '/queues'
+            href: '/queues',
         },
         {
             name: 'Content',
-            href: '/content'
+            href: '/content',
         },
         {
             name: 'Files & Storage',
-            href: '/files'
-        }
+            href: '/files',
+        },
+        {
+            name: 'Logs',
+            href: '/logs',
+        },
     ];
 
     return (

@@ -252,3 +252,11 @@ export interface IDiskSpace {
     free: number,
     size: number
 }
+
+export type TLogData = Partial<Record<EServiceName, TLog>>;
+
+export type TLog = {
+    [key: string]: {
+        [key: string]: string;
+    }[];
+};

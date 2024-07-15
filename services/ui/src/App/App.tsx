@@ -3,13 +3,14 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import useColorMode from './hooks/useColorMode';
 import Loader from './components/Loader';
 import PageTitle from './components/PageTitle';
+import Home from './pages/Home';
 import Campaigns from './pages/Campaigns';
 import EditCampaign from './pages/Campaigns/EditCampaign';
 import NewCampaign from './pages/Campaigns/NewCampaign';
 import ViewCampaign from './pages/Campaigns/ViewCampaign';
-import Home from './pages/Home';
 import Content from './pages/Content';
 import Files from './pages/Files';
+import Logs from './pages/Logs';
 import Queues from './pages/Queues';
 
 export default function App() {
@@ -75,15 +76,6 @@ export default function App() {
                     }
                 />
                 <Route
-                    path='/queues'
-                    element={
-                        <>
-                            <PageTitle title='Queues' />
-                            <Queues />
-                        </>
-                    }
-                />
-                <Route
                     path='/content'
                     element={
                         <>
@@ -98,6 +90,24 @@ export default function App() {
                         <>
                             <PageTitle title='Files & Storage' />
                             <Files />
+                        </>
+                    }
+                />
+                <Route
+                    path='/logs'
+                    element={
+                        <>
+                            <PageTitle title='Logs' />
+                            <Logs />
+                        </>
+                    }
+                />
+                <Route
+                    path='/queues'
+                    element={
+                        <>
+                            <PageTitle title='Queues' />
+                            <Queues />
                         </>
                     }
                 />

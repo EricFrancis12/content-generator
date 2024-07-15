@@ -3,7 +3,7 @@ import _shared, {
     EImageFileExtension, EVideoFileExtension, IHistoryItem, IIntakeHistoryItem, IOutputHistoryItem,
     TRabbitMQQueue, IQueue, TQueueHistory, TQueuesHistory,
     TCorner, IFilterOptions, IConcatVideosOptions, IOverlayVideoOntoVideoOptions, IOverlayImageOntoVideoOptions,
-    IFileSystemItem, EFileSystemItemType, IDiskSpace
+    IFileSystemItem, EFileSystemItemType, IDiskSpace, TLogData, TLog
 } from '../../../_shared';
 
 const shared = {
@@ -36,5 +36,7 @@ export {
     IOverlayImageOntoVideoOptions,
     IFileSystemItem,
     EFileSystemItemType,
-    IDiskSpace
+    IDiskSpace,
+    TLogData,
+    TLog
 };
