@@ -8,7 +8,7 @@ interface IOptionsReddit extends IOptions {
     selector?: 'new' | 'hot' | 'controversial';
 }
 
-const RedditApiResultSchema = z.object({
+export const RedditApiResultSchema = z.object({
     data: z.object({
         children: z.array(z.object({
             data: z.object({
@@ -17,7 +17,7 @@ const RedditApiResultSchema = z.object({
         }))
     })
 });
-type TRedditApiResultSchema = z.infer<typeof RedditApiResultSchema>;
+export type TRedditApiResultSchema = z.infer<typeof RedditApiResultSchema>;
 
 export default async function getRecentRedditImages(subreddit: string, options?: IOptionsReddit): Promise<ISourceImage[]> {
     try {

@@ -11,7 +11,8 @@
         "start": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
         "stop": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down",
         "lint": "eslint . --ext .ts --ext .tsx",
-        "test": "jest",
+        "test": "npx jest --testPathIgnorePatterns=smoke.test.ts",
+        "smoke_test": "npx jest --testNamePattern=\"smoke test\"",
         "prepare": "husky install",
         "preinstall": "node services/api/scripts/_prestart.js",
         "postinstall": "npm run install:_shared && npm run install:apply-filters-engine && npm run install:campaign-engine && npm run install:cleanup-engine && npm run install:download-engine && npm run install:api && npm run install:publish-engine && npm run install:ui",
@@ -29,14 +30,17 @@
     "license": "ISC",
     "devDependencies": {
         "@types/jest": "^29.5.12",
+        "@types/xml2js": "^0.4.14",
         "@typescript-eslint/eslint-plugin": "^7.6.0",
         "@typescript-eslint/parser": "^7.6.0",
+        "axios": "^1.7.2",
         "eslint": "^8.0.0",
         "eslint-plugin-react": "^7.34.1",
         "husky": "^8.0.0",
         "jest": "^29.7.0",
         "lint-staged": "^15.2.2",
-        "ts-jest": "^29.1.2"
+        "ts-jest": "^29.1.2",
+        "xml2js": "^0.6.2"
     },
     "lint-staged": {
         "**/*.{ts,tsx}": "eslint"

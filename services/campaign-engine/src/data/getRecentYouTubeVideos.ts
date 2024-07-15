@@ -14,14 +14,14 @@ interface IOptionsYouTube extends IOptions {
     // ...
 }
 
-const ParsedDataSchema = z.object({
+export const ParsedDataSchema = z.object({
     feed: z.object({
         entry: z.array(z.object({
             ['yt:videoId']: z.array(z.string())
         }))
     })
 });
-type TParsedData = z.infer<typeof ParsedDataSchema>;
+export type TParsedData = z.infer<typeof ParsedDataSchema>;
 
 export default async function getRecentYouTubeVideos(channel_id: string, options?: IOptionsYouTube): Promise<ISourceVideo[]> {
     try {
