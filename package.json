@@ -47,5 +47,8 @@
     },
     "lint-staged": {
         "**/*.{ts,tsx}": "eslint"
+    },
+    "dependencies": {
+        "@types/amqplib": "^0.10.5"
     }
 }
