@@ -11,7 +11,7 @@ const parser = new xml2js.Parser();
         memesAPI: false,
     };
 
-    {
+    try {
         const rssFeedUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCaM7yYDOlnQlRvkyh5vtyPQ';
         const data: unknown = (await axios.get(rssFeedUrl)).data;
 
@@ -33,9 +33,11 @@ const parser = new xml2js.Parser();
 
         const { success } = ParsedDataSchema.safeParse(parsedData);
         result.youtubeRSSFeed = success;
+    } catch (err) {
+        console.error(err);
     }
 
-    {
+    try {
         const url = 'https://api.reddit.com/r/memes/hot';
         const data: unknown = (await axios.get(url)).data;
 
@@ -45,9 +47,11 @@ const parser = new xml2js.Parser();
 
         const { success } = RedditApiResultSchema.safeParse(data);
         result.redditAPI = success;
+    } catch (err) {
+        console.error(err);
     }
 
-    {
+    try {
         const url = 'https://meme-api.com/gimme/memes';
         const data: unknown = (await axios.get(url)).data;
 
@@ -57,6 +61,8 @@ const parser = new xml2js.Parser();
 
         const { success } = MemeAPIResultSchema.safeParse(data);
         result.memesAPI = success;
+    } catch (err) {
+        console.error(err);
     }
 
     console.log('\n[RESULTS]:');
