@@ -19,8 +19,7 @@ export default async function getRecentRedditImages(subreddit: string, options?:
 
         const imageUrls: string[] = redditApiResultSchema.data.children.map(child => child.data.url)
         return imageUrls.map(imageUrl => {
-            const splitOnSlash = imageUrl.split('/');
-            const externalId = splitOnSlash[splitOnSlash.length - 1] || '';
+            const externalId = extractExternalIdFromRedditURL(imageUrl);
             return {
                 sourceType: ESourceType.REDDIT,
                 externalId
@@ -45,4 +44,9 @@ export async function fetchRedditImages(subreddit: string, selector: string): Pr
     } catch (err) {
         return new Error('Error fetching Reddit images');
     }
+}
+
+export function extractExternalIdFromRedditURL(url: string): string {
+    const splitOnSlash = url.split('/');
+    return splitOnSlash[splitOnSlash.length - 1] || '';
 }

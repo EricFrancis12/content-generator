@@ -59,7 +59,7 @@ export default class DownloadEngine {
                                     const publishQueueItem: TPublishQueueItem = {
                                         ...downloadQueueItem,
                                         contentPath: video.path
-                                    }
+                                    };
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
                                 }
                             } else {
@@ -76,19 +76,41 @@ export default class DownloadEngine {
                                     };
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_FILTER_QUEUE, Buffer.from(JSON.stringify(filterQueueItem)));
                                 } else {
-                                    const outputPath = `./shared-file-system/source-content/Reddit/images/${internalId}.jpg`;
+                                    const outputPath = `./shared-file-system/output-content/Reddit/images/${internalId}.jpg`;
                                     const image = await downloadRedditImage(externalId, outputPath);
                                     const publishQueueItem: TPublishQueueItem = {
                                         ...downloadQueueItem,
                                         contentPath: image.path
-                                    }
+                                    };
                                     this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
                                 }
                             } else {
                                 logger.error('Reddit content types other than IMAGE not yet implimented');
                             }
+                        } else if (sourceType === ESourceType.MEME_API) {
+                            if (contentType === EContentType.IMAGE) {
+                                if (filters.length > 0) {
+                                    const outputPath = `./shared-file-system/source-content/MemeAPI/images/${internalId}.jpg`;
+                                    const image = await downloadRedditImage(externalId, outputPath);
+                                    const filterQueueItem: TFilterQueueItem = {
+                                        ...downloadQueueItem,
+                                        contentPath: image.path
+                                    };
+                                    this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_FILTER_QUEUE, Buffer.from(JSON.stringify(filterQueueItem)));
+                                } else {
+                                    const outputPath = `./shared-file-system/output-content/MemeAPI/images/${internalId}.jpg`;
+                                    const image = await downloadRedditImage(externalId, outputPath);
+                                    const publishQueueItem: TPublishQueueItem = {
+                                        ...downloadQueueItem,
+                                        contentPath: image.path
+                                    };
+                                    this.channel?.publish(RABBITMQ_EXCHANGE, RABBITMQ_PUBLISH_QUEUE, Buffer.from(JSON.stringify(publishQueueItem)));
+                                }
+                            } else {
+                                logger.error('Meme API content types other than IMAGE not yet implimented');
+                            }
                         } else {
-                            logger.error('Source types other than YOUTUBE not yet implimented');
+                            logger.error('Unknown Source type: ' + sourceType);
                         }
                     } catch (err) {
                         logger.error(formatErr(err));

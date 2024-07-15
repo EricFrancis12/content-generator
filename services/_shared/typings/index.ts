@@ -145,6 +145,7 @@ export enum ESourceType {
     TIKTOK = 'TIKTOK',
     YOUTUBE = 'YOUTUBE',
     REDDIT = 'REDDIT',
+    MEME_API = 'MEME_API',
     CREATED_BY_FILTER = 'CREATED_BY_FILTER',
     READ_FROM_SAVED = 'READ_FROM_SAVED'
 }

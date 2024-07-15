@@ -1,7 +1,8 @@
 import cron from 'node-cron';
 import {
     fetchCampaigns, checkForNewYouTubeVideos, addToDownloadQueue,
-    addToIntakeHistory, checkForNewRedditImages, fetchIntakeHistory
+    addToIntakeHistory, checkForNewRedditImages, fetchIntakeHistory,
+    getImageFromMemeAPI
 } from '../data';
 import { ESourceType, EContentType, TDownloadQueueItem, ISourceImage, ISourceVideo } from '../../_shared';
 import { logger } from '../config/loggers';
@@ -61,8 +62,15 @@ const main = async () => {
             } else {
                 logger.error('Reddit content types other than IMAGE not yet implimented');
             }
+        } else if (sourceType === ESourceType.MEME_API) {
+            if (contentType === EContentType.IMAGE) {
+                const image = await getImageFromMemeAPI(externalId, intakeHistory, campaign?.options);
+                if (image) newContent = [image];
+            } else {
+                logger.error('Meme API content types other than IMAGE not yet implimented');
+            }
         } else {
-            logger.error('Source types other than YOUTUBE not yet implimented');
+            logger.error('Unknown source type');
         }
 
         for (let j = 0; j < newContent.length; j++) {

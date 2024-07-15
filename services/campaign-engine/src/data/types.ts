@@ -19,3 +19,8 @@ export const RedditApiResultSchema = z.object({
     })
 });
 export type TRedditApiResultSchema = z.infer<typeof RedditApiResultSchema>;
+
+export const MemeAPIResultSchema = z.object({
+    url: z.string(),
+});
+export type TMemeAPIResult = z.infer<typeof MemeAPIResultSchema>;
