@@ -49,6 +49,7 @@
         "**/*.{ts,tsx}": "eslint"
     },
     "dependencies": {
-        "@types/amqplib": "^0.10.5"
+        "@types/amqplib": "^0.10.5",
+        "winston": "^3.13.1"
     }
 }
