@@ -1,17 +1,17 @@
 import axios from 'axios';
 import xml2js from 'xml2js';
-import {
-    ParsedDataSchema, TParsedData,
-    RedditApiResultSchema, TRedditApiResultSchema
-} from '../services/campaign-engine/src/data/types';
+import { ParsedDataSchema, TParsedData, RedditApiResultSchema } from '../services/campaign-engine/src/data/types';
 
 const parser = new xml2js.Parser();
 
 describe('smoke test', () => {
     test('Fetching data from YouTube RSS feed', async () => {
         const rssFeedUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCaM7yYDOlnQlRvkyh5vtyPQ';
-        const res = await axios.get(rssFeedUrl);
-        const data: unknown = res.data;
+        const data: unknown = (await axios.get(rssFeedUrl)).data;
+
+        console.log('~ [START] YouTube RSS data');
+        console.log(data);
+        console.log('~ [END] YouTube RSS data');
 
         expect(typeof data).toEqual('string');
         if (typeof data !== 'string') throw new Error('data must be a string');
@@ -34,9 +34,13 @@ describe('smoke test', () => {
 
     test('Fetching data from Reddit', async () => {
         const url = 'https://api.reddit.com/r/memes/hot';
-        const res = await axios.get(url);
-        const redditApiResultSchema: TRedditApiResultSchema = res.data;
-        const { success } = RedditApiResultSchema.safeParse(redditApiResultSchema);
+        const data: unknown = (await axios.get(url)).data;
+
+        console.log('~ [START] Reddit data');
+        console.log(data);
+        console.log('~ [END] Reddit data');
+
+        const { success } = RedditApiResultSchema.safeParse(data);
         expect(success).toEqual(true);
     });
 });
